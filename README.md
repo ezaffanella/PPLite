@@ -4,7 +4,7 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 
 <h3>Current version (see below for older ones)</h3>
 
-    2020-11-24: PPLite 0.7 can be downloaded.
+    2020-11-24: <a href="releases/pplite-0.7.tar.gz">PPLite 0.7 can be downloaded</a>.
 
 <h3>Support</h3>
 
