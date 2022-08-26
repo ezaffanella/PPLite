@@ -4,7 +4,7 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2020-11-24: <a href="releases/pplite-0.7.tar.gz">PPLite 0.7 can be downloaded</a>.
+2022-18-26: <a href="releases/pplite-0.7.1.tar.gz">PPLite 0.7.1 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -58,8 +58,15 @@ While being derived from the PPL (Parma Polyhedra Library), PPLite has a very di
 <h3>Available downloads</h3>
 <ul>
 <li>
+2022-08-26:
+<a href="releases/pplite-0.7.1.tar.gz">PPLite 0.7.1 can be downloaded</a>.
+<br>
+Note: this version fixes a silly build error; no functionality changes wrt 0.7.
+</li>
+<li>
 2020-11-24:
-<a href="releases/pplite-0.7.tar.gz">PPLite 0.7 can be downloaded</a>.
+<strike><a href="releases/pplite-0.7.tar.gz">PPLite 0.7 can be downloaded</a>.</strike>
+(<b>No longer maintained: don't use it, switch to the most recent one</b>).
 <br>
 New configuration option <em>--enable-apron</em> allows for compiling
 the wrapper for (the C language bindings of) the Apron interface.
