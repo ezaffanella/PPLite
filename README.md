@@ -4,7 +4,7 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2022-11-02: <a href="releases/pplite-0.8.tar.gz">PPLite 0.8 can be downloaded</a>.
+2023-01-02: <a href="releases/pplite-0.9.tar.gz">PPLite 0.9 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -71,8 +71,15 @@ Previous collaborators include:
 <h3>Available downloads</h3>
 <ul>
 <li>
+2023-01-02:
+<a href="releases/pplite-0.9.tar.gz">PPLite 0.9 can be downloaded</a>.
+<br>
+The finite powerset domain is now a class template: pre-generated instances, also available via Apron interface, include finite sets of boxed polyhedra (P_Set) and finite sets of Cartesian factored boxed polyhedra (FP_Set).
+</li>
+<li>
 2022-11-02:
-<a href="releases/pplite-0.8.tar.gz">PPLite 0.8 can be downloaded</a>.
+<strike><a href="releases/pplite-0.8.tar.gz">PPLite 0.8 can be downloaded</a>.</strike>
+(<b>No longer maintained: switch to the most recent one.</b>)
 <br>
 This new version adds a prototype implementation of the finite powerset
 of Poly elements (PSet). It also provide an efficiency improved version
