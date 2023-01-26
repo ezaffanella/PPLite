@@ -4,7 +4,7 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2023-01-02: <a href="releases/pplite-0.9.tar.gz">PPLite 0.9 can be downloaded</a>.
+2023-01-26: <a href="releases/pplite-0.10.tar.gz">PPLite 0.10 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -20,17 +20,27 @@ While being derived from the PPL (Parma Polyhedra Library), PPLite has a very di
      (ease of implementation and readability are given priority).</li>
   <li>Portability is deemed important, but not the main concern
       (ease of implementation and readability are given priority).</li>
-  <li>The library is written in modern C++. The developers should feel free to use language features
-      made available by the recent standards, provided these lead to a simpler implementation
-    or improve on code readability.</li>
-  <li>The library is meant to be lightweight from the point of view of the developers:
-      the goal is to reduce maintenance costs. This implies, among other things:
+  <li>The library is written in modern C++ (current development
+      is based on the c++17 standard). The developers should feel free
+      to use language features made available by the recent standards,
+      provided these lead to a simpler implementation or improve
+      on code readability.</li>
+  <li>The library is meant to be lightweight from the point of view
+      of the developers: the goal is to reduce maintenance costs.
+      This implies, among other things:
       <ul>
         <li>backward compatibility is a non-goal;
         <li>documentation is kept minimal (if not omitted altogether);
-        <li>there is no plan to provide foreign language interfaces;
-        <li>the library typically provides narrow contracts: preconditions on operators are not checked at runtime, so that user errors will lead to undefined behavior (rather than exceptions);
-        <li>encapsulation is not fully enforced: a knowledgeable user can directly change the contents of inner data structures, e.g., to experiment with alternative implementations of domain operators.
+        <li>there is no plan to provide foreign language interfaces
+            (but the library can be accessed through Apron);
+        <li>the library typically provides narrow contracts:
+            preconditions on operators are not checked at runtime,
+            so that user errors will lead to undefined behavior
+            (rather than exceptions);
+        <li>encapsulation is not fully enforced: a knowledgeable user
+            can directly change the contents of inner data structures,
+            e.g., to experiment with alternative implementations
+            of domain operators.
       </ul>
 </ul>
 
@@ -69,13 +79,25 @@ Previous collaborators include:
 
 <A NAME="downloads">
 <h3>Available downloads</h3>
+
 <ul>
+
+<li>
+2023-01-26:
+<a href="releases/pplite-0.10.tar.gz">PPLite 0.10 can be downloaded</a>.
+<br>
+Main change: the Apron wrapper is no longer part of the library; it will
+be integrated into Apron itself.
+</li>
+
 <li>
 2023-01-02:
-<a href="releases/pplite-0.9.tar.gz">PPLite 0.9 can be downloaded</a>.
+<strike><a href="releases/pplite-0.9.tar.gz">PPLite 0.9 can be downloaded</a>.</strike>
+(<b>No longer maintained: switch to the most recent one.</b>)
 <br>
 The finite powerset domain is now a class template: pre-generated instances, also available via Apron interface, include finite sets of boxed polyhedra (P_Set) and finite sets of Cartesian factored boxed polyhedra (FP_Set).
 </li>
+
 <li>
 2022-11-02:
 <strike><a href="releases/pplite-0.8.tar.gz">PPLite 0.8 can be downloaded</a>.</strike>
@@ -85,6 +107,7 @@ This new version adds a prototype implementation of the finite powerset
 of Poly elements (PSet). It also provide an efficiency improved version
 of the F_Poly domain and a couple of bug fixes in the Apron wrapper.
 </li>
+
 <li>
 2022-08-26:
 <strike><a href="releases/pplite-0.7.1.tar.gz">PPLite 0.7.1 can be downloaded</a>.</strike>
@@ -92,6 +115,7 @@ of the F_Poly domain and a couple of bug fixes in the Apron wrapper.
 <br>
 Note: this version fixes a silly build error; no functionality changes wrt 0.7.
 </li>
+
 <li>
 2020-11-24:
 <strike><a href="releases/pplite-0.7.tar.gz">PPLite 0.7 can be downloaded</a>.</strike>
@@ -104,6 +128,7 @@ with several variants of the domain of convex polyhedra:
 Poly, U_Poly, F_Poly, UF_Poly and their XXX_Stats versions,
 computing timing information for abstract operators.
 </li>
+
 <li>
 2020-04-23:
 <strike><a href="releases/pplite-0.6.tar.gz">PPLite 0.6 can be downloaded</a>.</strike>
@@ -112,6 +137,7 @@ computing timing information for abstract operators.
 Added pplite::F_Poly, adding support for factored polyhedra
 (experimental feature, not optimized).
 </li>
+
 <li>
 2019-10-15:
 <strike><a href="releases/pplite-0.5.1.tar.gz">PPLite 0.5.1 can be downloaded</a>.</strike>
@@ -121,6 +147,7 @@ This version fixes a bug affecting Poly::parallel_affine_image()
 in version 0.5 (the bug was affecting computations of affine images
 when the denominators of the expressions where different from 1).
 </li>
+
 <li>
 2019-07-12:
 <strike><a href="releases/pplite-0.5.tar.gz">PPLite 0.5 can be downloaded</a></strike>
@@ -133,6 +160,7 @@ Poly::boxed_is_disjoint_from() so as to speed up computation
 (in particular, in client code computing over <em>sets</em> of polyhedra,
 as found in tools such as PHAVerLite).
 </li>
+
 <li>
 2019-03-08:
 <strike><a href="releases/pplite-0.4.1.tar.gz">PPLite 0.4.1 can be downloaded</a></strike>
@@ -149,6 +177,7 @@ Corrected a few, corner case bugs (affected functionalities were:
 computation of the bhrz03 widening; the removal of space dimensions;
 the addition of generating lines).
 </li>
+
 <li>
 2018-10-09:
 <strike><a href="releases/pplite-0.3.tar.gz">PPLite 0.3 can be downloaded</a>.</strike>
@@ -161,6 +190,7 @@ Corrected a few bugs: intersection of 0-dim polyhedra;
 printing of universe polyhedra; minimization of an affine function;
 a couple of other bugs in code used only in debugging mode.
 </li>
+
 <li>
 2018-07-10:
 <strike><a href="releases/pplite-0.2.tar.gz">PPLite 0.2 can be downloaded</a>.</strike>
@@ -171,6 +201,7 @@ it is now possible to develop multithreaded applications using PPLite.
 Implemented a few other operators on the polyhedra domain,
 including the more precise bhrz03 widening.
 </li>
+
 <li>
 2018-05-08:
 <strike><a href="releases/pplite-0.1.tar.gz">PPLite 0.1 can be downloaded</a>.</strike>
@@ -178,4 +209,5 @@ including the more precise bhrz03 widening.
 <br>
 Initial release.
 </li>
+
 </ul>
