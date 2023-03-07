@@ -4,7 +4,7 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2023-01-26: <a href="releases/pplite-0.10.tar.gz">PPLite 0.10 can be downloaded</a>.
+2023-03-07: <a href="releases/pplite-0.10.1.tar.gz">PPLite 0.10.1 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -32,7 +32,8 @@ While being derived from the PPL (Parma Polyhedra Library), PPLite has a very di
         <li>backward compatibility is a non-goal;
         <li>documentation is kept minimal (if not omitted altogether);
         <li>there is no plan to provide foreign language interfaces
-            (but the library can be accessed through Apron);
+            (but the library can be accessed through Apron,
+             using the C, Java or OCaml bindings);
         <li>the library typically provides narrow contracts:
             preconditions on operators are not checked at runtime,
             so that user errors will lead to undefined behavior
@@ -64,6 +65,7 @@ Previous collaborators include:
  - Maria Chiara Colla     (former student of the University of Parma)
  - Fabio Cristini         (former student of the University of Parma)
  - Rocco Di Gianni        (former student of the University of Parma)
+ - Greta Dolcetti         (student of the University of Parma)
  - Luca Gruppi            (former student of the University of Parma)
  - Eduard Ispas           (former student of the University of Parma)
  - Pasquale la Torre      (student of the University of Parma)
@@ -81,6 +83,13 @@ Previous collaborators include:
 <h3>Available downloads</h3>
 
 <ul>
+
+<li>
+2023-03-07:
+<a href="releases/pplite-0.10.1.tar.gz">PPLite 0.10.1 can be downloaded</a>.
+<br>
+Added support for the integral split operator.
+</li>
 
 <li>
 2023-01-26:
