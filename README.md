@@ -2,6 +2,8 @@
 
 PPLite is an open-source C++ library implementing the abstract domain of convex polyhedra, to be used in tools for static analysis and verification.
 
+<strong>Note:</strong> this public repository collects the releases of the library; it is <em>not</em> the repository where library development takes place (which is instead a <em>private</em> repository).
+
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
 2023-03-07: <a href="releases/pplite-0.10.1.tar.gz">PPLite 0.10.1 can be downloaded</a>.
