@@ -6,7 +6,7 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2023-03-07: <a href="releases/pplite-0.10.1.tar.gz">PPLite 0.10.1 can be downloaded</a>.
+2023-05-29: <a href="releases/pplite-0.10.2.tar.gz">PPLite 0.10.2 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -71,7 +71,7 @@ Previous collaborators include:
  - Luca Gruppi            (former student of the University of Parma)
  - Eduard Ispas           (former student of the University of Parma)
  - Pasquale la Torre      (student of the University of Parma)
- - Lorenzo Mora           (student of the University of Parma)
+ - Lorenzo Mora           (former student of the University of Parma)
  - Riccardo Mori          (student of the University of Parma)
  - Sara Musiari           (former student of the University of Parma)
  - Danilo Numeroso        (former student of the University of Parma)
@@ -87,15 +87,26 @@ Previous collaborators include:
 <ul>
 
 <li>
+2023-05-29:
+<a href="releases/pplite-0.10.2.tar.gz">PPLite 0.10.2 can be downloaded</a>.
+<br>
+Fixed a bug in the polyhedra simplification procedure.
+The bug could be triggered when using NNC polyhedra and converting
+from generator to constraints.
+</li>
+
+<li>
 2023-03-07:
-<a href="releases/pplite-0.10.1.tar.gz">PPLite 0.10.1 can be downloaded</a>.
+<strike><a href="releases/pplite-0.10.1.tar.gz">PPLite 0.10.1 can be downloaded</a>.</strike>
+(<b>No longer maintained: switch to the most recent one.</b>)
 <br>
 Added support for the integral split operator.
 </li>
 
 <li>
 2023-01-26:
-<a href="releases/pplite-0.10.tar.gz">PPLite 0.10 can be downloaded</a>.
+<strike><a href="releases/pplite-0.10.tar.gz">PPLite 0.10 can be downloaded</a>.</strike>
+(<b>No longer maintained: switch to the most recent one.</b>)
 <br>
 Main change: the Apron wrapper is no longer part of the library; it will
 be integrated into Apron itself.
