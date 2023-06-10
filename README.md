@@ -6,7 +6,7 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2023-05-29: <a href="releases/pplite-0.10.2.tar.gz">PPLite 0.10.2 can be downloaded</a>.
+2023-06-10: <a href="releases/pplite-0.11.tar.gz">PPLite 0.11 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -61,6 +61,7 @@ Previous collaborators include:
  - Daniele Arioli         (former student of the University of Parma)
  - Edoardo Bartolini      (former student of the University of Parma)
  - Anna Becchi            (former student of the University of Parma)
+ - Matteo Boroni Grazioli (student of the University of Parma)
  - Simone Brunazzi        (former student of the University of Parma)
  - Gino Ceresini          (former student of the University of Parma)
  - Carlotta Colla         (former student of the University of Parma)
@@ -78,6 +79,7 @@ Previous collaborators include:
  - Velia Pierdomenico     (student of the University of Parma)
  - Dana Greta Pop         (student of the University of Parma)
  - Andrea Rainone         (former student of the University of Parma)
+ - Benison Matondo Simao  (former student of the University of Parma)
  - Luigi Zaccone          (former student of the University of Parma)
 
 
@@ -87,8 +89,21 @@ Previous collaborators include:
 <ul>
 
 <li>
+2023-06-10:
+<a href="releases/pplite-0.11.tar.gz">PPLite 0.11 can be downloaded</a>.
+<br>
+While the library is based on the c++17 standard, its header files
+are now c++11 standard compliant (hence can be used more easily in
+other projects, e.g., the Apron library wrapper).
+Added new method
+  <code>Index_Set get_unconstrained() const;</code>
+to polyhedra domains, returning the set of unconstrained space dimensions.
+</li>
+
+<li>
 2023-05-29:
-<a href="releases/pplite-0.10.2.tar.gz">PPLite 0.10.2 can be downloaded</a>.
+<strike><a href="releases/pplite-0.10.2.tar.gz">PPLite 0.10.2 can be downloaded</a>.</strike>
+(<b>No longer maintained: switch to the most recent one.</b>)
 <br>
 Fixed a bug in the polyhedra simplification procedure.
 The bug could be triggered when using NNC polyhedra and converting
