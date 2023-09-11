@@ -2,7 +2,7 @@
 
 PPLite is an open-source C++ library implementing the abstract domain of convex polyhedra, to be used in tools for static analysis and verification.
 
-<strong>Note:</strong> this public repository collects the releases of the library; it is <em>not</em> the repository where library development takes place (which is instead a <em>private</em> repository).
+<strong>Note:</strong> this public repository also collects previous (non-versioned) releases of the library.
 
 <h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
 
@@ -56,32 +56,7 @@ Currently the library is maintained by Enea Zaffanella.
 
 Students collaborate to the development of the library (in a broad sense, which is sometimes different from writing source code), under supervision of Enea Zaffanella, during their internship and/or the activities related to the final exam of the Bachelor and/or Master Degree in Computer Science.
 
-Previous collaborators include:
-
- - Daniele Arioli         (former student of the University of Parma)
- - Edoardo Bartolini      (former student of the University of Parma)
- - Anna Becchi            (former student of the University of Parma)
- - Matteo Boroni Grazioli (student of the University of Parma)
- - Simone Brunazzi        (former student of the University of Parma)
- - Gino Ceresini          (former student of the University of Parma)
- - Carlotta Colla         (former student of the University of Parma)
- - Maria Chiara Colla     (former student of the University of Parma)
- - Fabio Cristini         (former student of the University of Parma)
- - Rocco Di Gianni        (former student of the University of Parma)
- - Greta Dolcetti         (student of the University of Parma)
- - Luca Gruppi            (former student of the University of Parma)
- - Eduard Ispas           (former student of the University of Parma)
- - Pasquale la Torre      (student of the University of Parma)
- - Lorenzo Mora           (former student of the University of Parma)
- - Riccardo Mori          (student of the University of Parma)
- - Sara Musiari           (former student of the University of Parma)
- - Danilo Numeroso        (former student of the University of Parma)
- - Velia Pierdomenico     (student of the University of Parma)
- - Dana Greta Pop         (student of the University of Parma)
- - Andrea Rainone         (former student of the University of Parma)
- - Benison Matondo Simao  (former student of the University of Parma)
- - Luigi Zaccone          (former student of the University of Parma)
-
+For the list of collaborators, see file CREDITS.
 
 <A NAME="downloads">
 <h3>Available downloads</h3>
