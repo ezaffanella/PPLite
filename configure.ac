@@ -331,15 +331,24 @@ fi
 extra_includes="${extra_includes}${extra_includes:+ }${gmp_include_options}"
 extra_libraries="${extra_libraries}${extra_libraries:+ }${gmp_library_options}"
 
-# Checks on the Flint library.
-AC_CHECK_FLINT
-if test x"$have_flint" = xno
+if test x"$integer_kind" = xflint
 then
-  AC_MSG_ERROR([Cannot find Flint version 2.5.2 or higher.])
+  # Checks on the MPFR library.
+  AC_CHECK_MPFR
+  # Checks on the Flint library.
+  AC_CHECK_FLINT
+  if test x"$have_mpfr" = xno
+  then
+    AC_MSG_ERROR([Cannot find MPFR.])
+  elif test x"$have_flint" = xno
+  then
+    AC_MSG_ERROR([Cannot find Flint version 2.5.2 or higher.])
+  else
+    extra_includes="${extra_includes}${extra_includes:+ }${flint_include_options} ${mpfr_include_options}"
+    extra_libraries="${extra_libraries}${extra_libraries:+ }${flint_library_options} ${mpfr_library_options}"
+  fi
 fi
 
-extra_includes="${extra_includes}${extra_includes:+ }${flint_include_options}"
-extra_libraries="${extra_libraries}${extra_libraries:+ }${flint_library_options}"
 # Checks for md5sum.
 AC_CHECK_PROG(MD5SUM, md5sum, md5sum)
 AM_CONDITIONAL(HAVE_MD5SUM, test x$MD5SUM = xmd5sum)
