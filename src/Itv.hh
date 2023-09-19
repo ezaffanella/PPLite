@@ -304,6 +304,8 @@ struct Itv {
 
   // Returns true if refinement makes it empty.
   bool refine_as_integral() {
+    if (is_empty())
+      return true;
     assert(not is_empty());
     if (has_lb()) lb.round_up();
     if (has_ub()) ub.round_down();
