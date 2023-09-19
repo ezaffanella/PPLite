@@ -429,6 +429,33 @@ test16() {
   return ph1 == kr1 && ph2 == kr2;
 }
 
+bool
+test17() {
+  Var A(0);
+  Var B(1);
+
+  Poly ph1(2);
+  ph1.add_con(-B >= 0);
+  ph1.add_con(A - B >= 0);
+
+  Con c { B == 0 };
+  Poly ph2 = ph1.integral_split(c);
+
+  Poly kr1(2);
+  kr1.add_con(-B >= 0);
+  kr1.add_con(A - B >= 0);
+  kr1.add_con(B == 0);
+  kr1.minimize();
+
+  Poly kr2(2);
+  kr2.add_con(-B >= 0);
+  kr2.add_con(A - B >= 0);
+  kr2.add_con(B <= -1);
+  kr2.minimize();
+
+  return ph1 == kr1 && ph2 == kr2;
+}
+
 BEGIN_MAIN
   DO_TEST(test01);
   DO_TEST(test02);
@@ -446,4 +473,5 @@ BEGIN_MAIN
   DO_TEST(test14);
   DO_TEST(test15);
   DO_TEST(test16);
+  DO_TEST(test17);
 END_MAIN
