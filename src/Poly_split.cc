@@ -1123,14 +1123,24 @@ Z_split_skel_on_eq(dim_type space_dim, dim_type num_lines, dim_type num_eq,
 
   Integers scal_prods_ineq;
 
+  auto is_empty_for_ineq = [](const Gens& sk, const Integers& sp) {
+    for (auto i : index_range(sk)) {
+      auto s = sgn(sp[i]);
+      if ((sk[i].is_point() && s != -1)
+          ||
+          (sk[i].is_ray() && s == 1))
+        return false;
+    }
+    return true;
+  };
+
   // Check for lucky cases.
   auto [beta_lt, beta_gt] = integral_complement_eq(beta_equal);
   // Check if ph_lt happens to be empty (lucky case).
   Integers scal_prods_lt = scal_prods_equal;
   Integer delta_inhomo = beta_equal.inhomo_term() + beta_lt.inhomo_term();
   Z_adjust_scal_prods(scal_prods_lt, sk_equal, delta_inhomo);
-  const bool ph_lt_empty
-    = all_of(scal_prods_lt, [](const Integer& sp) { return sgn(sp) < 0; });
+  const bool ph_lt_empty = is_empty_for_ineq(sk_equal, scal_prods_lt);
   if (ph_lt_empty) {
     // ph_lt is empty: the else branch can be based on beta_gt.
     beta_ineq = beta_gt;
@@ -1142,8 +1152,7 @@ Z_split_skel_on_eq(dim_type space_dim, dim_type num_lines, dim_type num_eq,
     Integers scal_prods_gt = scal_prods_lt;
     delta_inhomo = beta_lt.inhomo_term() + beta_gt.inhomo_term();
     Z_adjust_scal_prods(scal_prods_gt, sk_equal, delta_inhomo);
-    const bool ph_gt_empty
-      = all_of(scal_prods_gt, [](const Integer& sp) { return sgn(sp) < 0; });
+    const bool ph_gt_empty = is_empty_for_ineq(sk_equal, scal_prods_gt);
     if (ph_gt_empty) {
       // ph_gt is empty: the else branch can be based on beta_lt.
       beta_ineq = beta_lt;
