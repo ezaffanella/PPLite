@@ -1113,8 +1113,7 @@ Z_split_skel_on_eq(dim_type space_dim, dim_type num_lines, dim_type num_eq,
   bool combine_equal = not sk_neg_equal.empty() && not sk_pos_equal.empty();
   // Check for emptiness/redundancy.
   auto res_equal = combine_equal ? Conv_Iter_Result::OK
-    : sk_neg_equal.empty() ? Conv_Iter_Result::REDUNDANT
-    : (sk_pos_equal.empty() && has_no_eq_point(sk_ranges_equal, sk_equal)
+    : (has_no_eq_point(sk_ranges_equal, sk_equal)
        ? Conv_Iter_Result::EMPTY
        : Conv_Iter_Result::OK);
 
