@@ -410,6 +410,25 @@ test15() {
   return (ph1 == knr1 && ph2 == knr2);
 }
 
+bool
+test16() {
+  Var A(0);
+  Var B(1);
+
+  Poly ph1(2);
+  ph1.add_con(A >= 0);
+
+  Con c { A == 0 };
+  Poly ph2 = ph1.integral_split(c);
+
+  Poly kr1(2);
+  kr1.add_con(A == 0);
+  Poly kr2(2);
+  kr2.add_con(A >= 1);
+
+  return ph1 == kr1 && ph2 == kr2;
+}
+
 BEGIN_MAIN
   DO_TEST(test01);
   DO_TEST(test02);
@@ -426,5 +445,5 @@ BEGIN_MAIN
   DO_TEST(test13);
   DO_TEST(test14);
   DO_TEST(test15);
+  DO_TEST(test16);
 END_MAIN
-
