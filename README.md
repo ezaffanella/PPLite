@@ -17,16 +17,10 @@ PPLite is an open-source C++ library implementing the abstract domain of convex 
 While being derived from the PPL (Parma Polyhedra Library), PPLite has a very different goal: to provide researchers and students with a lighter framework for experimenting with new ideas and algorithms in the context of polyhedral computations. In particular, PPLite is not aimed at implementing the full range of abstract domains and operators made available by the PPL. The main characteristics of PPLite are the following.
 <ul>
   <li>Both closed and NNC rational convex polyhedra are supported.</li>
-  <li>Exact computations are based on FLINT</li>
-  <li>Performance is deemed important, but not the main concern
-     (ease of implementation and readability are given priority).</li>
-  <li>Portability is deemed important, but not the main concern
-      (ease of implementation and readability are given priority).</li>
-  <li>The library is written in modern C++ (current development
-      is based on the c++17 standard). The developers should feel free
-      to use language features made available by the recent standards,
-      provided these lead to a simpler implementation or improve
-      on code readability.</li>
+  <li>Performance and portability are deemed important, but not
+      the main concern (ease of implementation and readability
+      are given priority).</li>
+  <li>The library is written in C++ (currently, c++17).</li>
   <li>The library is meant to be lightweight from the point of view
       of the developers: the goal is to reduce maintenance costs.
       This implies, among other things:
@@ -46,6 +40,79 @@ While being derived from the PPL (Parma Polyhedra Library), PPLite has a very di
             of domain operators.
       </ul>
 </ul>
+
+
+<h3>Compilation/installation instructions</h3>
+
+Library development is based on Linux (Ubuntu).
+The build system uses GNU autotools; the main external dependency
+is the FLINT library, for arbitrary precision integer and rationals;
+the library is written in C++ and requires a reasonably recent
+C++ compiler (tested using g++ and clang++).
+
+Installation of main requirements:
+
+```
+sudo apt-get install make autoconf automake libtool
+sudo apt-get install libgmp-dev libmpfr-dev libflint-dev
+```
+
+Out-of-tree builds are strongly recommended:
+in the following we assume using a source directory
+named `MySources` and a build directory named `MyBuild`;
+the commands shown should be adapted accordingly.
+
+After cloning the library sources from git, resulting in directory `MySources/PPLite`,
+the following command will generate the configuration script
+(note: this preliminary step is **not** needed if the sources
+are extracted from a `.tar.gz` distribution):
+
+```
+cd MySources/PPLite
+autoreconf --install
+```
+
+We then move to the build directory and configure it:
+
+```
+cd MyBuild
+../MySources/PPLite/configure
+```
+
+This will use the default configuration options
+(which can be overridden, see `configure --help`),
+meaning that:
+  * the installation prefix is `/usr/local`
+  * the build is for release: optimizations are turned on
+    and assertions are turned off
+  * dependencies will be searched for in "standard" places
+
+Use option `--prefix=INSTALLDIR` to change the installation directory.
+Use option `--enable-assertions`
+(and maybe also option `--enable-optimization=zero`) for a debug build.
+If you have FLINT installed in a non-standard place the configure script
+will complain: in that case you can use option
+`--with-flint=DIR` or, if needed, the two options
+`--with-flint-include=INCDIR` and `--with-flint-lib=LIBDIR`
+to specify the location of the header files and the library;
+similar options are available for MPFR and GMP libraries.
+
+After configuration, the following commands will build the library,
+run its tests and install it:
+
+```
+cd MyBuild
+make -j8
+make check -j8
+sudo make install
+```
+Option `-j<N>` enables parallel builds using at most N workers;
+consider removing the `sudo` prefix from the installation command
+if it is not really needed.
+Note that the (static and dynamic) library files will be installed
+in `<prefix>/lib`, while the header files will be installed
+in their own subdirectory `<prefix>/include/pplite`.
+
 
 <h3>Main developers</h3>
 
