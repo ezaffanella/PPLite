@@ -20,23 +20,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "pplite-config.h"
 
 #include "FLINT_Integer.hh"
-#include <gmpxx.h>
+#include "ascii_dump_load.hh"
+
+#include <cctype>
+#include <string>
 
 namespace pplite {
 
 void
+FLINT_Integer::print(std::ostream& os, const fmpz_t mp) {
+  const auto& d = *mp;
+  if (COEFF_IS_MPZ(d)) {
+    // Get the mpz_t.
+    auto val = COEFF_TO_PTR(d);
+    os << mpz_to_string(val);
+  } else {
+    // Here the value fits a signed integer
+    assert(fmpz_fits_si(mp));
+    os << fmpz_get_si(mp);
+  }
+}
+
+bool
+FLINT_Integer::read(std::istream& is, fmpz_t mp) {
+  const char* buffer = read_mpz_as_string(is);
+  if (buffer == nullptr)
+    return false;
+  int res = fmpz_set_str(mp, buffer, 10);
+  return (res == 0);
+}
+
+void
 FLINT_Integer::ascii_dump(std::ostream& s) const {
-  print(s);
+  print(s, mp);
 }
 
 bool
 FLINT_Integer::ascii_load(std::istream& is) {
-  // flint has no operator>> : use the one in gmpxx.
-  mpz_class z;
-  if (!(is >> z))
-    return false;
-  fmpz_set_mpz(impl(), z.get_mpz_t());
-  return true;
+  ascii_load_skip_spaces(is);
+  return read(is, mp);
 }
 
 } // namespace pplite

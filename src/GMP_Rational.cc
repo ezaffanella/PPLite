@@ -21,23 +21,50 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Integer.hh"
 #include "GMP_Rational.hh"
+#include "ascii_dump_load.hh"
 
 namespace pplite {
 
 void
+GMP_Rational::print(std::ostream& os, const mpq_t mp) {
+  GMP_Integer::print(os, mpq_numref(mp));
+  if (0 == mpz_cmp_si(mpq_denref(mp), 1))
+    return;
+  os << "/";
+  GMP_Integer::print(os, mpq_denref(mp));
+}
+
+bool
+GMP_Rational::read(std::istream& is, mpq_t mp) {
+  GMP_Integer num;
+  GMP_Integer den = GMP_Integer::one();
+  if (not num.read(is))
+    return false;
+  // Note: the "/den" part is optional
+  char ch;
+  if (is.get(ch)) {
+    if (ch == '/') {
+      if (not den.read(is))
+        return false;
+    } else {
+      is.unget();
+    }
+  }
+  mpq_set_num(mp, num.impl());
+  mpq_set_den(mp, den.impl());
+  mpq_canonicalize(mp);
+  return true;
+}
+
+void
 GMP_Rational::ascii_dump(std::ostream& s) const {
-  print(s);
+  print(s, mp);
 }
 
 bool
 GMP_Rational::ascii_load(std::istream& is) {
-  // FIXME: TODO: avoid use of mpq_class.
-  mpq_class q;
-  if (!(is >> q))
-    return false;
-  mpq_canonicalize(q.get_mpq_t());
-  mpq_set(impl(), q.get_mpq_t());
-  return true;
+  ascii_load_skip_spaces(is);
+  return read(is, mp);
 }
 
 } // namespace pplite

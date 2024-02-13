@@ -22,11 +22,77 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef pplite_ascii_dump_load_hh
 #define pplite_ascii_dump_load_hh 1
 
-#include <string>
+#include <cctype>
+#include <gmp.h>
 #include <iterator>
 #include <iostream>
+#include <string>
+#include <vector>
 
 namespace pplite {
+
+inline void
+ascii_load_skip_spaces(std::istream& s) {
+  char ch;
+  while (s.get(ch)) {
+    if (not std::isspace(ch)) {
+      s.unget();
+      return;
+    }
+  }
+}
+
+inline const char*
+mpz_to_string(const mpz_t mp) {
+  // Create buffer (done only once).
+  static PPLITE_TLS std::vector<char> buffer;
+  // Resize buffer as needed (+2 for sign and terminator)
+  const int base10 = 10;
+  const size_t size = 2 + mpz_sizeinbase(mp, base10);
+  buffer.resize(size);
+  // Fill buffer with char* representation
+  mpz_get_str(buffer.data(), base10, mp);
+  return buffer.data();
+}
+
+inline const char*
+read_mpz_as_string(std::istream& is) {
+  // Create buffer (done only once).
+  static PPLITE_TLS std::vector<char> buffer;
+  buffer.resize(0);
+  char ch;
+  if (not is.get(ch))
+    return nullptr;
+  // Check for (optional) minus sign
+  if (ch == '-') {
+    buffer.push_back(ch);
+    if (not is.get(ch)) {
+      is.unget();
+      return nullptr;
+    }
+  }
+  // Check for (required) first digit
+  if (std::isdigit(ch))
+    buffer.push_back(ch);
+  else {
+    // Not a digit: error
+    is.unget();
+    return nullptr;
+  }
+  // Handle any other digit
+  while (is.get(ch)) {
+    if (std::isdigit(ch))
+      buffer.push_back(ch);
+    else {
+      // Not a digit: end of input
+      is.unget();
+      break;
+    }
+  }
+  // Push back the terminator
+  buffer.push_back('\0');
+  return buffer.data();
+}
 
 inline bool
 ascii_load_string(std::istream& s, const std::string& str) {

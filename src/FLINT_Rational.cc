@@ -20,23 +20,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "pplite-config.h"
 
 #include "FLINT_Rational.hh"
+#include "ascii_dump_load.hh"
 
 namespace pplite {
 
 void
+FLINT_Rational::print(std::ostream& os, const fmpq_t mp) {
+  FLINT_Integer::print(os, fmpq_numref(mp));
+  if (fmpz_is_one(fmpq_denref(mp)))
+    return;
+  os << "/";
+  FLINT_Integer::print(os, fmpq_denref(mp));
+}
+
+bool
+FLINT_Rational::read(std::istream& is, fmpq_t mp) {
+  FLINT_Integer num;
+  FLINT_Integer den = FLINT_Integer::one();
+  if (not num.read(is))
+    return false;
+  // Note: the "/den" part is optional
+  char ch;
+  if (is.get(ch)) {
+    if (ch == '/') {
+      if (not den.read(is))
+        return false;
+    } else {
+      is.unget();
+    }
+  }
+  fmpq_set_fmpz_frac(mp, num.impl(), den.impl());
+  return true;
+}
+
+void
 FLINT_Rational::ascii_dump(std::ostream& s) const {
-  print(s);
+  print(s, mp);
 }
 
 bool
 FLINT_Rational::ascii_load(std::istream& is) {
-  // FIXME: TODO: avoid use of mpq_class.
-  mpq_class q;
-  if (!(is >> q))
-    return false;
-  mpq_canonicalize(q.get_mpq_t());
-  fmpq_set_mpq(impl(), q.get_mpq_t());
-  return true;
+  ascii_load_skip_spaces(is);
+  return read(is, mp);
 }
 
 } // namespace pplite

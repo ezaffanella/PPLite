@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "pplite_test.hh"
 #include <vector>
 #include <functional>
+#include <random>
 #include <cmath>
 
 #ifndef M_PI
@@ -38,23 +39,26 @@ count_points(const Poly& ph) {
 
 bool
 test01() {
-  // Set up a random numbers' generator.
-  gmp_randclass rg(gmp_randinit_default);
+  // Random numbers generator.
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  const int maxc = 10000;
+  std::uniform_int_distribution<unsigned> distrib(0, maxc-1);
 
   Var x(0);
   Var y(1);
   Var z(2);
 
-  const int maxc = 10000;
   Poly ph(3, Spec_Elem::EMPTY);
   nout << count_points(ph) << endl;
   for (int n = 0; n < 200; ++n) {
-    const Integer cx = mpz_class(rg.get_z_range(maxc)).get_mpz_t();
-    const Integer cy = mpz_class(rg.get_z_range(maxc)).get_mpz_t();
-    const Integer cz = mpz_class(rg.get_z_range(maxc)).get_mpz_t();
+    const Integer cx = distrib(gen);
+    const Integer cy = distrib(gen);
+    const Integer cz = distrib(gen);
     ph.add_gen(point(cx*x + cy*y + cz*z));
-    if (ph.is_empty())
+    if (ph.is_empty()) {
       return false;
+    }
     nout << count_points(ph) << endl;
   }
   return true;
@@ -87,6 +91,9 @@ random_polytope(Poly& ph, unsigned dim, unsigned num_points,
   std::vector<float> theta(dim - 1);
   std::vector<float> coordinate(dim);
 
+  mpz_t z;
+  mpz_init(z);
+
   for (unsigned n = num_points; n > 0; --n) {
     // Compute n-1 random angles.
     for (unsigned i = dim - 1; i-- > 0; )
@@ -98,11 +105,12 @@ random_polytope(Poly& ph, unsigned dim, unsigned num_points,
 
     Linear_Expr le;
     for (unsigned i = dim; i-- > 0; ) {
-      mpz_class z = coordinate[i]*1000000.0;
-      add_mul_assign(le, Integer(z.get_mpz_t()), Var(i));
+      mpz_set_d(z, coordinate[i]*1000000.0);
+      add_mul_assign(le, Integer(z), Var(i));
     }
     ph.add_gen(point(le));
   }
+  mpz_clear(z);
 }
 
 bool

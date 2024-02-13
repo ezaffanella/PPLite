@@ -20,21 +20,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "pplite-config.h"
 
 #include "GMP_Integer.hh"
+#include "ascii_dump_load.hh"
 
 namespace pplite {
 
 void
+GMP_Integer::print(std::ostream& os, const mpz_t mp) {
+  os << mpz_to_string(mp);
+}
+
+bool
+GMP_Integer::read(std::istream& is, mpz_t mp) {
+  const char* buffer = read_mpz_as_string(is);
+  if (buffer == nullptr)
+    return false;
+  int res = mpz_set_str(mp, buffer, 10);
+  return (res == 0);
+}
+
+void
 GMP_Integer::ascii_dump(std::ostream& s) const {
-  print(s);
+  print(s, mp);
 }
 
 bool
 GMP_Integer::ascii_load(std::istream& is) {
-  mpz_class z;
-  if (!(is >> z))
-    return false;
-  mpz_set(impl(), z.get_mpz_t());
-  return true;
+  ascii_load_skip_spaces(is);
+  return read(is, mp);
 }
 
 } // namespace pplite

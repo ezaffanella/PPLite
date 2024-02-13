@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "globals.hh"
 
 #include <gmp.h>
-#include <gmpxx.h>
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -106,18 +105,6 @@ public:
     mpz_set(mp, z);
     return *this;
   }
-  // Conversion and assignment from GMP's mpz_class.
-  GMP_Integer(const mpz_class& z) { mpz_init_set(mp, z.get_mpz_t()); }
-  GMP_Integer& operator=(const mpz_class& z) {
-    mpz_set(mp, z.get_mpz_t());
-    return *this;
-  }
-  // Conversion to GMP's mpz_class.
-  operator mpz_class() const {
-    mpz_class res;
-    mpz_set(res.get_mpz_t(), mp);
-    return res;
-  }
 
   size_t hash() const { return detail::hash(mp); }
 
@@ -134,8 +121,12 @@ public:
   bool is_one() const { return mpz_cmp_si(mp, 1) == 0; }
   bool is_pm1() const { return mpz_cmpabs_ui(mp, 1) == 0; }
 
-  void print(std::ostream& os) const { os << mp; }
-  void print() const { print(std::cout); }
+  static void print(std::ostream& os, const mpz_t mp);
+  static bool read(std::istream& os, mpz_t mp);
+
+  void print(std::ostream& os) const { print(os, mp); }
+  void print() const { print(std::cout, mp); }
+  bool read(std::istream& is) { return read(is, mp); }
 
   void ascii_dump(std::ostream& s) const;
   bool ascii_load(std::istream& is);

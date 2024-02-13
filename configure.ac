@@ -1,4 +1,4 @@
-AC_INIT([PPLite],[0.11],[enea.zaffanella@unipr.it],[pplite],[github.com/ezaffanella/PPLite])
+AC_INIT([PPLite],[0.12],[enea.zaffanella@unipr.it],[pplite],[github.com/ezaffanella/PPLite])
 
 # Specify the location of additional local Autoconf macros.
 AC_CONFIG_MACRO_DIR([m4])
@@ -321,11 +321,6 @@ AC_CHECK_GMP
 if test x"$have_gmp" = xno
 then
   AC_MSG_ERROR([Cannot find GMP version 4.1.3 or higher.])
-else
-  if test x"$have_gmpxx" = xno
-  then
-    AC_MSG_ERROR([GMP compiled without enabling the C++ interface.])
-  fi
 fi
 
 extra_includes="${extra_includes}${extra_includes:+ }${gmp_include_options}"

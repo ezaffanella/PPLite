@@ -120,7 +120,8 @@ libpplite_la_LIBADD = @extra_libraries@
 # PPLite version 0.8 --> libtool version info 2:0:0
 # PPLite version 0.9 --> libtool version info 3:0:0
 # PPLite version 0.10 --> libtool version info 4:0:0
-libpplite_la_LDFLAGS = -no-undefined -version-info 4:0:0
+# PPLite version 0.12 --> libtool version info 4:0:0
+libpplite_la_LDFLAGS = -no-undefined -version-info 5:0:0
 
 pkginclude_HEADERS = \
 $(top_builddir)/pplite-config.h \

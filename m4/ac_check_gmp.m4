@@ -24,15 +24,15 @@ AC_DEFUN([AC_CHECK_GMP],
 [
 AC_ARG_WITH(gmp,
   AS_HELP_STRING([--with-gmp=DIR],
-		 [search for libgmp/libgmpxx in DIR/include and DIR/lib]))
+		 [search for libgmp in DIR/include and DIR/lib]))
 
 AC_ARG_WITH(gmp-include,
   AS_HELP_STRING([--with-gmp-include=DIR],
-		 [search for libgmp/libgmpxx headers in DIR]))
+		 [search for libgmp headers in DIR]))
 
 AC_ARG_WITH(gmp-lib,
   AS_HELP_STRING([--with-gmp-lib=DIR],
-		 [search for libgmp/libgmpxx library objects in DIR]))
+		 [search for libgmp library objects in DIR]))
 
 if test -n "$with_gmp"
 then
@@ -52,7 +52,7 @@ then
   gmp_library_options="-L$gmp_library_paths"
 fi
 
-gmp_libs="-lgmpxx -lgmp"
+gmp_libs="-lgmp"
 
 AC_ARG_WITH(gmp-build,
   AS_HELP_STRING([--with-gmp-build=DIR],
@@ -65,7 +65,7 @@ AC_ARG_WITH(gmp-build,
   else
     gmp_srcdir=`echo @abs_srcdir@ | $gmp_build_dir/config.status --file=-`
     gmp_include_options="-I$gmp_build_dir -I$gmp_build_dir/tune -I$gmp_srcdir"
-    gmp_libs="$gmp_build_dir/libgmp.la $gmp_build_dir/libgmpxx.la"
+    gmp_libs="$gmp_build_dir/libgmp.la"
   fi)
 
 gmp_library_options="$gmp_library_options $gmp_libs"
@@ -119,7 +119,7 @@ main() {
 
   if (header_version != library_version) {
     std::cerr
-      << "GMP header (gmpxx.h) and library (ligmpxx.*) version mismatch:\n"
+      << "GMP header (gmp.h) and library (ligmp.*) version mismatch:\n"
       << "header gives " << header_version << ";\n"
       << "library gives " << library_version << "." << std::endl;
     return 1;
@@ -128,7 +128,7 @@ main() {
   if (sizeof(mp_limb_t)*CHAR_BIT != BITS_PER_MP_LIMB
       || BITS_PER_MP_LIMB != mp_bits_per_limb) {
     std::cerr
-      << "GMP header (gmpxx.h) and library (ligmpxx.*) bits-per-limb mismatch:\n"
+      << "GMP header (gmp.h) and library (ligmp.*) bits-per-limb mismatch:\n"
       << "header gives " << BITS_PER_MP_LIMB << ";\n"
       << "library gives " << mp_bits_per_limb << ".\n"
       << "This probably means you are on a bi-arch system and\n"
@@ -137,7 +137,8 @@ main() {
     return 1;
   }
 
-  mpz_class n("3141592653589793238462643383279502884");
+  mpz_t n;
+  mpz_init_set_str(n, "3141592653589793238462643383279502884", 10);
   return 0;
 }
 ]])],
@@ -146,7 +147,7 @@ main() {
   AC_MSG_RESULT(no)
   ac_cv_have_gmp=no,
   AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
-#include <gmpxx.h>
+#include <gmp.h>
 
 #if __GNU_MP_VERSION < 4 || (__GNU_MP_VERSION == 4 && __GNU_MP_VERSION_MINOR < 1) || (__GNU_MP_VERSION == 4 && __GNU_MP_VERSION_MINOR == 1 && __GNU_MP_VERSION_PATCHLEVEL < 3)
 #GMP version 4.1.3 or higher is required
@@ -167,7 +168,7 @@ have_gmp=${ac_cv_have_gmp}
 if test x"$ac_cv_have_gmp" = xyes
 then
 
-AC_CHECK_SIZEOF(mp_limb_t, , [#include <gmpxx.h>])
+AC_CHECK_SIZEOF(mp_limb_t, , [#include <gmp.h>])
 
 fi
 

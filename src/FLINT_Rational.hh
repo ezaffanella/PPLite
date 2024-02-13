@@ -27,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <flint/fmpz.h>
 #include <flint/fmpq.h>
 #include <gmp.h>
-#include <gmpxx.h>
 
 #include <cassert>
 #include <cstddef>
@@ -63,8 +62,11 @@ public:
     : FLINT_Rational() { fmpq_set_fmpz_frac(mp, n.impl(), d.impl()); }
   explicit FLINT_Rational(double d)
     : FLINT_Rational() {
-    mpq_class mpq(d);
-    fmpq_set_mpq(mp, mpq.get_mpq_t());
+    mpq_t mpq;
+    mpq_init(mpq);
+    mpq_set_d(mpq, d);
+    fmpq_set_mpq(mp, mpq);
+    mpq_clear(mpq);
   }
 
   // Forbidden implicit conversions.
@@ -78,12 +80,6 @@ public:
   FLINT_Rational(unsigned long) = delete;
   FLINT_Rational(signed long long) = delete;
   FLINT_Rational(unsigned long long) = delete;
-
-  operator mpq_class() const {
-    mpq_class res;
-    fmpq_get_mpq(res.get_mpq_t(), impl());
-    return res;
-  }
 
   size_t hash() const {
     auto res = detail::hash(fmpq_numref(mp));
@@ -123,15 +119,12 @@ public:
     fmpz_set_si(den, 1);
   }
 
-  void print(std::ostream& os) const {
-    FLINT_Integer::print(os, fmpq_numref(mp));
-    if (fmpz_is_one(fmpq_denref(mp)))
-      return;
-    os << "/";
-    FLINT_Integer::print(os, fmpq_denref(mp));
-  }
+  static void print(std::ostream& os, const fmpq_t mp);
+  static bool read(std::istream& is, fmpq_t mp);
 
+  void print(std::ostream& os) const { print(os, mp); }
   void print() const { print(std::cout); }
+  bool read(std::istream& is) { return read(is, mp); }
 
   void ascii_dump(std::ostream& s) const;
   bool ascii_load(std::istream& is);
@@ -297,6 +290,11 @@ pow_si(FLINT_Rational const& x, signed long si) {
   FLINT_Rational res;
   fmpq_pow_si(res.impl(), x.impl(), si);
   return res;
+}
+
+inline void
+mpq_set(mpq_t dst, const FLINT_Rational& src) {
+  fmpq_get_mpq(dst, src.impl());
 }
 
 } // namespace pplite

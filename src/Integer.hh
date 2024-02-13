@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Integer_fwd.hh"
 
 #include "globals.hh"
+#include "ascii_dump_load.hh"
 #include <vector>
 
 #if PPLITE_USE_FLINT_INTEGERS
@@ -60,7 +61,9 @@ operator<<(std::ostream& s, const Integer& i) {
 
 inline std::istream&
 operator>>(std::istream& s, Integer& i) {
-  if (!i.ascii_load(s))
+  if (s.flags() & std::ios::skipws)
+    ascii_load_skip_spaces(s);
+  if (not i.read(s))
     s.setstate(std::ios::failbit);
   return s;
 }

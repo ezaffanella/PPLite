@@ -77,8 +77,6 @@ public:
   GMP_Rational(signed long long) = delete;
   GMP_Rational(unsigned long long) = delete;
 
-  operator mpq_class() const { return mpq_class(mp); }
-
   size_t hash() const {
     auto res = detail::hash(mpq_numref(mp));
     hash_combine(res, detail::hash(mpq_denref(mp)));
@@ -117,8 +115,12 @@ public:
     mpz_set_si(den, 1);
   }
 
-  void print(std::ostream& os) const { os << mp; }
-  void print() const { print(std::cout); }
+  static void print(std::ostream& os, const mpq_t mp);
+  static bool read(std::istream& os, mpq_t mp);
+
+  void print(std::ostream& os) const { print(os, mp); }
+  void print() const { print(std::cout, mp); }
+  bool read(std::istream& is) { return read(is, mp); }
 
   void ascii_dump(std::ostream& s) const;
   bool ascii_load(std::istream& is);
@@ -298,6 +300,11 @@ pow_si(GMP_Rational const& x, signed long si) {
   mpz_pow_ui(mpq_numref(mp), mpq_numref(mp), ui);
   mpz_pow_ui(mpq_denref(mp), mpq_denref(mp), ui);
   return res;
+}
+
+inline void
+mpq_set(mpq_t dst, const GMP_Rational& src) {
+  mpq_set(dst, src.impl());
 }
 
 } // namespace pplite
