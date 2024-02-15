@@ -96,6 +96,7 @@ public:
   GMP_Integer get_num() const { return mpq_numref(mp); }
   GMP_Integer get_den() const { return mpq_denref(mp); }
   double get_double() const { return mpq_get_d(mp); }
+  void get_mpq(mpq_t dst) const { mpq_set(dst, mp); }
 
   void round_up() {
     auto den = mpq_denref(mp);
@@ -300,11 +301,6 @@ pow_si(GMP_Rational const& x, signed long si) {
   mpz_pow_ui(mpq_numref(mp), mpq_numref(mp), ui);
   mpz_pow_ui(mpq_denref(mp), mpq_denref(mp), ui);
   return res;
-}
-
-inline void
-mpq_set(mpq_t dst, const GMP_Rational& src) {
-  mpq_set(dst, src.impl());
 }
 
 } // namespace pplite

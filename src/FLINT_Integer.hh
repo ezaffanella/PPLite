@@ -113,6 +113,8 @@ public:
     return *this;
   }
 
+  void get_mpz(mpz_t dst) const { fmpz_get_mpz(dst, mp); }
+
   size_t hash() const { return detail::hash(mp); }
 
   static const FLINT_Integer& zero() {
@@ -681,11 +683,6 @@ exact_div_assign(FLINT_Integer& x,
 inline int
 sgn(FLINT_Integer const& x) {
   return fmpz_sgn(x.impl());
-}
-
-inline void
-mpz_set(mpz_t dst, const FLINT_Integer& src) {
-  fmpz_get_mpz(dst, src.impl());
 }
 
 NOTHROW_DEFAULT_AND_MOVES(FLINT_Integer);

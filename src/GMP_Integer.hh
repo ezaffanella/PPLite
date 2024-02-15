@@ -105,6 +105,8 @@ public:
     return *this;
   }
 
+  void get_mpz(mpz_t dst) const { mpz_set(dst, mp); }
+
   size_t hash() const { return detail::hash(mp); }
 
   static const GMP_Integer& zero() {
@@ -663,11 +665,6 @@ exact_div_assign(GMP_Integer& x,
 inline int
 sgn(GMP_Integer const& x) {
   return mpz_sgn(x.impl());
-}
-
-inline void
-mpz_set(mpz_t dst, const GMP_Integer& src) {
-  mpz_set(dst, src.impl());
 }
 
 NOTHROW_DEFAULT_AND_MOVES(GMP_Integer);

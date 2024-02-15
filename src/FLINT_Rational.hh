@@ -102,6 +102,7 @@ public:
   FLINT_Integer get_num() const { return fmpq_numref(mp); }
   FLINT_Integer get_den() const { return fmpq_denref(mp); }
   double get_double() const { return fmpq_get_d(mp); }
+  void get_mpq(mpq_t dst) const { fmpq_get_mpq(dst, mp); }
 
   void round_up() {
     auto den = fmpq_denref(mp);
@@ -292,11 +293,6 @@ pow_si(FLINT_Rational const& x, signed long si) {
   FLINT_Rational res;
   fmpq_pow_si(res.impl(), x.impl(), si);
   return res;
-}
-
-inline void
-mpq_set(mpq_t dst, const FLINT_Rational& src) {
-  fmpq_get_mpq(dst, src.impl());
 }
 
 } // namespace pplite
