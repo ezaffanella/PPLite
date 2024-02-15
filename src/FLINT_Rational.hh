@@ -39,9 +39,10 @@ class FLINT_Rational {
 private:
   fmpq_t mp;
 public:
-  using Impl = fmpq_t;
-  Impl& impl() { return mp; }
-  Impl const& impl() const { return mp; }
+  using fmpq_ptr = fmpq*;
+  using fmpq_srcptr = const fmpq*;
+  fmpq_ptr impl() { return mp; }
+  fmpq_srcptr impl() const { return mp; }
 
   // Special members.
   FLINT_Rational() noexcept { fmpq_init(mp); }
@@ -100,6 +101,7 @@ public:
 
   FLINT_Integer get_num() const { return fmpq_numref(mp); }
   FLINT_Integer get_den() const { return fmpq_denref(mp); }
+  double get_double() const { return fmpq_get_d(mp); }
 
   void round_up() {
     auto den = fmpq_denref(mp);

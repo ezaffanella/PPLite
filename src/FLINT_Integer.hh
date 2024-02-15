@@ -48,9 +48,10 @@ class FLINT_Integer {
 private:
   fmpz_t mp;
 public:
-  using Impl = fmpz_t;
-  Impl& impl() { return mp; }
-  Impl const& impl() const { return mp; }
+  using fmpz_ptr = fmpz*;
+  using fmpz_srcptr = const fmpz*;
+  fmpz_ptr impl() { return mp; }
+  fmpz_srcptr impl() const { return mp; }
 
   // Special members.
   FLINT_Integer() noexcept { fmpz_init(mp); }

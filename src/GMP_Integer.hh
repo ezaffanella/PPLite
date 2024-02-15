@@ -47,9 +47,8 @@ class GMP_Integer {
 private:
   mpz_t mp;
 public:
-  using Impl = mpz_t;
-  Impl& impl() { return mp; }
-  Impl const& impl() const { return mp; }
+  mpz_ptr impl() { return mp; }
+  mpz_srcptr impl() const { return mp; }
 
   // Special members.
   GMP_Integer() noexcept { mpz_init(mp); }

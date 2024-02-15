@@ -35,9 +35,8 @@ class GMP_Rational {
 private:
   mpq_t mp;
 public:
-  using Impl = mpq_t;
-  Impl& impl() { return mp; }
-  Impl const& impl() const { return mp; }
+  mpq_ptr impl() { return mp; }
+  mpq_srcptr impl() const { return mp; }
 
   // Special members.
   GMP_Rational() noexcept { mpq_init(mp); }
@@ -96,6 +95,7 @@ public:
 
   GMP_Integer get_num() const { return mpq_numref(mp); }
   GMP_Integer get_den() const { return mpq_denref(mp); }
+  double get_double() const { return mpq_get_d(mp); }
 
   void round_up() {
     auto den = mpq_denref(mp);
@@ -296,7 +296,7 @@ pow_si(GMP_Rational const& x, signed long si) {
   else
     mpq_inv(res.impl(), x.impl());
   unsigned long ui = std::abs(si);
-  auto& mp = res.impl();
+  auto mp = res.impl();
   mpz_pow_ui(mpq_numref(mp), mpq_numref(mp), ui);
   mpz_pow_ui(mpq_denref(mp), mpq_denref(mp), ui);
   return res;
