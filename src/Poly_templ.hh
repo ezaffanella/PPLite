@@ -324,8 +324,7 @@ Poly_Impl::remove_space_dims(Iter first, Iter last) {
                 "Iter must have dim_type as its value type");
   assert(std::all_of(first, last,
                      [this](value_type i) { return 0 <= i && i < dim; }));
-  assert(std::adjacent_find(first, last,
-                            std::greater_equal<value_type>()) == last);
+  assert(std::is_sorted(first, last));
   const dim_type num_rem = std::distance(first, last);
   if (num_rem == 0)
     return;
