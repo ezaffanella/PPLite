@@ -43,9 +43,17 @@ struct Itv {
   explicit Itv(Spec_Elem s = Spec_Elem::UNIVERSE) noexcept
     : kind(s == Spec_Elem::UNIVERSE ? UNIVERSE : EMPTY) {}
 
-  static Itv zero() {
-    Itv res;
-    res.set_zero();
+  static const Itv& empty() {
+    static PPLITE_TLS Itv res(Spec_Elem::EMPTY);
+    return res;
+  }
+  static const Itv& universe() {
+    static PPLITE_TLS Itv res(Spec_Elem::UNIVERSE);
+    return res;
+  }
+  static const Itv& zero() {
+    auto itv_zero = []() { Itv res; res.set_zero(); return res; };
+    static PPLITE_TLS Itv res = itv_zero();
     return res;
   }
 
@@ -62,11 +70,6 @@ struct Itv {
       return lb <= ub;
     }
     return false;
-  }
-
-  static const Itv& empty_itv() {
-    static PPLITE_TLS Itv res(Spec_Elem::EMPTY);
-    return res;
   }
 
   bool is_empty() const { return kind == EMPTY; }
@@ -414,7 +417,7 @@ itv_from_con_inhomo(const Con& c) {
   if (c.linear_expr().is_zero()) {
     // Not a proper constraint.
     if (c.is_inconsistent())
-      return Itv(Spec_Elem::EMPTY);
+      return Itv::empty();
     else
       return Itv(Spec_Elem::UNIVERSE);
   }

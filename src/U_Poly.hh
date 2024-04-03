@@ -126,26 +126,26 @@ public:
   }
   Itv get_bounds(Var var) const {
     if (is_empty())
-      return Itv(Spec_Elem::EMPTY);
+      return Itv::empty();
     auto sd = var.id();
     if (is_unconstrained_dim(sd))
-      return Itv();
+      return Itv::universe();
     auto k_var = Var(kernel_dim(sd));
     return kernel.get_bounds(k_var);
   }
   Itv get_bounds(const Affine_Expr& ae) const {
     if (is_empty())
-      return Itv(Spec_Elem::EMPTY);
+      return Itv::empty();
     for (auto sd : ae.expr.non_zeroes()) {
       if (is_unconstrained_dim(sd))
-        return Itv();
+        return Itv::universe();
     }
     auto k_ae = Affine_Expr(shell_2_kernel_expr(ae.expr), ae.inhomo);
     return kernel.get_bounds(k_ae);
   }
   Itv get_bounds(const Itv_Expr& ie) const {
     if (is_empty())
-      return Itv(Spec_Elem::EMPTY);
+      return Itv::empty();
 
     const auto& ie_vars = ie.first;
     const auto& ie_itvs = ie.second;
@@ -158,7 +158,7 @@ public:
     for (auto i : index_range(ie_vars)) {
       if (is_unconstrained_dim(ie_vars[i].id())
           && not ie_itvs[i].is_zero())
-        return Itv();
+        return Itv::universe();
     }
 
     Itv_Expr k_ie;

@@ -90,7 +90,7 @@ public:
   }
   const Itv& get_bounds(Var v) const {
     assert(v.id() < space_dim());
-    return is_empty() ? Itv::empty_itv() : itvs[v.id()];
+    return is_empty() ? Itv::empty() : itvs[v.id()];
   }
   bool is_included_in(const Con& c) const;
 

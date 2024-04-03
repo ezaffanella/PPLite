@@ -2654,18 +2654,18 @@ Itv
 Poly_Impl::get_bounds(Var var) const {
   assert(var.space_dim() <= space_dim());
   if (is_empty())
-    return Itv(Spec_Elem::EMPTY);
+    return Itv::empty();
   assert(has_valid_gens());
 
   // Check lines.
   for (const auto& g : gs.sing_rows) {
     if (not g.coeff(var).is_zero())
-      return Itv();
+      return Itv::universe();
   }
   // Check pending lines.
   for (const auto& g : gs_pending.sing_rows) {
     if (not g.coeff(var).is_zero())
-      return Itv();
+      return Itv::universe();
   }
 
   bool inf_lb = false;
@@ -2689,13 +2689,13 @@ Poly_Impl::get_bounds(Var var) const {
   for (const auto& g : gs.sk_rows) {
     check_ray(g);
     if (inf_lb && inf_ub)
-      return Itv();
+      return Itv::universe();
   }
   // Check pending rays.
   for (const auto& g : gs_pending.sk_rows) {
     check_ray(g);
     if (inf_lb && inf_ub)
-      return Itv();
+      return Itv::universe();
   }
 
   bool first = true;
@@ -2736,7 +2736,7 @@ Itv
 Poly_Impl::get_bounds(const Affine_Expr& ae) const {
   assert(ae.space_dim() <= space_dim());
   if (is_empty())
-    return Itv(Spec_Elem::EMPTY);
+    return Itv::empty();
   assert(has_valid_gens());
 
   const auto ae_nz = ae.expr.non_zeroes();
@@ -2751,12 +2751,12 @@ Poly_Impl::get_bounds(const Affine_Expr& ae) const {
   // Check lines.
   for (const auto& g : gs.sing_rows) {
     if (check_line(g))
-      return Itv();
+      return Itv::universe();
   }
   // Check pending lines.
   for (const auto& g : gs_pending.sing_rows) {
     if (check_line(g))
-      return Itv();
+      return Itv::universe();
   }
 
   bool inf_lb = false;
@@ -2784,12 +2784,12 @@ Poly_Impl::get_bounds(const Affine_Expr& ae) const {
   // Check rays.
   for (const auto& g : gs.sk_rows) {
     if (check_ray(g))
-      return Itv();
+      return Itv::universe();
   }
   // Check pending rays.
   for (const auto& g : gs_pending.sk_rows) {
     if (check_ray(g))
-      return Itv();
+      return Itv::universe();
   }
 
   bool first = true;
@@ -2841,7 +2841,7 @@ Poly_Impl::get_bounds(const Affine_Expr& ae) const {
 Itv
 Poly_Impl::get_bounds(const Itv_Expr& ie) const {
   if (is_empty())
-    return Itv(Spec_Elem::EMPTY);
+    return Itv::empty();
 
   // Computes scalar product on itvs and expr.
   auto scalar_prod = [](const Itv_Expr& ie, const Linear_Expr& expr) {
@@ -2877,12 +2877,12 @@ Poly_Impl::get_bounds(const Itv_Expr& ie) const {
   // Check lines.
   for (const auto& g : gs.sing_rows) {
     if (check_line(g))
-      return Itv();
+      return Itv::universe();
   }
   // Check pending lines.
   for (const auto& g : gs_pending.sing_rows) {
     if (check_line(g))
-      return Itv();
+      return Itv::universe();
   }
 
   bool inf_lb = false;
@@ -2912,12 +2912,12 @@ Poly_Impl::get_bounds(const Itv_Expr& ie) const {
   // Check rays.
   for (const auto& g : gs.sk_rows) {
     if (check_ray(g))
-      return Itv();
+      return Itv::universe();
   }
   // Check pending rays.
   for (const auto& g : gs_pending.sk_rows) {
     if (check_ray(g))
-      return Itv();
+      return Itv::universe();
   }
 
   bool first = true;

@@ -1316,7 +1316,7 @@ F_Poly::min(const Affine_Expr& ae, Rational& value,
 Itv
 F_Poly::get_bounds(Var var) const {
   if (is_empty())
-    return Itv(Spec_Elem::EMPTY);
+    return Itv::empty();
   if (is_itv_dim(var.id()))
     return itvs[var.id()];
   else {
@@ -1364,7 +1364,7 @@ F_Poly::get_bounds(const Affine_Expr& ae) const {
 Itv
 F_Poly::get_bounds(const Itv_Expr& ie) const {
   if (is_empty())
-    return Itv(Spec_Elem::EMPTY);
+    return Itv::empty();
 
   const auto& ie_vars = ie.first;
   const auto& ie_itvs = ie.second;
@@ -1645,7 +1645,7 @@ F_Poly::set_empty() {
 void
 F_Poly::set_universe() {
   empty = false;
-  itvs.assign(dim, Itv());
+  itvs.assign(dim, Itv::universe());
   blocks.clear();
   factors.clear();
   is_normalized = true;
@@ -2144,9 +2144,7 @@ F_Poly::add_space_dims(dim_type m, bool project) {
     dim += m;
     return;
   }
-  Itv itv;
-  if (project)
-    itv.set_zero();
+  Itv itv = project ? Itv::zero() : Itv::universe();
   itvs.insert(itvs.end(), m, itv);
   dim += m;
   assert(check_inv());
@@ -2281,7 +2279,7 @@ F_Poly::expand_space_dim(Var v, dim_type m) {
   auto idx = detail::find_block_index(blocks, v);
   const auto old_dim = dim;
   dim += m;
-  itvs.resize(dim, Itv(Spec_Elem::EMPTY));
+  itvs.resize(dim, Itv::empty());
   if (blocks[idx].size() == 1) {
     // Add m copies of factor idx (and corresponding blocks).
     for (auto d : range(m))
