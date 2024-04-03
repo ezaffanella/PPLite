@@ -522,7 +522,7 @@ factorize(Block& b, Factor& f, bool normalize,
 
 #define FACT_STATS 0
 #if FACT_STATS
-  static Counter cc;
+  static PPLITE_TLS Counter cc;
   #define UPDATE_STATS do { cc.check(new_bs); } while (false)
 #else
   #define UPDATE_STATS
