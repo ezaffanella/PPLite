@@ -239,8 +239,8 @@ no)
   ;;
 esac
 
-# --enable-thread-safe
-enableval=no
+# --enable-thread-safe (default: yes)
+enableval=yes
 AC_MSG_CHECKING([whether to compile for thread safety])
 AC_ARG_ENABLE(thread-safe,
   AS_HELP_STRING([--enable-thread-safe], [compile for thread safety]))
