@@ -33,28 +33,33 @@ build_polyhedron() {
   return ph;
 }
 
-// The work to be done in a each thread.
+// The work to be done in each thread.
 void
-compute_image(Poly* ph) {
+compute_image(Poly* ph, int tid) {
+  std::stringstream ss;
+  ss << "start of thread " << tid << "\n";
+  nout << ss.str();
   ph->affine_image(Var(0), Linear_Expr(), 5);
+  ph->minimize();
+  ss = std::stringstream();
+  ss << "end of thread " << tid << "\n";
+  nout << ss.str();
 }
 
 bool
 test01() {
-  Poly ph1 = build_polyhedron();
-  Poly ph2(ph1);
-  Poly ph3(ph1);
-  Poly ph4(ph1);
+  const int num_threads = 8;
+  std::vector<std::thread> tds { num_threads };
+  std::vector<Poly> phs { num_threads, build_polyhedron() };
 
-  std::thread t1(compute_image, &ph1);
-  std::thread t2(compute_image, &ph2);
-  std::thread t3(compute_image, &ph3);
-  std::thread t4(compute_image, &ph4);
-  t1.join();
-  t2.join();
-  t3.join();
-  t4.join();
-  return (ph1 == ph2) && (ph2 == ph3) && (ph3 == ph4);
+  for (int i = 0; i < num_threads; ++i)
+    tds[i] = std::thread(compute_image, &phs[i], i);
+
+  for (int i = 0; i < num_threads; ++i)
+    tds[i].join();
+
+  return phs.end() == std::adjacent_find(phs.begin(), phs.end(),
+                                         std::not_equal_to<Poly>());
 }
 
 BEGIN_MAIN
