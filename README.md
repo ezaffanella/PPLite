@@ -1,20 +1,32 @@
 # PPLite: convex polyhedra library for Abstract Interpretation
 
-PPLite is an open-source C++ library implementing the abstract domain of convex polyhedra, to be used in tools for static analysis and verification.
+PPLite is an open-source C++ library
+implementing the abstract domain of convex polyhedra,
+to be used in tools for static analysis and verification.
 
-<strong>Note:</strong> this public repository also collects previous (non-versioned) releases of the library.
+<strong>Note:</strong> this public repository also collects
+previous (non-versioned) releases of the library.
 
-<h3>Current version (see <a href="#available-downloads">below</a> for older ones)</h3>
+<h3>Current version
+(see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2023-06-10: <a href="releases/pplite-0.11.tar.gz">PPLite 0.11 can be downloaded</a>.
+2023-06-10:
+<a href="releases/pplite-0.11.tar.gz">PPLite 0.11 can be downloaded</a>.
 
 <h3>Support</h3>
 
-  If you need help for using PPLite or have some feature requests, send an email to enea.zaffanella@unipr.it
+If you need help for using PPLite or have some feature requests,
+send an email to enea.zaffanella@unipr.it
 
 <h3>Goals (and non-goals)</h3>
 
-While being derived from the PPL (Parma Polyhedra Library), PPLite has a very different goal: to provide researchers and students with a lighter framework for experimenting with new ideas and algorithms in the context of polyhedral computations. In particular, PPLite is not aimed at implementing the full range of abstract domains and operators made available by the PPL. The main characteristics of PPLite are the following.
+While being derived from the PPL (Parma Polyhedra Library), PPLite has
+a very different goal: to provide researchers and students with a
+lighter framework for experimenting with new ideas and algorithms in
+the context of polyhedral computations.
+In particular, PPLite is not aimed at implementing the full range of
+abstract domains and operators made available by the PPL. The main
+characteristics of PPLite are the following.
 <ul>
   <li>Both closed and NNC rational convex polyhedra are supported.</li>
   <li>Performance and portability are deemed important, but not
@@ -62,7 +74,8 @@ in the following we assume using a source directory
 named `MySources` and a build directory named `MyBuild`;
 the commands shown should be adapted accordingly.
 
-After cloning the library sources from git, resulting in directory `MySources/PPLite`,
+After cloning the library sources from git,
+resulting in directory `MySources/PPLite`,
 the following command will generate the configuration script
 (note: this preliminary step is **not** needed if the sources
 are extracted from a `.tar.gz` distribution):
@@ -121,7 +134,11 @@ Currently the library is maintained by Enea Zaffanella.
 
 <h3>Contributors and past members of development team</h3>
 
-Students collaborate to the development of the library (in a broad sense, which is sometimes different from writing source code), under supervision of Enea Zaffanella, during their internship and/or the activities related to the final exam of the Bachelor and/or Master Degree in Computer Science.
+Students collaborate to the development of the library (in a broad
+sense, which is sometimes different from writing source code), under
+supervision of Enea Zaffanella, during their internship and/or the
+activities related to the final exam of the Bachelor and/or Master
+Degree in Computer Science.
 
 For the list of collaborators, see file CREDITS.
 
@@ -129,6 +146,15 @@ For the list of collaborators, see file CREDITS.
 <h3>Available downloads</h3>
 
 <ul>
+
+<li>
+2024-04-04:
+<a href="releases/pplite-0.12.tar.gz">PPLite 0.12 can be downloaded</a>.
+<br>
+The library no longer depends on the C++ interface of GMP (this change
+mainly affects classes `pplite::Integer` and `pplite::Rational`).
+The support for conditional thread safety is now enabled by default.
+</li>
 
 <li>
 2023-06-10:
