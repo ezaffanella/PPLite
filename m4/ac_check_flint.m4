@@ -1,5 +1,5 @@
 dnl PPLite: a lightweight library for convex polyhedra derived from PPL.
-dnl Copyright (C) 2018-2023 Enea Zaffanella <enea.zaffanella@unipr.it>
+dnl Copyright (C) 2018-2024 Enea Zaffanella <enea.zaffanella@unipr.it>
 dnl
 dnl This file is part of PPLite.
 dnl

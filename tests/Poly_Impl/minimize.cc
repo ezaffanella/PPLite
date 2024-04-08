@@ -1,5 +1,5 @@
 /* PPLite: a lightweight library for convex polyhedra derived from PPL.
-   Copyright (C) 2023 Enea Zaffanella <enea.zaffanella@unipr.it>
+   Copyright (C) 2023-2024 Enea Zaffanella <enea.zaffanella@unipr.it>
 
 This file is part of PPLite.
 
