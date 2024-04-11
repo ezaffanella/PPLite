@@ -10,8 +10,8 @@ previous (non-versioned) releases of the library.
 <h3>Current version
 (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2023-06-10:
-<a href="releases/pplite-0.11.tar.gz">PPLite 0.11 can be downloaded</a>.
+2024-04-11:
+<a href="releases/pplite-0.12.tar.gz">PPLite 0.12 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -148,7 +148,7 @@ For the list of collaborators, see file CREDITS.
 <ul>
 
 <li>
-2024-04-04:
+2024-04-11:
 <a href="releases/pplite-0.12.tar.gz">PPLite 0.12 can be downloaded</a>.
 <br>
 The library no longer depends on the C++ interface of GMP (this change
