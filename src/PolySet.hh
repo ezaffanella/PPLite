@@ -674,7 +674,10 @@ NOTHROW_MOVES(FP_Set);
 namespace IO_Operators {
 
 template <typename PH>
-std::ostream& operator<<(std::ostream& s, const PolySet<PH>& x);
+std::ostream& operator<<(std::ostream& s, const PolySet<PH>& x) {
+  x.print(s);
+  return s;
+}
 
 } // namespace IO_Operators
 
