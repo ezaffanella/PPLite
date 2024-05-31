@@ -28,21 +28,22 @@ namespace pplite {
 
 namespace {
 
-/*
-  Note: if this helper function is inlined by g++ version 11 or 12
-  when using optimization levels -O2 or -O3, then it triggers an error
-  (e.g., executing pplite_lcdd reg600-5_m.ext with assertions turned on).
-  Looks like a compiler bug, but it could also be an UB in our own code.
-  No bug is observed at lower optimization levels or when using
-  g++ version 9 or 10, or when using clang++ (no matter the version).
-*/
-[[gnu::noinline]] Bits::Word
+inline Bits::Word
 shifted_copy(Bits::Word src1, Bits::Word src2, dim_type start) {
-  constexpr auto w_ones = Bits::word_ones();
   assert(0 < start && start < Bits::word_size);
-  Bits::Word src_mask = (w_ones << start);
-  return ((src1 & src_mask) >> start)
-    | ((src2 & ~src_mask) << (w_ones - start + 1));
+  /*
+    Example (8 bit word for clarity):
+    src1 = [a7 a6 a5 a4 a3 a2 a1 a0]
+    src2 = [b7 b6 b5 b4 b3 b2 b1 b0]
+    start = 3
+  */
+  // right shift the leftmost `word_size - start' bits from src1
+  src1 = (src1 >> start);
+  // now src1 = [0 0 0 a7 a6 a5 a4 a4]
+  // left shift the rightmost `start' bits from src2
+  src2 = (src2 << (Bits::word_size - start));
+  // now src2 = [b2 b1 b0 0 0 0 0 0]
+  return src1 | src2; // [b2 b1 b0 a7 a6 a5 a4 a3]
 }
 
 inline Bits::Word

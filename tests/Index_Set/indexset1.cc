@@ -41,12 +41,12 @@ bool test01() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 0\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 0\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -67,12 +67,12 @@ bool test02() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 1\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 1\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -93,12 +93,12 @@ bool test03() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 2\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 2\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -121,12 +121,12 @@ bool test04() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 3\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 3\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -149,12 +149,12 @@ bool test05() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 4\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 4\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -175,12 +175,12 @@ bool test06() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 5\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 5\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -203,12 +203,12 @@ bool test07() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 6\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 6\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -231,12 +231,12 @@ bool test08() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"fake row 6\n";
-  std::cout<<"iset:  ";
+  std::cout << "fake row 6\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -259,12 +259,12 @@ bool test09() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 7\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 7\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -287,12 +287,12 @@ bool test10() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 8\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 8\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -315,12 +315,12 @@ bool test11() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"row 9\n";
-  std::cout<<"iset:  ";
+  std::cout << "row 9\n";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -333,10 +333,10 @@ bool test12() {
   neg.set(0);
   neg.set(129);
 
-  std::cout<<"iset:  ";
+  std::cout << "iset:  ";
   print(iset);
 
-  std::cout<<"neg:  ";
+  std::cout << "neg:  ";
   print(neg);
 
   iset.remove_all(neg.begin(), neg.end());
@@ -346,11 +346,11 @@ bool test12() {
 
   bool ok = (iset == known_iset);
 
-  std::cout<<"iset:  ";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(known_iset);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -377,21 +377,21 @@ bool test13() {
   for (auto i : known)
     iset_known.set(i);
 
-  std::cout<<"iset:  ";
+  std::cout << "iset:  ";
   print(iset);
 
-  std::cout<<"neg:   ";
+  std::cout << "neg:   ";
   print(iset_neg);
 
   iset.remove_all(iset_neg.begin(), iset_neg.end());
 
   bool ok = (iset == iset_known);
 
-  std::cout<<"iset:  ";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(iset_known);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -417,21 +417,21 @@ bool test14() {
   for (auto i : known)
     iset_known.set(i);
 
-  std::cout<<"iset:  ";
+  std::cout << "iset:  ";
   print(iset);
 
-  std::cout<<"neg:   ";
+  std::cout << "neg:   ";
   print(iset_neg);
 
   iset.remove_all(iset_neg.begin(), iset_neg.end());
 
   bool ok = (iset == iset_known);
 
-  std::cout<<"iset:  ";
+  std::cout << "iset:  ";
   print(iset);
-  std::cout<<"known: ";
+  std::cout << "known: ";
   print(iset_known);
-  std::cout<<"\n";
+  std::cout << "\n";
 
   return ok;
 }
@@ -441,6 +441,35 @@ bool test15() {
   bs.set(1024);
   bs.reset_from(1024);
   return bs.check_inv();
+}
+
+bool test16() {
+  Bits bs;
+  bs.set_until(257);
+
+  Bits bs_expected;
+  bs_expected.set_until(256);
+
+  std::vector<int> tbr = { 0 };
+
+  nout << "=== bs before remove_all( { 0 } ) ===\n";
+  auto sz1 = bs.size();
+  nout << "size1 = " << sz1 << std::endl;
+  bs.print_as_bits(nout);
+
+  bs.remove_all(tbr);
+
+  nout << "=== bs after remove_all( { 0 } ) ===\n";
+  auto sz2 = bs.size();
+  nout << "size2 = " << sz2 << std::endl;
+  bs.print_as_bits(nout);
+
+  nout << "=== known result ===\n";
+
+  nout << "size = " << bs_expected.size() << std::endl;
+  bs_expected.print_as_bits(nout);
+
+  return (bs == bs_expected);
 }
 
 BEGIN_MAIN
@@ -459,4 +488,5 @@ BEGIN_MAIN
   DO_TEST(test13);
   DO_TEST(test14);
   DO_TEST(test15);
+  DO_TEST(test16);
 END_MAIN
