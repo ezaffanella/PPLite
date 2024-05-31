@@ -510,9 +510,10 @@ combine_type(Gen::Type g_pos, Gen::Type g_neg,
     return (!is_strict_inequality && g_neg == Gen::POINT)
       ? Gen::POINT
       : Gen::CLOSURE_POINT;
+  case Gen::LINE:
   default:
-    assert(false);
-    return Gen::LINE;
+    PPLITE_UNREACH;
+    break;
   }
 }
 
@@ -804,7 +805,7 @@ make_non_singular(Con& c, Integer& sp) {
 
 inline bool
 has_no_points(const Cons&) {
-  assert(false);
+  PPLITE_UNREACH;
   return true;
 }
 inline bool

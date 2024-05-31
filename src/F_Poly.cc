@@ -116,8 +116,8 @@ convert(Var v, const Block& b) {
     if (b[i] == v.id())
       return Var(i);
   }
-  assert(false);
-  abort();
+  // v is meant to be in block b
+  PPLITE_UNREACH;
 }
 
 inline Linear_Expr
@@ -223,8 +223,7 @@ get_containing_block_index(const Blocks& bs, const Block& b) {
       return i;
     }
   }
-  assert(false);
-  abort();
+  PPLITE_UNREACH;
 }
 
 inline dim_type

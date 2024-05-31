@@ -283,8 +283,7 @@ Linear_Expr::combine(Linear_Expr& x, Integer& x_inhomo,
     combine_ZZ();
     break;
   default:
-    assert(false);
-    abort();
+    PPLITE_UNREACH;
   }
 }
 

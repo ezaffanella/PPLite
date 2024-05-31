@@ -442,8 +442,7 @@ make_poly(Abs_Poly::Kind kind, dim_type d, Spec_Elem s, Topol t) {
     return new Abs_Poly_Adapter<Stats<FP_Set>>(d, s, t);
   default:
     std::cerr << "Invalid Abs_Poly::Kind value" << std::endl;
-    assert(false);
-    return nullptr;
+    PPLITE_UNREACH;
   }
 }
 
@@ -455,7 +454,7 @@ make_poly(const char* kind_name, dim_type d, Spec_Elem s, Topol t) {
   if (abs_poly_name_to_kind(kind_name, kind, requires_stats))
     return make_poly(kind, d, s, t);
   std::cerr << "Invalid Abs_Poly::Kind name" << std::endl;
-  assert(false);
+  PPLITE_UNREACH;
   return nullptr;
 }
 

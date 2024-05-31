@@ -54,8 +54,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   do {                                                            \
     std::cerr << "\n\npplite: calling unimplemented function\n";  \
     std::cerr << "  " << __PRETTY_FUNCTION__ << "\n";             \
+    assert(false);                                                \
     abort();                                                      \
-  } while (false);
+  } while (false)
+
+#define PPLITE_UNREACH                                            \
+  do {                                                            \
+    std::cerr << "\n\npplite: executing unreachable code\n";      \
+    std::cerr << "  " << __PRETTY_FUNCTION__ << "\n";             \
+    assert(false);                                                \
+    abort();                                                      \
+  } while (false)
 
 
 #define NOTHROW_DEFAULT_CTOR(Type)                                  \

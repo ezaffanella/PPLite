@@ -297,7 +297,7 @@ Poly_Impl::gens_info() const {
       break;
     case Gen::LINE:
     default:
-      assert(false);
+      PPLITE_UNREACH;
       break;
     }
   }
@@ -833,7 +833,7 @@ Poly_Impl::minimize() const {
     x.sat_g = x.sat_c.transpose();
   if (detail::add_and_minimize<false>(x.dim, x.gs, x.gs_pending,
                                       x.cs, x.sat_g, x.sat_c))
-    assert(false);
+    PPLITE_UNREACH;
   else
     x.set_status(Status::MINIMIZED);
   assert(check_inv(false));
@@ -2084,7 +2084,7 @@ operator<<(std::ostream& s, Poly_Impl::Status status) {
     s << "PENDING";
     break;
   default:
-    assert(false);
+    PPLITE_UNREACH;
     break;
   }
   return s;
@@ -2626,7 +2626,7 @@ Poly_Impl::min(const Affine_Expr& ae, Rational& value,
   for (const auto& ns : gs.ns_rows) {
     Gen mater = detail::materialize(ns, gs.sk_rows);
     if (check_skel(mater))
-      assert(false);
+      PPLITE_UNREACH;
     if (cand_ptr == &mater) {
       mater_cand = std::move(mater);
       cand_ptr = &mater_cand;
@@ -2635,7 +2635,7 @@ Poly_Impl::min(const Affine_Expr& ae, Rational& value,
   for (const auto& ns : gs_pending.ns_rows) {
     Gen mater = detail::materialize(ns, gs_pending.sk_rows);
     if (check_skel(mater))
-      assert(false);
+      PPLITE_UNREACH;
     if (cand_ptr == &mater) {
       mater_cand = std::move(mater);
       cand_ptr = &mater_cand;

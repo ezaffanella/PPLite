@@ -206,7 +206,7 @@ sk_ranges_to_index_sets(const Ranges& sk_ranges,
       iset_pos.set(i);
       break;
     default:
-      assert(false);
+      PPLITE_UNREACH;
     }
   }
 }
@@ -1320,7 +1320,7 @@ move_to_end(std::vector<Row>& src, std::vector<Row>& dst) {
 bool
 is_efc_from_sat(const Index_Set&, const Cons&) {
   /* Only for con2gen conversion. */
-  assert(false);
+  PPLITE_UNREACH;
   return false;
 }
 inline bool
