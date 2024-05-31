@@ -160,6 +160,7 @@ Poly_Impl::set_empty() {
   // Add `1 == 0'.
   cs.sing_rows.push_back(Con::zero_dim_false());
   set_status(Status::EMPTY);
+  assert(check_inv());
 }
 
 void
@@ -168,6 +169,8 @@ Poly_Impl::set_universe() {
   detail::set_universe(dim, cs, gs, sat_c);
   sat_g = sat_c.transpose();
   set_status(Status::MINIMIZED);
+  // check_inv() would trigger an infinite recursion.
+  assert(check_inv_without_minimize());
 }
 
 void
@@ -188,7 +191,8 @@ Poly_Impl::reinit_with_gens(dim_type d, Topol t, Sys<Gens>&& gens) {
   detail::init_dd(dim, gs, gs_pending, cs, sat_g);
   sat_c = sat_g.transpose();
   set_status(gs_pending.empty() ? Status::MINIMIZED : Status::PENDING);
-  // assert(check_inv());
+  // check_inv() would trigger an infinite recursion.
+  assert(check_inv_without_minimize());
 }
 
 Poly_Impl::Poly_Impl(dim_type d, Spec_Elem s, Topol t)
@@ -823,7 +827,8 @@ Poly_Impl::minimize() const {
       x.set_empty();
     else
       x.set_status(Status::MINIMIZED);
-    assert(check_inv(false));
+    // check_inv() would trigger an infinite recursion.
+    assert(check_inv_without_minimize());
     return;
   }
 
@@ -836,7 +841,8 @@ Poly_Impl::minimize() const {
     PPLITE_UNREACH;
   else
     x.set_status(Status::MINIMIZED);
-  assert(check_inv(false));
+  // check_inv() would trigger an infinite recursion.
+  assert(check_inv_without_minimize());
 }
 
 namespace detail {
@@ -1398,7 +1404,7 @@ concatenate_minimized(Poly_Impl& x, const Poly_Impl& y) {
   // Update space dimension and sat_g.
   x.dim += y.dim;
   x.sat_g = x.sat_c.transpose();
-  assert(x.check_inv(true));
+  assert(x.check_inv());
 }
 
 } // namespace detail
@@ -1752,41 +1758,60 @@ find_efc(const NS_Rows& cs_ns,
   return maybe_efc;
 }
 
+void
+maybe_dump(const Poly_Impl& ph, const char* reason) {
+#ifdef NDEBUG
+  (void) ph;
+  (void) reason;
+#else // In debugging mode, be noisy.
+  std::cerr << reason << std::endl;
+  ph.ascii_dump(std::cerr);
+  std::cerr << reason << std::endl;
+#endif
+}
+
 } // namespace detail
 
 bool
-Poly_Impl::check_inv(bool do_equals) const {
-  std::string reason;
-#ifdef NDEBUG
-  auto maybe_dump = []() {};
-#else // In debugging mode, be noisy.
-  auto maybe_dump = [this, &reason]() {
-    std::cerr << reason << std::endl;
-    this->ascii_dump(std::cerr);
-    std::cerr << reason << std::endl;
-  };
-#endif
-
-  /* Check 0-dim polyhedra. */
-  if (dim == 0 && !(marked_empty() || marked_min())) {
-    reason = "Zero-dim poly neither empty nor minimized";
-    maybe_dump();
+Poly_Impl::check_inv() const {
+  const char* reason = aux_check_inv_without_minimize();
+  if (reason != nullptr) {
+    detail::maybe_dump(*this, reason);
     return false;
   }
+  reason = aux_check_inv_check_minimize();
+  if (reason != nullptr) {
+    detail::maybe_dump(*this, reason);
+    return false;
+  }
+  return true;
+}
+
+bool
+Poly_Impl::check_inv_without_minimize() const {
+  const char* reason = aux_check_inv_without_minimize();
+  if (reason != nullptr) {
+    detail::maybe_dump(*this, reason);
+    return false;
+  }
+  return true;
+}
+
+const char*
+Poly_Impl::aux_check_inv_without_minimize() const {
+  /* Check 0-dim polyhedra. */
+  if (dim == 0 && not marked_empty() && not marked_min())
+    return "Zero-dim poly neither empty nor minimized";
 
   /* Check systems cardinalities. */
-  if (!detail::check_inv(cs, dim))
-    reason = "non-pending constraints are broken";
-  else if (!detail::check_inv(gs, dim))
-    reason = "non-pending generators are broken";
-  else if (!detail::check_inv(cs_pending, dim))
-    reason = "pending constraints are broken";
-  else if (!detail::check_inv(gs_pending, dim))
-    reason = "pending generators are broken";
-  if (!reason.empty()) {
-    maybe_dump();
-    return false;
-  }
+  if (not detail::check_inv(cs, dim))
+    return "non-pending constraints are broken";
+  if (not detail::check_inv(gs, dim))
+    return "non-pending generators are broken";
+  if (not detail::check_inv(cs_pending, dim))
+    return "pending constraints are broken";
+  if (not detail::check_inv(gs_pending, dim))
+    return "pending generators are broken";
 
   // Checks status consistency.
   switch (status) {
@@ -1798,142 +1823,136 @@ Poly_Impl::check_inv(bool do_equals) const {
              && cs_pending.empty()
              && gs.empty() && gs_pending.empty()
              && sat_c.empty() && sat_g.empty()))
-      reason = "poly marked empty is broken";
+      return "poly marked empty is broken";
     break;
 
   case Status::PENDING:
-    if (cs_pending.empty() && gs_pending.empty()) {
-      reason = "poly marked pending has no pending cons/gens";
-      break;
-    } else if (!cs_pending.empty() && !gs_pending.empty()) {
-      reason = "poly marked pending has both pending cons and gens";
-      break;
-    } else if (cs.empty()) {
-      reason = "poly marked pending has empty non-pending cons";
-      break;
-    } else if (gs.empty()) {
-      reason = "poly marked pending has empty non-pending gens";
-      break;
-    }
+    if (cs_pending.empty() && gs_pending.empty())
+      return "poly marked pending has no pending cons/gens";
+    if (not cs_pending.empty() && not gs_pending.empty())
+      return "poly marked pending has both pending cons and gens";
+    if (cs.empty())
+      return "poly marked pending has empty non-pending cons";
+    if (gs.empty())
+      return "poly marked pending has empty non-pending gens";
     // Intentionally falling through:
-    // check minimization invariants for the non-pending part.
+    // we also check minimization invariants for the non-pending part.
 
     [[ fallthrough ]];
   case Status::MINIMIZED:
-    {
-      if (not (num_rows(cs.sing_rows) <= dim
-               && num_rows(gs.sing_rows) <= dim
-               && !sat_c.empty() && !sat_g.empty()
-               && (sat_c.num_rows() == sat_g.num_cols())
-               && (sat_g.num_rows() == sat_c.num_cols())
-               && (sat_c.num_rows() == num_rows(gs.sk_rows))
-               && (sat_g.num_rows() == num_rows(cs.sk_rows)))) {
-        reason = "minimized poly: broken cardinalities";
-        break;
-      }
-      // Note: recheck status (may be falling through from PENDING).
-      if (status == Status::MINIMIZED
-          && !(cs_pending.empty() && gs_pending.empty())) {
-        reason = "minimized poly has pending cons/gens";
-        break;
-      }
-      // Check sat matrix consistency.
-      Sat sat_c_tr = sat_c.transpose();
-      if (sat_g != sat_c_tr) {
-        reason = "poly: sat_c is not the transpose of sat_g";
-        break;
-      }
-      if (not detail::check_sat(sat_g, cs.sk_rows, gs.sk_rows)) {
-        reason = "poly: sat matrix does not match scalar prod";
-        break;
-      }
-      // Check for efc
-      if (!detail::check_efc(cs.ns_rows, cs.sk_rows,
-                             gs.sk_rows, sat_g, sat_c)) {
-        reason = "poly: invalid efc";
-        break;
-      }
-      if (do_equals) {
-        auto get_counters = [](const Poly_Impl& ph) {
-          auto num_sk_strict
-            = std::count_if(ph.cs.sk_rows.begin(), ph.cs.sk_rows.end(),
-                            std::mem_fn(&Con::is_strict_inequality));
-          auto num_sk_points
-            = std::count_if(ph.gs.sk_rows.begin(), ph.gs.sk_rows.end(),
-                            std::mem_fn(&Gen::is_point));
-          auto num_ns_strict = num_rows(ph.cs.ns_rows);
-          auto num_ns_points = num_rows(ph.gs.ns_rows);
-          return std::make_tuple(num_sk_strict, num_sk_points,
-                                 num_ns_strict, num_ns_points);
-        };
-
-        // Rebuild non-pending part from constraints.
-        {
-          // Copy the non-pending part of this into x.
-          Poly_Impl x = *this;
-          x.cs_pending.clear();
-          x.gs_pending.clear();
-          x.status = Status::MINIMIZED;
-          // Create y using the constraints of x as pending.
-          Poly_Impl y(x.dim, Spec_Elem::UNIVERSE, x.topol);
-          y.cs_pending = x.cs;
-          y.set_status(Status::PENDING);
-          y.minimize();
-
-          const auto x_counters = get_counters(x);
-          const auto y_counters = get_counters(y);
-          if (x_counters != y_counters) {
-            reason = "poly said minimized, but it is not"
-              ": conversion cons->gens computes a DD pair having"
-              " a cardinality mismatch for cons/gens kinds";
-            break;
-          }
-          if (!y.equals(x)) {
-            reason = "poly said minimized, but it is not"
-              ": conversion cons->gens computes different polyhedron";
-            break;
-          }
-        }
-        // Rebuild non-pending part from generators.
-        {
-          // Copy the non-pending part of this into x.
-          Poly_Impl x = *this;
-          x.cs_pending.clear();
-          x.gs_pending.clear();
-          x.status = Status::MINIMIZED;
-          // Create y using the generators of x as pending.
-          Poly_Impl y(x.dim, Spec_Elem::UNIVERSE, x.topol);
-          auto x_gs_copy = x.gs;
-          y.reinit_with_gens(x.dim, x.topol, std::move(x_gs_copy));
-          y.minimize();
-
-          const auto x_counters = get_counters(x);
-          const auto y_counters = get_counters(y);
-          if (x_counters != y_counters) {
-            reason = "poly said minimized, but it is not"
-              ": conversion gens->cons computes a DD pair having"
-              " a cardinality mismatch for cons/gens kinds";
-            break;
-          }
-          if (!y.equals(x)) {
-            reason = "poly said minimized, but it is not"
-              ": conversion gens->cons computes different polyhedron";
-            break;
-          }
-        }
-      }
-    }
+    if (not (num_rows(cs.sing_rows) <= dim
+             && num_rows(gs.sing_rows) <= dim
+             && not sat_c.empty() && not sat_g.empty()
+             && (sat_c.num_rows() == sat_g.num_cols())
+             && (sat_g.num_rows() == sat_c.num_cols())
+             && (sat_c.num_rows() == num_rows(gs.sk_rows))
+             && (sat_g.num_rows() == num_rows(cs.sk_rows))))
+      return "minimized poly: broken cardinalities";
+    // Note: recheck status (may be falling through from PENDING).
+    if (status == Status::MINIMIZED
+        && not (cs_pending.empty() && gs_pending.empty()))
+      return "minimized poly has pending cons/gens";
+    // Check sat matrix consistency.
+    if (not (sat_g == sat_c.transpose()))
+      return "poly: sat_c is not the transpose of sat_g";
+    if (not detail::check_sat(sat_g, cs.sk_rows, gs.sk_rows))
+      return "poly: sat matrix does not match scalar prod";
+    // Check for efc
+    if (not detail::check_efc(cs.ns_rows, cs.sk_rows,
+                              gs.sk_rows, sat_g, sat_c))
+      return "poly: invalid efc";
     break;
 
   default:
-    reason = "poly: unknown status value";
-    break;
+    return "poly: unknown status value";
+  } // switch (status)
+
+  // All checks passed
+  return nullptr;
+}
+
+const char*
+Poly_Impl::aux_check_inv_check_minimize() const {
+  /* This (computationally heavy) check assumes that
+     aux_check_inv_without_minimize() has succeded.
+     Since it calls the following Poly_Impl methods:
+       1) empty constructor
+       2) universe constructor
+       3) copy constructor
+       4) reinit_with_gens
+       5) minimize
+       6) equals
+     Methods 2-6 cannot call this check, neither directly nor indirectly
+     by calling check_inv(), since this would trigger an infinite recursion.
+  */
+  if (status != Status::MINIMIZED && status != Status::PENDING)
+    return nullptr;
+
+  auto get_counters = [](const Poly_Impl& ph) {
+    auto num_sk_strict
+      = std::count_if(ph.cs.sk_rows.begin(), ph.cs.sk_rows.end(),
+                      std::mem_fn(&Con::is_strict_inequality));
+    auto num_sk_points
+      = std::count_if(ph.gs.sk_rows.begin(), ph.gs.sk_rows.end(),
+                      std::mem_fn(&Gen::is_point));
+    auto num_ns_strict = num_rows(ph.cs.ns_rows);
+    auto num_ns_points = num_rows(ph.gs.ns_rows);
+    return std::make_tuple(num_sk_strict, num_sk_points,
+                           num_ns_strict, num_ns_points);
+  };
+
+  // Rebuild non-pending part from constraints.
+  {
+    // Copy the non-pending part of this into x.
+    Poly_Impl x = *this;
+    x.cs_pending.clear();
+    x.gs_pending.clear();
+    x.status = Status::MINIMIZED;
+    // Create y using the constraints of x as pending.
+    Poly_Impl y(x.dim, Spec_Elem::UNIVERSE, x.topol);
+    y.cs_pending = x.cs;
+    y.set_status(Status::PENDING);
+    y.minimize();
+
+    const auto x_counters = get_counters(x);
+    const auto y_counters = get_counters(y);
+    if (x_counters != y_counters) {
+      return "poly said minimized, but it is not"
+        ": conversion cons->gens computes a DD pair having"
+        " a cardinality mismatch for cons/gens kinds";
+    }
+    if (not y.equals(x)) {
+      return "poly said minimized, but it is not"
+        ": conversion cons->gens computes different polyhedron";
+    }
   }
+  // Rebuild non-pending part from generators.
+  {
+    // Copy the non-pending part of this into x.
+    Poly_Impl x = *this;
+    x.cs_pending.clear();
+    x.gs_pending.clear();
+    x.status = Status::MINIMIZED;
+    // Create y using the generators of x as pending.
+    Poly_Impl y(x.dim, Spec_Elem::UNIVERSE, x.topol);
+    auto x_gs_copy = x.gs;
+    y.reinit_with_gens(x.dim, x.topol, std::move(x_gs_copy));
+    y.minimize();
 
-  if (!reason.empty())
-    maybe_dump();
-
-  return reason.empty();
+    const auto x_counters = get_counters(x);
+    const auto y_counters = get_counters(y);
+    if (x_counters != y_counters) {
+      return "poly said minimized, but it is not"
+        ": conversion gens->cons computes a DD pair having"
+        " a cardinality mismatch for cons/gens kinds";
+    }
+    if (not y.equals(x)) {
+      return "poly said minimized, but it is not"
+        ": conversion gens->cons computes different polyhedron";
+    }
+  }
+  // All checks passed
+  return nullptr;
 }
 
 void

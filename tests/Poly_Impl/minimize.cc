@@ -117,7 +117,7 @@ bool test03() {
   nout << "\n\n=== added g ===\n";
   ph.ascii_dump(nout);
 
-  return ph.check_inv(true);
+  return ph.check_inv();
 }
 
 
@@ -147,7 +147,7 @@ bool test04() {
   nout << "\n\n=== added g ===\n";
   ph.ascii_dump(nout);
 
-  return ph.check_inv(true);
+  return ph.check_inv();
 }
 
 BEGIN_MAIN

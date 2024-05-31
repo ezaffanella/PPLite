@@ -140,12 +140,12 @@ struct Poly_Impl {
   void ensure_valid_cons() const {
     if (!has_valid_cons())
       minimize();
-    assert(check_inv(false));
+    assert(check_inv_without_minimize());
   }
   void ensure_valid_gens() const {
     if (!has_valid_gens())
       minimize();
-    assert(check_inv(false));
+    assert(check_inv_without_minimize());
   }
 
   dim_type num_equals() const {
@@ -187,11 +187,20 @@ struct Poly_Impl {
             Spec_Elem s = Spec_Elem::UNIVERSE,
             Topol t = get_default_topology());
 
+  /* Checks for class invariant */
+
+  bool check_inv() const;
+  bool check_inv_without_minimize() const;
+
+  // These helpers should not be used directly: they are called from
+  // the check_inv* predicates above. They return a C string explaining
+  // why the invariant is broken; they return nullptr when it is satisfied.
+  const char* aux_check_inv_without_minimize() const;
+  const char* aux_check_inv_check_minimize() const;
+
   /* Predicates */
 
-  bool check_inv(bool do_equals = true) const;
   bool is_necessarily_closed() const { return topol == Topol::CLOSED; }
-
   bool is_empty() const;
   bool is_minimized() const { return !has_pending(); }
   bool is_universe() const;
@@ -411,9 +420,7 @@ public:
 
   /* Predicates */
   bool is_necessarily_closed() const { return impl().is_necessarily_closed(); }
-  bool check_inv(bool do_equals = true) const {
-    return impl().check_inv(do_equals);
-  }
+  bool check_inv() const { return impl().check_inv(); }
   bool is_empty() const { return impl().is_empty(); }
   bool is_universe() const { return impl().is_universe(); }
   bool is_minimized() const { return impl().is_minimized(); }
