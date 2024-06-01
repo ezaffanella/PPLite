@@ -21,8 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void print(const Index_Set& iset) {
   for (auto i : iset)
-    std::cout << i << " ";
-  std::cout << "\n";
+    nout << i << " ";
+  nout << "\n";
 }
 
 bool test01() {
@@ -41,12 +41,12 @@ bool test01() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 0\n";
-  std::cout << "iset:  ";
+  nout << "row 0\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -67,12 +67,12 @@ bool test02() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 1\n";
-  std::cout << "iset:  ";
+  nout << "row 1\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -93,12 +93,12 @@ bool test03() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 2\n";
-  std::cout << "iset:  ";
+  nout << "row 2\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -121,12 +121,12 @@ bool test04() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 3\n";
-  std::cout << "iset:  ";
+  nout << "row 3\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -149,12 +149,12 @@ bool test05() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 4\n";
-  std::cout << "iset:  ";
+  nout << "row 4\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -175,12 +175,12 @@ bool test06() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 5\n";
-  std::cout << "iset:  ";
+  nout << "row 5\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -203,12 +203,12 @@ bool test07() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 6\n";
-  std::cout << "iset:  ";
+  nout << "row 6\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -231,12 +231,12 @@ bool test08() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "fake row 6\n";
-  std::cout << "iset:  ";
+  nout << "fake row 6\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -259,12 +259,12 @@ bool test09() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 7\n";
-  std::cout << "iset:  ";
+  nout << "row 7\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -287,12 +287,12 @@ bool test10() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 8\n";
-  std::cout << "iset:  ";
+  nout << "row 8\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -315,12 +315,12 @@ bool test11() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "row 9\n";
-  std::cout << "iset:  ";
+  nout << "row 9\n";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -333,10 +333,10 @@ bool test12() {
   neg.set(0);
   neg.set(129);
 
-  std::cout << "iset:  ";
+  nout << "iset:  ";
   print(iset);
 
-  std::cout << "neg:  ";
+  nout << "neg:  ";
   print(neg);
 
   iset.remove_all(neg.begin(), neg.end());
@@ -346,11 +346,11 @@ bool test12() {
 
   bool ok = (iset == known_iset);
 
-  std::cout << "iset:  ";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(known_iset);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -377,21 +377,21 @@ bool test13() {
   for (auto i : known)
     iset_known.set(i);
 
-  std::cout << "iset:  ";
+  nout << "iset:  ";
   print(iset);
 
-  std::cout << "neg:   ";
+  nout << "neg:   ";
   print(iset_neg);
 
   iset.remove_all(iset_neg.begin(), iset_neg.end());
 
   bool ok = (iset == iset_known);
 
-  std::cout << "iset:  ";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(iset_known);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }
@@ -417,21 +417,21 @@ bool test14() {
   for (auto i : known)
     iset_known.set(i);
 
-  std::cout << "iset:  ";
+  nout << "iset:  ";
   print(iset);
 
-  std::cout << "neg:   ";
+  nout << "neg:   ";
   print(iset_neg);
 
   iset.remove_all(iset_neg.begin(), iset_neg.end());
 
   bool ok = (iset == iset_known);
 
-  std::cout << "iset:  ";
+  nout << "iset:  ";
   print(iset);
-  std::cout << "known: ";
+  nout << "known: ";
   print(iset_known);
-  std::cout << "\n";
+  nout << "\n";
 
   return ok;
 }

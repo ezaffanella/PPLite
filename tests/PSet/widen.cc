@@ -722,6 +722,9 @@ test13() {
   T2.add_disjunct(p3);
   T2.add_disjunct(p4);
 
+  print_gens(p1, "=== p1 ===");
+  print_gens(q1, "=== q1 ===");
+
   print_pset(T1, "*** T1 ***");
   print_pset(T2, "*** T2 ***");
 
@@ -799,7 +802,7 @@ aux2_test14(unsigned n) {
   MyPSet s{2, Topol::CLOSED, Spec_Elem::EMPTY};
   if (n == 0) {
 
-    std::cout << "S0 = { P0 }\n";
+    nout << "S0 = { P0 }\n";
 
     s.add_disjunct(aux1_test14(0));
     return s;
@@ -810,27 +813,27 @@ aux2_test14(unsigned n) {
   switch (n % 3) {
   case 1:
 
-    std::cout << "S" << n << " = { "
-              << "P" << p_base + 1 << ", "
-              << "P" << p_base + 3 << " }" << endl;
+    nout << "S" << n << " = { "
+         << "P" << p_base + 1 << ", "
+         << "P" << p_base + 3 << " }" << endl;
 
     s.add_disjunct(aux1_test14(p_base + 1));
     s.add_disjunct(aux1_test14(p_base + 3));
     break;
   case 2:
 
-    std::cout << "S" << n << " = { "
-              << "P" << p_base + 2 << ", "
-              << "P" << p_base + 3 << " }" << endl;
+    nout << "S" << n << " = { "
+         << "P" << p_base + 2 << ", "
+         << "P" << p_base + 3 << " }" << endl;
 
     s.add_disjunct(aux1_test14(p_base + 2));
     s.add_disjunct(aux1_test14(p_base + 3));
     break;
   case 0:
 
-    std::cout << "S" << n << " = { "
-              << "P" << p_base + 2 << ", "
-              << "P" << p_base + 4 << " }" << endl;
+    nout << "S" << n << " = { "
+         << "P" << p_base + 2 << ", "
+         << "P" << p_base + 4 << " }" << endl;
 
     s.add_disjunct(aux1_test14(p_base + 2));
     s.add_disjunct(aux1_test14(p_base + 4));
@@ -852,19 +855,19 @@ test14() {
   MyPSet T = aux2_test14(0);
 
   print_pset(T, "*** T0 ***");
-  // std::cout << "T0 = " << T << endl;
+  // nout << "T0 = " << T << endl;
 
   bool converged = false;
   for (unsigned n = 1; !converged && n <= 20; ++n) {
     MyPSet Sn = aux2_test14(n);
 
-    std::cout << "S" << n << " = ";
+    nout << "S" << n << " = ";
     print_pset(Sn, "");
 
     Sn.join_assign(T);
     Sn.widening_assign(T, Widen_Impl::BHRZ03);
 
-    std::cout << "T" << n << " = ";
+    nout << "T" << n << " = ";
     print_pset(Sn, "");
 
     if (Sn.definitely_entails(T))
@@ -926,7 +929,7 @@ aux2_test15(unsigned n) {
   MyPSet s{2, Topol::CLOSED, Spec_Elem::EMPTY};
   if (n == 0) {
 
-    std::cout << "S0 = { P0 }" << endl;
+    nout << "S0 = { P0 }" << endl;
 
     s.add_disjunct(aux1_test15(0));
     return s;
@@ -937,27 +940,27 @@ aux2_test15(unsigned n) {
   switch (n % 3) {
   case 1:
 
-    std::cout << "S" << n << " = { "
-              << "P" << p_base + 1 << ", "
-              << "P" << p_base + 3 << " }" << endl;
+    nout << "S" << n << " = { "
+         << "P" << p_base + 1 << ", "
+         << "P" << p_base + 3 << " }" << endl;
 
     s.add_disjunct(aux1_test15(p_base + 1));
     s.add_disjunct(aux1_test15(p_base + 3));
     break;
   case 2:
 
-    std::cout << "S" << n << " = { "
-              << "P" << p_base + 2 << ", "
-              << "P" << p_base + 3 << " }" << endl;
+    nout << "S" << n << " = { "
+         << "P" << p_base + 2 << ", "
+         << "P" << p_base + 3 << " }" << endl;
 
     s.add_disjunct(aux1_test15(p_base + 2));
     s.add_disjunct(aux1_test15(p_base + 3));
     break;
   case 0:
 
-    std::cout << "S" << n << " = { "
-              << "P" << p_base + 2 << ", "
-              << "P" << p_base + 4 << " }" << endl;
+    nout << "S" << n << " = { "
+         << "P" << p_base + 2 << ", "
+         << "P" << p_base + 4 << " }" << endl;
 
     s.add_disjunct(aux1_test15(p_base + 2));
     s.add_disjunct(aux1_test15(p_base + 4));
@@ -978,14 +981,14 @@ test15() {
 
   MyPSet T = aux2_test15(0);
 
-  std::cout << "T0 = ";
+  nout << "T0 = ";
   print_pset(T, "");
 
   bool converged = false;
   for (unsigned n = 1; !converged && n <= 20; ++n) {
     MyPSet Sn = aux2_test15(n);
 
-    std::cout << "S" << n << " = ";
+    nout << "S" << n << " = ";
     print_pset(Sn, "");
 
     Sn.join_assign(T);
@@ -1016,7 +1019,7 @@ BEGIN_MAIN
   DO_TEST(test10);
   DO_TEST(test11);
   DO_TEST(test12);
-//  DO_TEST(test13);
+  // DO_TEST(test13);
   DO_TEST(test14);
   DO_TEST(test15);
 END_MAIN
