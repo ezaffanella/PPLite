@@ -45,6 +45,7 @@ namespace {
 
 const char* program_name = nullptr;
 bool print_timings = false;
+bool sort_input = false;
 bool verbose = false;
 const char* check_file_name = nullptr;
 
@@ -53,11 +54,12 @@ std::istream* input_stream_p = nullptr;
 const char* output_file_name = nullptr;
 std::ostream* output_stream_p = nullptr;
 
-const char* const option_letters = "ho:tvc:";
+const char* const option_letters = "ho:stvc:";
 
 struct option long_options[] = {
   {"help",    no_argument,       nullptr, 'h'},
   {"output",  required_argument, nullptr, 'o'},
+  {"sort-input", no_argument,    nullptr, 's'},
   {"timings", no_argument,       nullptr, 't'},
   {"verbose", no_argument,       nullptr, 'v'},
   {"check",   required_argument, nullptr, 'c'},
@@ -164,6 +166,10 @@ process_options(const int argc, char* const argv[]) {
 
     case 'o':
       output_file_name = optarg;
+      break;
+
+    case 's':
+      sort_input = true;
       break;
 
     case 't':
@@ -287,6 +293,13 @@ read_indexes_set(std::istream& in, std::set<unsigned>& dst) {
   }
 }
 
+template <typename Row>
+struct RowCmp {
+  bool operator()(const Row& row1, const Row& row2) const {
+    return compare(row1, row2) < 0;
+  }
+};
+
 enum class Repr { H, V };
 
 Repr
@@ -408,9 +421,13 @@ read_polyhedron(std::istream& in, poly_type& ph) {
     error(std::string("found `") + s + " while seeking for `end'");
 
   if (repr == Repr::H) {
+    if (sort_input)
+      std::sort(cs.begin(), cs.end(), RowCmp<Con>());
     ph = poly_type(space_dim);
     ph.add_cons(std::move(cs));
   } else {
+    if (sort_input)
+      std::sort(gs.begin(), gs.end(), RowCmp<Gen>());
     ph = poly_type(space_dim, Spec_Elem::EMPTY);
     ph.add_gens(std::move(gs));
   }
