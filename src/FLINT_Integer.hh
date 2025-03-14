@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "globals.hh"
 
-#include <flint/fmpz.h>
 #include <gmp.h>
+#include <flint/fmpz.h>
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
