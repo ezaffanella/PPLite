@@ -86,9 +86,46 @@ test04() {
   return ok;
 }
 
+bool
+test05(){
+    Var A(0); Var B(1);
+    Poly ph(2, Topol::NNC);
+    ph.add_con(A>=0);
+    ph.add_con(B>=0);
+    ph.add_con(A+B<6);
+    ph.minimize();
+    Gens gen_copy;
+    gen_copy = ph.copy_gens();
+    int counter = 0; // counters for gens of correct dim
+    int l = gen_copy.size(); //number of gens
+    for(int i =0; i <l; i++){
+        if(gen_copy[i].space_dim() == ph.space_dim()){counter++;};
+    }
+    if(counter==l){return true;}
+    else{return false;};
+}
+
+bool
+test06() {
+  Var A(0); Var B(1); Var C(2);
+  Poly ph(3, Topol::NNC);
+  ph.add_con(A==0);
+  ph.add_con(B==0);
+  ph.add_con(-C-1>=0);
+  ph.minimize(); // Ray -1>=C in R^3.
+  Gens gen_copy;
+  gen_copy = ph.copy_gens();
+  if((gen_copy[0].divisor() == 1) and (gen_copy[1].divisor() == 1))
+    {return true;}
+  else{return false;};
+}
+
+
 BEGIN_MAIN
 /* test01 moved into Poly_Impl */
   DO_TEST(test02);
   DO_TEST(test03);
   DO_TEST(test04);
+  DO_TEST(test05);
+  DO_TEST(test06);
 END_MAIN
