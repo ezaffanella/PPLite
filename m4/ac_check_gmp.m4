@@ -85,7 +85,7 @@ AC_LANG_PUSH(C++)
 
 AC_MSG_CHECKING([for the GMP library version 4.1.3 or above])
 AC_RUN_IFELSE([AC_LANG_SOURCE([[
-#include <gmpxx.h>
+#include <gmp.h>
 #include <climits>
 #include <string>
 #include <sstream>
