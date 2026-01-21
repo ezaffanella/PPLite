@@ -1,4 +1,4 @@
-AC_INIT([PPLite],[0.12],[enea.zaffanella@unipr.it],[pplite],[github.com/ezaffanella/PPLite])
+AC_INIT([PPLite],[0.13],[enea.zaffanella@unipr.it],[pplite],[github.com/ezaffanella/PPLite])
 
 # Specify the location of additional local Autoconf macros.
 AC_CONFIG_MACRO_DIR([m4])

@@ -10,8 +10,8 @@ previous (non-versioned) releases of the library.
 <h3>Current version
 (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2024-04-11:
-<a href="releases/pplite-0.12.tar.gz">PPLite 0.12 can be downloaded</a>.
+2026-01-22:
+<a href="releases/pplite-0.13.tar.gz">PPLite 0.13 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -148,8 +148,16 @@ For the list of collaborators, see file CREDITS.
 <ul>
 
 <li>
+2026-01-22:
+<a href="releases/pplite-0.13.tar.gz">PPLite 0.13 can be downloaded</a>.
+<br>
+Fixed a build error when using FLINT 3.2.0 and above (patch by Jan Engelhardt).
+</li>
+
+<li>
 2024-04-11:
-<a href="releases/pplite-0.12.tar.gz">PPLite 0.12 can be downloaded</a>.
+<strike><a href="releases/pplite-0.12.tar.gz">PPLite 0.12 can be downloaded</a>.</strike>
+(<b>No longer maintained: switch to the most recent one.</b>)
 <br>
 The library no longer depends on the C++ interface of GMP (this change
 mainly affects classes `pplite::Integer` and `pplite::Rational`).
@@ -158,7 +166,8 @@ The support for conditional thread safety is now enabled by default.
 
 <li>
 2023-06-10:
-<a href="releases/pplite-0.11.tar.gz">PPLite 0.11 can be downloaded</a>.
+<strike><a href="releases/pplite-0.11.tar.gz">PPLite 0.11 can be downloaded</a>.</strike>
+(<b>No longer maintained: switch to the most recent one.</b>)
 <br>
 While the library is based on the c++17 standard, its header files
 are now c++11 standard compliant (hence can be used more easily in
