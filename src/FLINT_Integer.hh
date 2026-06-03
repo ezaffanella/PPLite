@@ -636,7 +636,7 @@ operator<<(FLINT_Integer const& x, unsigned long ui) {
 }
 
 inline FLINT_Integer
-operator>>(FLINT_Integer& x, unsigned int ui) {
+operator>>(FLINT_Integer const& x, unsigned int ui) {
   FLINT_Integer res;
   fmpz_tdiv_q_2exp(res.impl(), x.impl(), ui);
   return res;
