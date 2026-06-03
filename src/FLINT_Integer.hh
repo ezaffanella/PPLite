@@ -301,8 +301,8 @@ inline void abs_assign(FLINT_Integer& x) {
 }
 
 inline FLINT_Integer abs(FLINT_Integer const& x) {
-  FLINT_Integer res = x;
-  abs_assign(res);
+  FLINT_Integer res;
+  fmpz_abs(res.impl(), x.impl());
   return res;
 }
 
@@ -311,8 +311,8 @@ inline void neg_assign(FLINT_Integer& x) {
 }
 
 inline FLINT_Integer neg(FLINT_Integer const& x) {
-  FLINT_Integer res = x;
-  neg_assign(res);
+  FLINT_Integer res;
+  fmpz_neg(res.impl(), x.impl());
   return res;
 }
 
@@ -340,13 +340,13 @@ operator+=(FLINT_Integer& x, FLINT_Integer const& y) {
 
 inline FLINT_Integer&
 operator+=(FLINT_Integer& x, signed int si) {
-  x += FLINT_Integer(si);
+  fmpz_add_si(x.impl(), x.impl(), si);
   return x;
 }
 
 inline FLINT_Integer&
 operator+=(FLINT_Integer& x, signed long si) {
-  x += FLINT_Integer(si);
+  fmpz_add_si(x.impl(), x.impl(), si);
   return x;
 }
 
@@ -370,13 +370,13 @@ operator-=(FLINT_Integer& x, FLINT_Integer const& y) {
 
 inline FLINT_Integer&
 operator-=(FLINT_Integer& x, signed int si) {
-  x -= FLINT_Integer(si);
+  fmpz_sub_si(x.impl(), x.impl(), si);
   return x;
 }
 
 inline FLINT_Integer&
 operator-=(FLINT_Integer& x, signed long si) {
-  x -= FLINT_Integer(si);
+  fmpz_sub_si(x.impl(), x.impl(), si);
   return x;
 }
 
@@ -486,12 +486,16 @@ operator+(FLINT_Integer const& x, FLINT_Integer const& y) {
 
 inline FLINT_Integer
 operator+(FLINT_Integer const& x, signed int si) {
-  return operator+(x, FLINT_Integer(si));
+  FLINT_Integer res;
+  fmpz_add_si(res.impl(), x.impl(), si);
+  return res;
 }
 
 inline FLINT_Integer
 operator+(FLINT_Integer const& x, signed long si) {
-  return operator+(x, FLINT_Integer(si));
+  FLINT_Integer res;
+  fmpz_add_si(res.impl(), x.impl(), si);
+  return res;
 }
 
 inline FLINT_Integer
@@ -510,8 +514,8 @@ operator+(FLINT_Integer const& x, unsigned long ui) {
 
 inline FLINT_Integer
 operator-(FLINT_Integer const& x) {
-  FLINT_Integer res = x;
-  neg_assign(res);
+  FLINT_Integer res;
+  fmpz_neg(res.impl(), x.impl());
   return res;
 }
 
@@ -524,12 +528,16 @@ operator-(FLINT_Integer const& x, FLINT_Integer const& y) {
 
 inline FLINT_Integer
 operator-(FLINT_Integer const& x, signed int si) {
-  return operator-(x, FLINT_Integer(si));
+  FLINT_Integer res;
+  fmpz_sub_si(res.impl(), x.impl(), si);
+  return res;
 }
 
 inline FLINT_Integer
 operator-(FLINT_Integer const& x, signed long si) {
-  return operator-(x, FLINT_Integer(si));
+  FLINT_Integer res;
+  fmpz_sub_si(res.impl(), x.impl(), si);
+  return res;
 }
 
 inline FLINT_Integer
@@ -623,8 +631,10 @@ operator/(FLINT_Integer& x, unsigned long ui) {
 
 inline FLINT_Integer
 operator%(FLINT_Integer const& x, FLINT_Integer const& y) {
-  FLINT_Integer res = x;
-  res %= y;
+  assert(y != 0);
+  FLINT_Integer dummy;
+  FLINT_Integer res;
+  fmpz_tdiv_qr(dummy.impl(), res.impl(), x.impl(), y.impl());
   return res;
 }
 
