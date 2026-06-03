@@ -190,19 +190,19 @@ inline bool operator!=(FLINT_Integer const& x, FLINT_Integer const& y) {
   return !(x == y);
 }
 
-inline bool operator!=(FLINT_Integer const& x, signed int const& y) {
+inline bool operator!=(FLINT_Integer const& x, signed int y) {
   return !(x == y);
 }
 
-inline bool operator!=(FLINT_Integer const& x, signed long const& y) {
+inline bool operator!=(FLINT_Integer const& x, signed long y) {
   return !(x == y);
 }
 
-inline bool operator!=(FLINT_Integer const& x, unsigned int const& y) {
+inline bool operator!=(FLINT_Integer const& x, unsigned int y) {
   return !(x == y);
 }
 
-inline bool operator!=(FLINT_Integer const& x, unsigned long const& y) {
+inline bool operator!=(FLINT_Integer const& x, unsigned long y) {
   return !(x == y);
 }
 
@@ -210,19 +210,19 @@ inline bool operator<(FLINT_Integer const& x, FLINT_Integer const& y) {
   return (0 > fmpz_cmp(x.impl(), y.impl()));
 }
 
-inline bool operator<(FLINT_Integer const& x, signed int const& si) {
+inline bool operator<(FLINT_Integer const& x, signed int si) {
   return (0 > fmpz_cmp_si(x.impl(), si));
 }
 
-inline bool operator<(FLINT_Integer const& x, signed long const& si) {
+inline bool operator<(FLINT_Integer const& x, signed long si) {
   return (0 > fmpz_cmp_si(x.impl(), si));
 }
 
-inline bool operator<(FLINT_Integer const& x, unsigned int const& ui) {
+inline bool operator<(FLINT_Integer const& x, unsigned int ui) {
   return (0 > fmpz_cmp_ui(x.impl(), ui));
 }
 
-inline bool operator<(FLINT_Integer const& x, unsigned long const& ui) {
+inline bool operator<(FLINT_Integer const& x, unsigned long ui) {
   return (0 > fmpz_cmp_ui(x.impl(), ui));
 }
 
@@ -230,19 +230,19 @@ inline bool operator>(FLINT_Integer const& x, FLINT_Integer const& y) {
   return (y < x);
 }
 
-inline bool operator>(FLINT_Integer const& x, signed int const& y) {
+inline bool operator>(FLINT_Integer const& x, signed int y) {
   return (y < x);
 }
 
-inline bool operator>(FLINT_Integer const& x, signed long const& y) {
+inline bool operator>(FLINT_Integer const& x, signed long y) {
   return (y < x);
 }
 
-inline bool operator>(FLINT_Integer const& x, unsigned int const& y) {
+inline bool operator>(FLINT_Integer const& x, unsigned int y) {
   return (y < x);
 }
 
-inline bool operator>(FLINT_Integer const& x, unsigned long const& y) {
+inline bool operator>(FLINT_Integer const& x, unsigned long y) {
   return (y < x);
 }
 
@@ -250,19 +250,19 @@ inline bool operator>=(FLINT_Integer const& x, FLINT_Integer const& y) {
   return !(x < y);
 }
 
-inline bool operator>=(FLINT_Integer const& x, signed int const& y) {
+inline bool operator>=(FLINT_Integer const& x, signed int y) {
   return !(x < y);
 }
 
-inline bool operator>=(FLINT_Integer const& x, signed long const& y) {
+inline bool operator>=(FLINT_Integer const& x, signed long y) {
   return !(x < y);
 }
 
-inline bool operator>=(FLINT_Integer const& x, unsigned int const& y) {
+inline bool operator>=(FLINT_Integer const& x, unsigned int y) {
   return !(x < y);
 }
 
-inline bool operator>=(FLINT_Integer const& x, unsigned long const& y) {
+inline bool operator>=(FLINT_Integer const& x, unsigned long y) {
   return !(x < y);
 }
 
@@ -270,19 +270,19 @@ inline bool operator<=(FLINT_Integer const& x, FLINT_Integer const& y) {
   return !(x > y);
 }
 
-inline bool operator<=(FLINT_Integer const& x, signed int const& y) {
+inline bool operator<=(FLINT_Integer const& x, signed int y) {
   return !(x > y);
 }
 
-inline bool operator<=(FLINT_Integer const& x, signed long const& y) {
+inline bool operator<=(FLINT_Integer const& x, signed long y) {
   return !(x > y);
 }
 
-inline bool operator<=(FLINT_Integer const& x, unsigned int const& y) {
+inline bool operator<=(FLINT_Integer const& x, unsigned int y) {
   return !(x > y);
 }
 
-inline bool operator<=(FLINT_Integer const& x, unsigned long const& y) {
+inline bool operator<=(FLINT_Integer const& x, unsigned long y) {
   return !(x > y);
 }
 
@@ -339,25 +339,25 @@ operator+=(FLINT_Integer& x, FLINT_Integer const& y) {
 }
 
 inline FLINT_Integer&
-operator+=(FLINT_Integer& x, signed int const& si) {
+operator+=(FLINT_Integer& x, signed int si) {
   x += FLINT_Integer(si);
   return x;
 }
 
 inline FLINT_Integer&
-operator+=(FLINT_Integer& x, signed long const& si) {
+operator+=(FLINT_Integer& x, signed long si) {
   x += FLINT_Integer(si);
   return x;
 }
 
 inline FLINT_Integer&
-operator+=(FLINT_Integer& x, unsigned int const& ui) {
+operator+=(FLINT_Integer& x, unsigned int ui) {
   fmpz_add_ui(x.impl(), x.impl(), ui);
   return x;
 }
 
 inline FLINT_Integer&
-operator+=(FLINT_Integer& x, unsigned long const& ui) {
+operator+=(FLINT_Integer& x, unsigned long ui) {
   fmpz_add_ui(x.impl(), x.impl(), ui);
   return x;
 }
@@ -369,25 +369,25 @@ operator-=(FLINT_Integer& x, FLINT_Integer const& y) {
 }
 
 inline FLINT_Integer&
-operator-=(FLINT_Integer& x, signed int const& si) {
+operator-=(FLINT_Integer& x, signed int si) {
   x -= FLINT_Integer(si);
   return x;
 }
 
 inline FLINT_Integer&
-operator-=(FLINT_Integer& x, signed long const& si) {
+operator-=(FLINT_Integer& x, signed long si) {
   x -= FLINT_Integer(si);
   return x;
 }
 
 inline FLINT_Integer&
-operator-=(FLINT_Integer& x, unsigned int const& ui) {
+operator-=(FLINT_Integer& x, unsigned int ui) {
   fmpz_sub_ui(x.impl(), x.impl(), ui);
   return x;
 }
 
 inline FLINT_Integer&
-operator-=(FLINT_Integer& x, unsigned long const& ui) {
+operator-=(FLINT_Integer& x, unsigned long ui) {
   fmpz_sub_ui(x.impl(), x.impl(), ui);
   return x;
 }
@@ -485,24 +485,24 @@ operator+(FLINT_Integer const& x, FLINT_Integer const& y) {
 }
 
 inline FLINT_Integer
-operator+(FLINT_Integer const& x, signed int const& si) {
+operator+(FLINT_Integer const& x, signed int si) {
   return operator+(x, FLINT_Integer(si));
 }
 
 inline FLINT_Integer
-operator+(FLINT_Integer const& x, signed long const& si) {
+operator+(FLINT_Integer const& x, signed long si) {
   return operator+(x, FLINT_Integer(si));
 }
 
 inline FLINT_Integer
-operator+(FLINT_Integer const& x, unsigned int const& ui) {
+operator+(FLINT_Integer const& x, unsigned int ui) {
   FLINT_Integer res;
   fmpz_add_ui(res.impl(), x.impl(), ui);
   return res;
 }
 
 inline FLINT_Integer
-operator+(FLINT_Integer const& x, unsigned long const& ui) {
+operator+(FLINT_Integer const& x, unsigned long ui) {
   FLINT_Integer res;
   fmpz_add_ui(res.impl(), x.impl(), ui);
   return res;
@@ -523,24 +523,24 @@ operator-(FLINT_Integer const& x, FLINT_Integer const& y) {
 }
 
 inline FLINT_Integer
-operator-(FLINT_Integer const& x, signed int const& si) {
+operator-(FLINT_Integer const& x, signed int si) {
   return operator-(x, FLINT_Integer(si));
 }
 
 inline FLINT_Integer
-operator-(FLINT_Integer const& x, signed long const& si) {
+operator-(FLINT_Integer const& x, signed long si) {
   return operator-(x, FLINT_Integer(si));
 }
 
 inline FLINT_Integer
-operator-(FLINT_Integer const& x, unsigned int const& ui) {
+operator-(FLINT_Integer const& x, unsigned int ui) {
   FLINT_Integer res;
   fmpz_sub_ui(res.impl(), x.impl(), ui);
   return res;
 }
 
 inline FLINT_Integer
-operator-(FLINT_Integer const& x, unsigned long const& ui) {
+operator-(FLINT_Integer const& x, unsigned long ui) {
   FLINT_Integer res;
   fmpz_sub_ui(res.impl(), x.impl(), ui);
   return res;

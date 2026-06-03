@@ -179,19 +179,19 @@ inline bool operator!=(GMP_Integer const& x, GMP_Integer const& y) {
   return !(x == y);
 }
 
-inline bool operator!=(GMP_Integer const& x, signed int const& y) {
+inline bool operator!=(GMP_Integer const& x, signed int y) {
   return !(x == y);
 }
 
-inline bool operator!=(GMP_Integer const& x, signed long const& y) {
+inline bool operator!=(GMP_Integer const& x, signed long y) {
   return !(x == y);
 }
 
-inline bool operator!=(GMP_Integer const& x, unsigned int const& y) {
+inline bool operator!=(GMP_Integer const& x, unsigned int y) {
   return !(x == y);
 }
 
-inline bool operator!=(GMP_Integer const& x, unsigned long const& y) {
+inline bool operator!=(GMP_Integer const& x, unsigned long y) {
   return !(x == y);
 }
 
@@ -199,19 +199,19 @@ inline bool operator<(GMP_Integer const& x, GMP_Integer const& y) {
   return (0 > mpz_cmp(x.impl(), y.impl()));
 }
 
-inline bool operator<(GMP_Integer const& x, signed int const& si) {
+inline bool operator<(GMP_Integer const& x, signed int si) {
   return (0 > mpz_cmp_si(x.impl(), si));
 }
 
-inline bool operator<(GMP_Integer const& x, signed long const& si) {
+inline bool operator<(GMP_Integer const& x, signed long si) {
   return (0 > mpz_cmp_si(x.impl(), si));
 }
 
-inline bool operator<(GMP_Integer const& x, unsigned int const& ui) {
+inline bool operator<(GMP_Integer const& x, unsigned int ui) {
   return (0 > mpz_cmp_ui(x.impl(), ui));
 }
 
-inline bool operator<(GMP_Integer const& x, unsigned long const& ui) {
+inline bool operator<(GMP_Integer const& x, unsigned long ui) {
   return (0 > mpz_cmp_ui(x.impl(), ui));
 }
 
@@ -219,19 +219,19 @@ inline bool operator>(GMP_Integer const& x, GMP_Integer const& y) {
   return (y < x);
 }
 
-inline bool operator>(GMP_Integer const& x, signed int const& y) {
+inline bool operator>(GMP_Integer const& x, signed int y) {
   return (y < x);
 }
 
-inline bool operator>(GMP_Integer const& x, signed long const& y) {
+inline bool operator>(GMP_Integer const& x, signed long y) {
   return (y < x);
 }
 
-inline bool operator>(GMP_Integer const& x, unsigned int const& y) {
+inline bool operator>(GMP_Integer const& x, unsigned int y) {
   return (y < x);
 }
 
-inline bool operator>(GMP_Integer const& x, unsigned long const& y) {
+inline bool operator>(GMP_Integer const& x, unsigned long y) {
   return (y < x);
 }
 
@@ -239,19 +239,19 @@ inline bool operator>=(GMP_Integer const& x, GMP_Integer const& y) {
   return !(x < y);
 }
 
-inline bool operator>=(GMP_Integer const& x, signed int const& y) {
+inline bool operator>=(GMP_Integer const& x, signed int y) {
   return !(x < y);
 }
 
-inline bool operator>=(GMP_Integer const& x, signed long const& y) {
+inline bool operator>=(GMP_Integer const& x, signed long y) {
   return !(x < y);
 }
 
-inline bool operator>=(GMP_Integer const& x, unsigned int const& y) {
+inline bool operator>=(GMP_Integer const& x, unsigned int y) {
   return !(x < y);
 }
 
-inline bool operator>=(GMP_Integer const& x, unsigned long const& y) {
+inline bool operator>=(GMP_Integer const& x, unsigned long y) {
   return !(x < y);
 }
 
@@ -259,19 +259,19 @@ inline bool operator<=(GMP_Integer const& x, GMP_Integer const& y) {
   return !(x > y);
 }
 
-inline bool operator<=(GMP_Integer const& x, signed int const& y) {
+inline bool operator<=(GMP_Integer const& x, signed int y) {
   return !(x > y);
 }
 
-inline bool operator<=(GMP_Integer const& x, signed long const& y) {
+inline bool operator<=(GMP_Integer const& x, signed long y) {
   return !(x > y);
 }
 
-inline bool operator<=(GMP_Integer const& x, unsigned int const& y) {
+inline bool operator<=(GMP_Integer const& x, unsigned int y) {
   return !(x > y);
 }
 
-inline bool operator<=(GMP_Integer const& x, unsigned long const& y) {
+inline bool operator<=(GMP_Integer const& x, unsigned long y) {
   return !(x > y);
 }
 
@@ -328,25 +328,25 @@ operator+=(GMP_Integer& x, GMP_Integer const& y) {
 }
 
 inline GMP_Integer&
-operator+=(GMP_Integer& x, signed int const& si) {
+operator+=(GMP_Integer& x, signed int si) {
   x += GMP_Integer(si);
   return x;
 }
 
 inline GMP_Integer&
-operator+=(GMP_Integer& x, signed long const& si) {
+operator+=(GMP_Integer& x, signed long si) {
   x += GMP_Integer(si);
   return x;
 }
 
 inline GMP_Integer&
-operator+=(GMP_Integer& x, unsigned int const& ui) {
+operator+=(GMP_Integer& x, unsigned int ui) {
   mpz_add_ui(x.impl(), x.impl(), ui);
   return x;
 }
 
 inline GMP_Integer&
-operator+=(GMP_Integer& x, unsigned long const& ui) {
+operator+=(GMP_Integer& x, unsigned long ui) {
   mpz_add_ui(x.impl(), x.impl(), ui);
   return x;
 }
@@ -358,25 +358,25 @@ operator-=(GMP_Integer& x, GMP_Integer const& y) {
 }
 
 inline GMP_Integer&
-operator-=(GMP_Integer& x, signed int const& si) {
+operator-=(GMP_Integer& x, signed int si) {
   x -= GMP_Integer(si);
   return x;
 }
 
 inline GMP_Integer&
-operator-=(GMP_Integer& x, signed long const& si) {
+operator-=(GMP_Integer& x, signed long si) {
   x -= GMP_Integer(si);
   return x;
 }
 
 inline GMP_Integer&
-operator-=(GMP_Integer& x, unsigned int const& ui) {
+operator-=(GMP_Integer& x, unsigned int ui) {
   mpz_sub_ui(x.impl(), x.impl(), ui);
   return x;
 }
 
 inline GMP_Integer&
-operator-=(GMP_Integer& x, unsigned long const& ui) {
+operator-=(GMP_Integer& x, unsigned long ui) {
   mpz_sub_ui(x.impl(), x.impl(), ui);
   return x;
 }
@@ -471,24 +471,24 @@ operator+(GMP_Integer const& x, GMP_Integer const& y) {
 }
 
 inline GMP_Integer
-operator+(GMP_Integer const& x, signed int const& si) {
+operator+(GMP_Integer const& x, signed int si) {
   return operator+(x, GMP_Integer(si));
 }
 
 inline GMP_Integer
-operator+(GMP_Integer const& x, signed long const& si) {
+operator+(GMP_Integer const& x, signed long si) {
   return operator+(x, GMP_Integer(si));
 }
 
 inline GMP_Integer
-operator+(GMP_Integer const& x, unsigned int const& ui) {
+operator+(GMP_Integer const& x, unsigned int ui) {
   GMP_Integer res;
   mpz_add_ui(res.impl(), x.impl(), ui);
   return res;
 }
 
 inline GMP_Integer
-operator+(GMP_Integer const& x, unsigned long const& ui) {
+operator+(GMP_Integer const& x, unsigned long ui) {
   GMP_Integer res;
   mpz_add_ui(res.impl(), x.impl(), ui);
   return res;
@@ -509,24 +509,24 @@ operator-(GMP_Integer const& x, GMP_Integer const& y) {
 }
 
 inline GMP_Integer
-operator-(GMP_Integer const& x, signed int const& si) {
+operator-(GMP_Integer const& x, signed int si) {
   return operator-(x, GMP_Integer(si));
 }
 
 inline GMP_Integer
-operator-(GMP_Integer const& x, signed long const& si) {
+operator-(GMP_Integer const& x, signed long si) {
   return operator-(x, GMP_Integer(si));
 }
 
 inline GMP_Integer
-operator-(GMP_Integer const& x, unsigned int const& ui) {
+operator-(GMP_Integer const& x, unsigned int ui) {
   GMP_Integer res;
   mpz_sub_ui(res.impl(), x.impl(), ui);
   return res;
 }
 
 inline GMP_Integer
-operator-(GMP_Integer const& x, unsigned long const& ui) {
+operator-(GMP_Integer const& x, unsigned long ui) {
   GMP_Integer res;
   mpz_sub_ui(res.impl(), x.impl(), ui);
   return res;
