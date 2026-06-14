@@ -35,11 +35,12 @@ point_poly(bool pos, const dim_type k, const dim_type dim) {
 
 bool
 test01() {
-  const dim_type min_dim = 12;
 #ifdef NDEBUG
+  const dim_type min_dim = 12;
   const dim_type max_dim = 18;
 #else
-  const dim_type max_dim = 15;
+  const dim_type min_dim = 10;
+  const dim_type max_dim = 12;
 #endif
 
   for (auto dim = min_dim; dim <= max_dim; ++dim) {
