@@ -204,6 +204,7 @@ public:
 
   // A proxy type for constraints: maps kernel cs into shell cs.
   struct Cons_Proxy {
+    enum K_Proxy_Kind { standard, normalized, skeleton };
     using K_Proxy = typename Kernel::Cons_Proxy;
     K_Proxy k_proxy;
     Dims inverse;
@@ -211,10 +212,13 @@ public:
     using cache_type = std::vector<std::unique_ptr<value_type>>;
     mutable cache_type shell_cs;
 
-    explicit Cons_Proxy(const Shell* shell_ptr, bool normalized = false)
-      : k_proxy(normalized ?
-                shell_ptr->kernel.normalized_cons()
-                : shell_ptr->kernel.cons()),
+    explicit Cons_Proxy(const Shell* shell_ptr, K_Proxy_Kind kind)
+      : k_proxy(kind == standard
+                ? shell_ptr->kernel.cons()
+                : (kind == normalized
+                   ? shell_ptr->kernel.normalized_cons()
+                   : shell_ptr->kernel.skeleton_cons())
+                ),
         inverse(shell_ptr->get_inverse_info()),
         shell_cs(k_proxy.end_pos()) {}
 
@@ -247,11 +251,19 @@ public:
     const_iterator end() const { return cend(); }
   }; // Cons_Proxy
 
-  Cons_Proxy cons() const { return Cons_Proxy(this); }
-  Cons_Proxy normalized_cons() const { return Cons_Proxy(this, true); }
+  Cons_Proxy cons() const {
+    return Cons_Proxy(this, Cons_Proxy::standard);
+  }
+  Cons_Proxy normalized_cons() const {
+    return Cons_Proxy(this, Cons_Proxy::normalized);
+  }
+  Cons_Proxy skeleton_cons() const {
+    return Cons_Proxy(this, Cons_Proxy::skeleton);
+  }
 
   // A proxy type for generators: maps kernel gs into shell gs.
   struct Gens_Proxy {
+    enum K_Proxy_Kind { standard, skeleton };
     using K_Proxy = typename Kernel::Gens_Proxy;
     K_Proxy k_proxy;
     dim_type k_offset;
@@ -260,8 +272,10 @@ public:
     using cache_type = std::vector<std::unique_ptr<value_type>>;
     mutable cache_type shell_gs;
 
-    explicit Gens_Proxy(const Shell* shell_ptr)
-      : k_proxy(shell_ptr->kernel.gens()),
+    explicit Gens_Proxy(const Shell* shell_ptr, K_Proxy_Kind kind)
+      : k_proxy(kind == standard
+                ? shell_ptr->kernel.gens()
+                : shell_ptr->kernel.skeleton_gens()),
         k_offset(0) {
       if (shell_ptr->is_empty())
         return;
@@ -309,7 +323,12 @@ public:
     const_iterator end() const { return cend(); }
   }; // Gens_Proxy
 
-  Gens_Proxy gens() const { return Gens_Proxy(this); }
+  Gens_Proxy gens() const {
+    return Gens_Proxy(this, Gens_Proxy::standard);
+  }
+  Gens_Proxy skeleton_gens() const {
+    return Gens_Proxy(this, Gens_Proxy::skeleton);
+  }
 
   void collapse(dim_type) { /* nothing to do */ }
   dim_type num_disjuncts() const { return is_empty() ? 0 : 1; }

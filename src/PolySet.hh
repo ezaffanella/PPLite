@@ -301,12 +301,28 @@ public:
     PPLITE_UNIMPL;
   }
 
+  Cons_Proxy skeleton_cons() const {
+    if (has_single_disjunct())
+      return begin()->skeleton_cons();
+    if (is_empty())
+      return empty_disjunct().skeleton_cons();
+    PPLITE_UNIMPL;
+  }
+
   using Gens_Proxy = typename Disj::Gens_Proxy;
   Gens_Proxy gens() const {
     if (has_single_disjunct())
       return begin()->gens();
     if (is_empty())
       return empty_disjunct().gens();
+    PPLITE_UNIMPL;
+  }
+
+  Gens_Proxy skeleton_gens() const {
+    if (has_single_disjunct())
+      return begin()->skeleton_gens();
+    if (is_empty())
+      return empty_disjunct().skeleton_gens();
     PPLITE_UNIMPL;
   }
 

@@ -72,6 +72,7 @@ relwith1 \
 relwith2 \
 removehigherdims \
 removespacedims \
+skel_cons_gens \
 split \
 split2 \
 split_dualhyper \
@@ -133,6 +134,7 @@ relwith1_SOURCES = relwith1.cc
 relwith2_SOURCES = relwith2.cc
 removehigherdims_SOURCES = removehigherdims.cc
 removespacedims_SOURCES = removespacedims.cc
+skel_cons_gens_SOURCES = skel_cons_gens.cc
 split_SOURCES = split.cc
 split2_SOURCES = split2.cc
 split_dualhyper_SOURCES = split_dualhyper.cc

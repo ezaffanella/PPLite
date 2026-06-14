@@ -238,6 +238,12 @@ struct Stats : private PH {
   Cons copy_normalized_cons() const {
     return this->Base::copy_normalized_cons();
   }
+  Cons_Proxy skeleton_cons() const {
+    return this->Base::skeleton_cons();
+  }
+  Gens_Proxy skeleton_gens() const {
+    return this->Base::skeleton_gens();
+  }
   template <typename Partial_Func>
   void map_space_dims(const Partial_Func& pfunc) {
     AbsOp_Clock clock(AbsOp::DIMS_MAP);

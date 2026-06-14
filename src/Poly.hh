@@ -254,6 +254,23 @@ struct Poly_Impl {
     return Gens(proxy.begin(), proxy.end());
   }
 
+  // Note: this will ignore non-skel constraints, thereby returning
+  // an overapproximation of an NNC polyhedron.
+  Cons_Proxy skeleton_cons() const {
+    ensure_valid_cons();
+    return Cons_Proxy(this, true);
+  }
+
+  // Note: this will ignore non-skel generators, thereby returning
+  // a possibly invalid generator system for an NNC polyhedron
+  // (it may have no points at all, just closure points).
+  // If the closure points are "interpreted" as points, then the
+  // generators describe the topological closure of the polyhedron.
+  Gens_Proxy skeleton_gens() const {
+    ensure_valid_gens();
+    return Gens_Proxy(this, true);
+  }
+
   bool min(const Affine_Expr& ae, Rational& value,
            bool* included_ptr = nullptr, Gen* g_ptr = nullptr) const;
   bool max(const Affine_Expr& ae, Rational& value,
@@ -486,6 +503,8 @@ public:
   Gens copy_gens() const { return impl().copy_gens(); }
   Cons_Proxy normalized_cons() const { return impl().normalized_cons(); }
   Cons copy_normalized_cons() const { return impl().copy_normalized_cons(); }
+  Cons_Proxy skeleton_cons() const { return impl().skeleton_cons(); }
+  Gens_Proxy skeleton_gens() const { return impl().skeleton_gens(); }
   Gens_Info gens_info() const { return impl().gens_info(); }
   dim_type num_min_cons() const { return impl().num_min_cons(); }
   dim_type num_min_gens() const { return impl().num_min_gens(); }

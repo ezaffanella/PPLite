@@ -136,8 +136,10 @@ public:
   using Cons_Proxy = Abs_Poly::Cons_Proxy;
   Cons_Proxy cons() const { return ptr->cons(); }
   Cons_Proxy normalized_cons() const { return ptr->normalized_cons(); }
+  Cons_Proxy skeleton_cons() const { return ptr->skeleton_cons(); }
   using Gens_Proxy = Abs_Poly::Gens_Proxy;
   Gens_Proxy gens() const { return ptr->gens(); }
+  Gens_Proxy skeleton_gens() const { return ptr->skeleton_gens(); }
 
   void collapse(dim_type n) { ptr->collapse(n); }
   dim_type num_disjuncts() const { return ptr->num_disjuncts(); }

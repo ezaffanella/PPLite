@@ -172,12 +172,18 @@ public:
   void print(std::ostream& os) const;
   void print() const { print(std::cout); }
 
+private:
+  Cons get_cons(bool only_skeleton = false) const;
+  Gens get_gens(bool only_skeleton = false) const;
+public:
   using Cons_Proxy = Cont_Proxy<Cons>;
-  Cons_Proxy cons() const { return Cons_Proxy(copy_cons()); }
+  Cons_Proxy cons() const { return Cons_Proxy(get_cons()); }
+  Cons_Proxy skeleton_cons() const { return Cons_Proxy(get_cons(true)); }
   using Gens_Proxy = Cont_Proxy<Gens>;
-  Gens_Proxy gens() const { return Gens_Proxy(copy_gens()); }
-  Cons copy_cons() const;
-  Gens copy_gens() const;
+  Gens_Proxy gens() const { return Gens_Proxy(get_gens()); }
+  Gens_Proxy skeleton_gens() const { return Gens_Proxy(get_gens(true)); }
+  Cons copy_cons() const { return get_cons(); }
+  Gens copy_gens() const { return get_gens(); }
   Cons_Proxy normalized_cons() const { normalize(); return cons(); }
   Cons copy_normalized_cons() const  { normalize(); return copy_cons(); }
   Gens_Info gens_info() const;

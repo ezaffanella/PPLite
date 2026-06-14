@@ -140,8 +140,10 @@ struct Abs_Poly {
   using Cons_Proxy = Proxy<Con>;
   virtual Cons_Proxy cons() const = 0;
   virtual Cons_Proxy normalized_cons() const = 0;
+  virtual Cons_Proxy skeleton_cons() const = 0;
   using Gens_Proxy = Proxy<Gen>;
   virtual Gens_Proxy gens() const = 0;
+  virtual Gens_Proxy skeleton_gens() const = 0;
 
   // Extension for powerset-like abstract domains.
   virtual void collapse(dim_type n) = 0;

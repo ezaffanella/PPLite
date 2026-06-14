@@ -1494,7 +1494,7 @@ F_Poly::itvs_to_cons() const {
 }
 
 Cons
-F_Poly::copy_cons() const {
+F_Poly::get_cons(bool only_skeleton) const {
   if (empty)
     return { Con::zero_dim_false() };
   if (space_dim() == 0)
@@ -1503,14 +1503,19 @@ F_Poly::copy_cons() const {
   Cons res = itvs_to_cons();
   for (auto i : index_range(factors)) {
     const auto& bi = blocks[i];
-    for (const auto& c : factors[i].cons())
-      res.push_back(detail::convert_back(c, bi));
+    if (only_skeleton) {
+      for (const auto& c : factors[i].skeleton_cons())
+        res.push_back(detail::convert_back(c, bi));
+    } else {
+      for (const auto& c : factors[i].cons())
+        res.push_back(detail::convert_back(c, bi));
+    }
   }
   return res;
 }
 
 Gens
-F_Poly::copy_gens() const {
+F_Poly::get_gens(bool only_skeleton) const {
   if (empty)
     return Gens();
 
@@ -1527,7 +1532,14 @@ F_Poly::copy_gens() const {
   assert(num_rows(b) == space_dim());
   assert(f.space_dim() == space_dim());
   f.map_space_dims(b);
-  return f.copy_gens();
+  // Note: force copy, since f will go out of scope.
+  if (only_skeleton) {
+    const auto& skel_gens = f.skeleton_gens();
+    Gens res(skel_gens.begin(), skel_gens.end());
+    return res;
+  } else {
+    return f.copy_gens();
+  }
 }
 
 dim_type

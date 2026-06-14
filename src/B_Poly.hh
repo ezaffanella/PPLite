@@ -267,9 +267,11 @@ public:
   using Cons_Proxy = typename poly_type::Cons_Proxy;
   Cons_Proxy cons() const { return ph.cons(); }
   Cons_Proxy normalized_cons() const { return ph.normalized_cons(); }
+  Cons_Proxy skeleton_cons() const { return ph.skeleton_cons(); }
 
   using Gens_Proxy = typename poly_type::Gens_Proxy;
   Gens_Proxy gens() const { return ph.gens(); }
+  Gens_Proxy skeleton_gens() const { return ph.skeleton_gens(); }
 
   void collapse(dim_type n) {
     // bbox preserved

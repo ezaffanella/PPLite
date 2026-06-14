@@ -260,8 +260,14 @@ public:
   Cons_Proxy normalized_cons() const override {
     return Cons_Proxy(new Con_Seq(ph.normalized_cons()));
   }
+  Cons_Proxy skeleton_cons() const override {
+    return Cons_Proxy(new Con_Seq(ph.skeleton_cons()));
+  }
   Gens_Proxy gens() const override {
     return Gens_Proxy(new Gen_Seq(ph.gens()));
+  }
+  Gens_Proxy skeleton_gens() const override {
+    return Gens_Proxy(new Gen_Seq(ph.skeleton_gens()));
   }
 
   // Extension for powerset-like abstact domains.

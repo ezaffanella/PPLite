@@ -59,10 +59,12 @@ struct Mater_Sys {
   dim_type end_offset;
   mutable cache_type cache;
   const Impl* impl;
+  bool only_skeleton = false;
 
   // Constructor.
-  explicit Mater_Sys(const Impl* p_impl)
-    : impl(p_impl) {
+  explicit Mater_Sys(const Impl* p_impl, bool only_skel = false)
+    : impl(p_impl),
+      only_skeleton(only_skel) {
     std::tie(ptr1, ptr2) = impl->get_sys_ptrs(ptr1);
     sk_offset = num_rows(ptr1->sing_rows) + num_rows(ptr2->sing_rows);
     ns_offset = sk_offset + num_rows(ptr1->sk_rows) + num_rows(ptr2->sk_rows);
@@ -79,7 +81,9 @@ struct Mater_Sys {
   Mater_Sys(const Mater_Sys&) = delete;
   Mater_Sys& operator=(const Mater_Sys&) = delete;
 
-  dim_type end_pos() const { return end_offset; }
+  dim_type end_pos() const {
+    return only_skeleton ? ns_offset : end_offset;
+  }
 
   bool is_skippable(dim_type pos) const {
     assert(pos < end_pos());
@@ -91,7 +95,7 @@ struct Mater_Sys {
       return false;
     if (pos < ns_offset)
       return skippable(get_value_ptr(pos));
-    if (impl->is_necessarily_closed())
+    if (only_skeleton || impl->is_necessarily_closed())
       return true;
     // Non-skel element: we only skip the efc in ptr1
     // (the non-pending constraints).
