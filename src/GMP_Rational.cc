@@ -40,14 +40,14 @@ GMP_Rational::read(std::istream& is, mpq_t mp) {
   GMP_Integer den = GMP_Integer::one();
   if (not num.read(is))
     return false;
-  // Note: the "/den" part is optional
-  char ch;
-  if (is.get(ch)) {
+  // Note: the "/den" part is optional.
+  if (is.good()) {
+    // not eof; peek reads a char without consuming it
+    char ch = is.peek();
     if (ch == '/') {
+      is.get(ch); // consume it
       if (not den.read(is))
         return false;
-    } else {
-      is.unget();
     }
   }
   mpq_set_num(mp, num.impl());

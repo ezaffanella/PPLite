@@ -153,6 +153,34 @@ test10() {
   return check_print(os.str(), "3");
 }
 
+bool
+test11() {
+  std::stringstream is("1");
+  Rational r;
+  is >> r;
+  return r == Rational(1);
+}
+
+bool
+test12() {
+  std::stringstream is("123456789012345678901234567890/1234567");
+  Rational r;
+  is >> r;
+  Integer num("123456789012345678901234567890");
+  Integer den("1234567");
+  Rational res(num, den);
+  return r == res;
+}
+
+bool
+test13() {
+  std::stringstream is("1g");
+  Rational r;
+  char ch;
+  is >> r;
+  is >> ch;
+  return (r == Rational(1)) && (ch == 'g');
+}
 
 BEGIN_MAIN
   DO_TEST(test01);
@@ -165,4 +193,7 @@ BEGIN_MAIN
   DO_TEST(test08);
   DO_TEST(test09);
   DO_TEST(test10);
+  DO_TEST(test11);
+  DO_TEST(test12);
+  DO_TEST(test13);
 END_MAIN
