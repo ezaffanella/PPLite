@@ -70,6 +70,7 @@ yes)
 no)
   AC_MSG_RESULT(no)
   enable_debugging=no
+  OPT_FLAGS="-g0"
   ;;
 *)
   AC_MSG_ERROR([bad value ${enableval} for --enable-debugging, needs yes or no])
