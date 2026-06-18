@@ -46,6 +46,7 @@ bbox1 \
 bbox2 \
 boxed_inters \
 bounded \
+closed_join_if_exact \
 concatenate \
 conhull \
 constrains \
@@ -108,6 +109,7 @@ bbox1_SOURCES = bbox1.cc
 bbox2_SOURCES = bbox2.cc
 boxed_inters_SOURCES = boxed_inters.cc
 bounded_SOURCES = bounded.cc
+closed_join_if_exact_SOURCES = closed_join_if_exact.cc
 concatenate_SOURCES = concatenate.cc
 conhull_SOURCES = conhull.cc
 constrains_SOURCES = constrains.cc
