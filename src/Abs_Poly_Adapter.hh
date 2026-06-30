@@ -305,6 +305,9 @@ public:
   void join_assign(const Abs_Poly& y) override {
     ph.join_assign(get_poly(y));
   }
+  bool join_assign_if_exact(const Abs_Poly& y) override {
+    return ph.join_assign_if_exact(get_poly(y));
+  }
   void poly_hull_assign(const Abs_Poly& y) override {
     ph.poly_hull_assign(get_poly(y));
   }

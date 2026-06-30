@@ -231,6 +231,7 @@ public:
 
   void intersection_assign(const F_Poly& y);
   void join_assign(const F_Poly& y) { poly_hull_assign(y); }
+  bool join_assign_if_exact(const F_Poly& y);
   void poly_hull_assign(const F_Poly& y);
   void con_hull_assign(const F_Poly& y, bool boxed = false) {
     con_hull(*this, &y, &y + 1, boxed);

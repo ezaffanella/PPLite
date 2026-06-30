@@ -645,6 +645,10 @@ public:
 
   void meet_assign(const PolySet& y) { intersection_assign(y); }
   void join_assign(const PolySet& y);
+  bool join_assign_if_exact(const PolySet& y) {
+    join_assign(y);
+    return true;
+  }
   void difference_assign(const PolySet& y);
   void collapse(dim_type n);
 

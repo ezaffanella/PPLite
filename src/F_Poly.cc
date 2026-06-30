@@ -1778,6 +1778,96 @@ F_Poly::poly_hull_assign(const F_Poly& y) {
 }
 
 bool
+F_Poly::join_assign_if_exact(const F_Poly& y) {
+  auto& x = *this;
+  assert(x.space_dim() == y.space_dim());
+  if (y.is_empty())
+    return true;
+  if (x.is_empty() || x.space_dim() == 0) {
+    x = y;
+    return true;
+  }
+
+  x.factorize();
+  y.factorize();
+
+  /*
+    Theorem 4.1 in BHZ CGTA 2010: hull is not exact if
+    A) it is not exact on a single (itv/block) factor; or
+    B) there are two different factors violating containment.
+  */
+  // Initially, no containment relation is violated.
+  bool x_not_contains_y = false;
+  bool y_not_contains_x = false;
+  // First check (common) interval factors
+  for (auto i : dim_range(x)) {
+    if (x.is_itv_dim(i) && y.is_itv_dim(i)) {
+      const auto& xi = x.itvs[i];
+      const auto& yi = y.itvs[i];
+      // check for cond B
+      bool xi_not_contains_yi = not xi.contains(yi);
+      if (y_not_contains_x && xi_not_contains_yi)
+        return false;
+      bool yi_not_contains_xi = not yi.contains(xi);
+      if (x_not_contains_y && yi_not_contains_xi)
+        return false;
+      if (xi_not_contains_yi)
+        x_not_contains_y = true;
+      if (yi_not_contains_xi)
+        y_not_contains_x = true;
+      // check for cond A
+      if (not xi.has_exact_lub(yi))
+        return false;
+    }
+  }
+
+  // deep copy of x: this will be reassigned to x if detecting that
+  // the hull is not exact (i.e., before returning *false*).
+  auto x_old = x;
+
+  // Compute common block factors and check those
+  using namespace detail;
+  Blocks lub = blocks_lub(x.itvs, x.blocks, y.itvs, y.blocks);
+  x.sync(lub);
+  Refactor_Proxy y_fs(y.impl(), lub);
+
+  for (auto i : index_range(lub)) {
+    auto& xi = x.factors[i];
+    auto& yi = y_fs[i];
+    // check for cond B
+    bool xi_not_contains_yi = not xi.contains(yi);
+    if (y_not_contains_x && xi_not_contains_yi) {
+      x = std::move(x_old);
+      return false;
+    }
+    bool yi_not_contains_xi = not yi.contains(xi);
+    if (x_not_contains_y && yi_not_contains_xi) {
+      x = std::move(x_old);
+      return false;
+    }
+    if (xi_not_contains_yi)
+      x_not_contains_y = true;
+    if (yi_not_contains_xi)
+      y_not_contains_x = true;
+    // check for cond A (this may change x)
+    bool xi_exact = xi.join_assign_if_exact(yi);
+    if (not xi_exact) {
+      x = std::move(x_old);
+      return false;
+    }
+  }
+  // reaching this point means hull is exact;
+  // we still have to compute it for the common itvs component.
+  for (auto i : dim_range(x)) {
+    if (x.is_itv_dim(i) && y.is_itv_dim(i))
+      x.itvs[i].lub_assign(y.itvs[i]);
+  }
+  x.blocks_to_itvs();
+  assert(x.check_inv());
+  return true;
+}
+
+bool
 F_Poly::constrains(Var v) const {
   if (is_empty())
     return true;

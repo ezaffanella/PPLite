@@ -32,25 +32,25 @@ test01() {
 
   // empty, empty
   ph = ph_empty;
-  ok &= ph.closed_join_assign_if_exact(ph_empty);
+  ok &= ph.join_assign_if_exact(ph_empty);
   ok &= (ph == ph_empty);
   print_cons(ph, "*** empty union empty ***");
 
   // empty, universe
   ph = ph_empty;
-  ok &= ph.closed_join_assign_if_exact(ph_universe);
+  ok &= ph.join_assign_if_exact(ph_universe);
   ok &= (ph == ph_universe);
   print_cons(ph, "*** empty union universe ***");
 
   // universe, empty
   ph = ph_universe;
-  ok &= ph.closed_join_assign_if_exact(ph_empty);
+  ok &= ph.join_assign_if_exact(ph_empty);
   ok &= (ph == ph_universe);
   print_cons(ph, "*** universe union empty ***");
 
   // universe, universe
   ph = ph_universe;
-  ok &= ph.closed_join_assign_if_exact(ph_universe);
+  ok &= ph.join_assign_if_exact(ph_universe);
   ok &= (ph == ph_universe);
   print_cons(ph, "*** universe union universe ***");
 
@@ -80,10 +80,10 @@ test02() {
 
   Poly kr(ph1);
 
-  bool ok = not ph1.closed_join_assign_if_exact(ph2);
+  bool ok = not ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
 
-  print_cons(ph1, "*** ph1.closed_join_assign_if_exact(ph2) ***");
+  print_cons(ph1, "*** ph1.join_assign_if_exact(ph2) ***");
 
   return ok;
 }
@@ -115,10 +115,10 @@ test03() {
   kr.add_con(y >= 0);
   kr.add_con(y <= 2);
 
-  bool ok = ph1.closed_join_assign_if_exact(ph2);
+  bool ok = ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
 
-  print_cons(ph1, "*** ph1.closed_join_assign_if_exact(ph2) ***");
+  print_cons(ph1, "*** ph1.join_assign_if_exact(ph2) ***");
 
   return ok;
 }
@@ -144,10 +144,10 @@ test04() {
 
   Poly kr(ph2);
 
-  bool ok = ph1.closed_join_assign_if_exact(ph2);
+  bool ok = ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
 
-  print_cons(ph1, "*** ph1.closed_join_assign_if_exact(ph2) ***");
+  print_cons(ph1, "*** ph1.join_assign_if_exact(ph2) ***");
 
   return ok;
 }
@@ -172,10 +172,10 @@ test05() {
 
   Poly kr(ph1);
 
-  bool ok = not ph1.closed_join_assign_if_exact(ph2);
+  bool ok = not ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
 
-  print_cons(ph1, "*** ph1.closed_join_assign_if_exact(ph2) ***");
+  print_cons(ph1, "*** ph1.join_assign_if_exact(ph2) ***");
 
   return ok;
 }
@@ -197,10 +197,10 @@ test06() {
 
   Poly kr(ph1);
 
-  bool ok = not ph1.closed_join_assign_if_exact(ph2);
+  bool ok = not ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
 
-  print_cons(ph1, "*** ph1.closed_join_assign_if_exact(ph2) ***");
+  print_cons(ph1, "*** ph1.join_assign_if_exact(ph2) ***");
 
   return ok;
 }
@@ -222,10 +222,10 @@ test07() {
 
   Poly kr(ph1);
 
-  bool ok = not ph1.closed_join_assign_if_exact(ph2);
+  bool ok = not ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
 
-  print_cons(ph1, "*** ph1.closed_join_assign_if_exact(ph2) ***");
+  print_cons(ph1, "*** ph1.join_assign_if_exact(ph2) ***");
 
   return ok;
 }
@@ -247,10 +247,10 @@ test08() {
 
   Poly kr(2);
 
-  bool ok = ph1.closed_join_assign_if_exact(ph2);
+  bool ok = ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
 
-  print_cons(ph1, "*** ph1.closed_join_assign_if_exact(ph2) ***");
+  print_cons(ph1, "*** ph1.join_assign_if_exact(ph2) ***");
 
   return ok;
 }
@@ -301,7 +301,7 @@ test09() {
   known_res.add_con(w <= 5);
 
   Poly comp_res = icosahedron1;
-  bool ok = comp_res.closed_join_assign_if_exact(icosahedron2);
+  bool ok = comp_res.join_assign_if_exact(icosahedron2);
   ok &= (comp_res == known_res);
 
   print_cons(icosahedron1, "*** icosahedron1 ***");
@@ -385,7 +385,7 @@ test10() {
   ph1.add_con(X[25] - X[22] <= 5);
   ph2.add_con(X[25] - X[22] >= 1);
 
-  bool ok = ph1.closed_join_assign_if_exact(ph2);
+  bool ok = ph1.join_assign_if_exact(ph2);
   ok &= (ph1 == kr);
   return ok;
 }
@@ -412,7 +412,7 @@ test11() {
   cube2.add_con(x >= 2);
   cube2.add_con(x <= 6);
 
-  bool ok = cube1.closed_join_assign_if_exact(cube2);
+  bool ok = cube1.join_assign_if_exact(cube2);
 
   print_gens(cube1, "*** cube1 ***");
   print_gens(cube2, "*** cube2 ***");

@@ -171,6 +171,9 @@ public:
     ptr->intersection_assign(*y.ptr);
   }
   void join_assign(const Dyn_Poly& y) { ptr->join_assign(*y.ptr); }
+  bool join_assign_if_exact(const Dyn_Poly& y) {
+    return ptr->join_assign_if_exact(*y.ptr);
+  }
   void poly_hull_assign(const Dyn_Poly& y) {
     ptr->poly_hull_assign(*y.ptr);
   }

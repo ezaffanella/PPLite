@@ -393,6 +393,7 @@ public:
 
   void intersection_assign(const U_Wrap& y);
   void join_assign(const U_Wrap& y) { poly_hull_assign(y); }
+  bool join_assign_if_exact(const U_Wrap& y);
   void poly_difference_assign(const U_Wrap& y) {
     auto& x = *this;
     x = detail::poly_difference(x, y);

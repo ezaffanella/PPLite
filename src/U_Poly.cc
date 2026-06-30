@@ -496,6 +496,56 @@ U_Wrap<PH>::intersection_assign(const U_Wrap& y) {
 }
 
 template <typename PH>
+bool
+U_Wrap<PH>::join_assign_if_exact(const U_Wrap& y) {
+  auto& x = *this;
+  if (y.is_empty() || x.is_universe())
+    return true;
+  if (x.is_empty() || y.is_universe()) {
+    x = y;
+    return true;
+  }
+  assert(x.kernel.space_dim() > 0 && y.kernel.space_dim() > 0);
+
+  auto p = missing_kernel_dims(x, y);
+  const auto& x_missing = p.first;
+  const auto& y_missing = p.second;
+  if (x_missing.empty()) {
+    if (y_missing.empty()) {
+      // both empty: call method on kernels
+      x.sync_kernel_dims(y);
+      bool exact = x.kernel.join_assign_if_exact(y.kernel);
+      if (exact)
+        x.check_kernel_for_unconstrained();
+      return exact;
+    } else {
+      // (only) x_missing is empty: work on a copy of y
+      auto yy = y;
+      detail::kernelize(yy.info, yy.kernel, y_missing);
+      x.sync_kernel_dims(yy);
+      bool exact = x.kernel.join_assign_if_exact(yy.kernel);
+      if (exact)
+        x.check_kernel_for_unconstrained();
+      return exact;
+    }
+  } else if (y_missing.empty()) {
+    // (only) y_missing is empty; work on a copy of x
+    auto xx = x;
+    detail::kernelize(xx.info, xx.kernel, x_missing);
+    xx.sync_kernel_dims(y);
+    bool exact = xx.kernel.join_assign_if_exact(y.kernel);
+    if (exact) {
+      x = std::move(xx);
+      x.check_kernel_for_unconstrained();
+    }
+    return exact;
+  } else {
+    // both non-empty: hull is not exact
+    return false;
+  }
+}
+
+template <typename PH>
 void
 U_Wrap<PH>::time_elapse_assign(const U_Wrap& y) {
   auto& x = *this;

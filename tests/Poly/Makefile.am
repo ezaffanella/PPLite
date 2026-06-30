@@ -46,7 +46,6 @@ bbox1 \
 bbox2 \
 boxed_inters \
 bounded \
-closed_join_if_exact \
 concatenate \
 conhull \
 constrains \
@@ -62,6 +61,8 @@ hash \
 hyper \
 hyperphull \
 inters \
+join_if_exact_closed \
+join_if_exact_nnc \
 mapspacedims \
 mater \
 minmax \
@@ -109,7 +110,6 @@ bbox1_SOURCES = bbox1.cc
 bbox2_SOURCES = bbox2.cc
 boxed_inters_SOURCES = boxed_inters.cc
 bounded_SOURCES = bounded.cc
-closed_join_if_exact_SOURCES = closed_join_if_exact.cc
 concatenate_SOURCES = concatenate.cc
 conhull_SOURCES = conhull.cc
 constrains_SOURCES = constrains.cc
@@ -125,6 +125,8 @@ hash_SOURCES = hash.cc
 hyper_SOURCES = hyper.cc
 hyperphull_SOURCES = hyperphull.cc
 inters_SOURCES = inters.cc
+join_if_exact_closed_SOURCES = join_if_exact_closed.cc
+join_if_exact_nnc_SOURCES = join_if_exact_nnc.cc
 mapspacedims_SOURCES = mapspacedims.cc
 mater_SOURCES = mater.cc
 minmax_SOURCES = minmax.cc

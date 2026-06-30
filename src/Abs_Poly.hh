@@ -171,6 +171,7 @@ struct Abs_Poly {
   virtual void concatenate_assign(const Abs_Poly& y) = 0;
   virtual void intersection_assign(const Abs_Poly& y) = 0;
   virtual void join_assign(const Abs_Poly& y) = 0;
+  virtual bool join_assign_if_exact(const Abs_Poly& y) = 0;
   virtual void poly_hull_assign(const Abs_Poly& y) = 0;
   virtual void poly_difference_assign(const Abs_Poly& y) = 0;
   virtual void time_elapse_assign(const Abs_Poly& y) = 0;

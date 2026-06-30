@@ -349,7 +349,9 @@ struct Poly_Impl {
   void join_assign(const Poly_Impl& y) { poly_hull_assign(y); }
   void poly_hull_assign(const Poly_Impl& y);
 
+  bool join_assign_if_exact(const Poly_Impl& y);
   bool closed_join_assign_if_exact(const Poly_Impl& y);
+  bool nnc_join_assign_if_exact(const Poly_Impl& y);
 
   void affine_image(Var var, const Linear_Expr& expr,
                     const Integer& inhomo, const Integer& den);
@@ -548,11 +550,11 @@ public:
     impl().intersection_assign(y.impl());
   }
   void join_assign(const Poly& y) { impl().join_assign(y.impl()); }
+  bool join_assign_if_exact(const Poly& y) {
+    return impl().join_assign_if_exact(y.impl());
+  }
   void poly_hull_assign(const Poly& y) {
     impl().poly_hull_assign(y.impl());
-  }
-  bool closed_join_assign_if_exact(const Poly& y) {
-    return impl().closed_join_assign_if_exact(y.impl());
   }
   void con_hull_assign(const Poly& y, bool boxed = false);
   void poly_difference_assign(const Poly& y);

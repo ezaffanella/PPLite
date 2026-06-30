@@ -97,6 +97,7 @@ Low_Level_Stats.cc \
 Poly.cc \
 Poly_min.cc \
 Poly_conv.cc \
+Poly_exact_hull.cc \
 Poly_simpl.cc \
 Poly_split.cc \
 Poly_widen.cc \

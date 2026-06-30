@@ -328,6 +328,10 @@ struct Stats : private PH {
     AbsOp_Clock clock(AbsOp::JOIN);
     this->Base::join_assign(y);
   }
+  bool join_assign_if_exact(const Stats& y) {
+    AbsOp_Clock clock(AbsOp::JOIN);
+    return this->Base::join_assign_if_exact(y);
+  }
   void poly_hull_assign(const Stats& y) {
     AbsOp_Clock clock(AbsOp::POLY_HULL);
     this->Base::poly_hull_assign(y);

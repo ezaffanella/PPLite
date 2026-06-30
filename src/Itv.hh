@@ -93,6 +93,12 @@ struct Itv {
   bool intersects(const Itv& y) const {
     return !is_disjoint_from(y);
   }
+  bool has_exact_lub(const Itv& y) const {
+    const auto& x = *this;
+    assert(x.check_inv());
+    assert(y.check_inv());
+    return x.intersects(y) || x.is_empty() || y.is_empty();
+  }
 
   size_t hash() const {
     size_t res = kind;

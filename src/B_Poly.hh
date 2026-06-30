@@ -395,6 +395,23 @@ public:
     ph.join_assign(y.ph);
   }
 
+  bool join_assign_if_exact(const B_Wrap& y) {
+    if (y.is_empty())
+      return true;
+    auto& x = *this;
+    if (x.is_empty()) {
+      x = y;
+      return true;
+    }
+    x.ensure_bbox();
+    y.ensure_bbox();
+    if (x.bbp->is_disjoint_from(*y.bbp))
+      return false;
+    bool exact = ph.join_assign_if_exact(y.ph);
+    if (exact) reset_bbox();
+    return exact;
+  }
+
   void poly_difference_assign(const B_Wrap& y) {
     if (y.is_empty())
       return;
