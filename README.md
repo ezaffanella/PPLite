@@ -259,7 +259,7 @@ Added pplite::F_Poly, adding support for factored polyhedra
 <br>
 This version fixes a bug affecting Poly::parallel_affine_image()
 in version 0.5 (the bug was affecting computations of affine images
-when the denominators of the expressions where different from 1).
+when the denominators of the expressions were different from 1).
 </li>
 
 <li>
