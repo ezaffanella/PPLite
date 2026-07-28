@@ -257,6 +257,13 @@ public:
 
   Index_Set get_unconstrained() const { return ph.get_unconstrained(); }
 
+  B_Wrap minkowski_sum(const B_Wrap& y) const {
+    auto res = B_Wrap(space_dim(), Spec_Elem::EMPTY, topology());
+    res.ph = ph.minkowski_sum(y.ph);
+    res.reset_bbox();
+    return res;
+  }
+
   Cons copy_cons() const { return ph.copy_cons(); }
   Gens copy_gens() const { return ph.copy_gens(); }
   Cons copy_normalized_cons() const { return ph.copy_normalized_cons(); }

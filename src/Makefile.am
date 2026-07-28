@@ -96,6 +96,7 @@ Linear_Expr.cc \
 Low_Level_Stats.cc \
 Poly.cc \
 Poly_min.cc \
+Poly_minkowski.cc \
 Poly_conv.cc \
 Poly_exact_hull.cc \
 Poly_simpl.cc \

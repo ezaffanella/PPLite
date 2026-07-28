@@ -110,6 +110,8 @@ struct Abs_Poly {
   virtual size_t hash() const = 0;
   virtual size_t get_memory_in_bytes() const = 0;
 
+  virtual Abs_Poly* minkowski_sum(const Abs_Poly& y) const = 0;
+
   // Proxies for polymorphic sequences (trying to minimize copies)
   template <typename Value>
   struct Proxy {

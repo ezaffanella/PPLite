@@ -2720,6 +2720,40 @@ F_Poly::split_aux(const Con& c, Topol t, bool integral) {
   return res;
 }
 
+F_Poly
+F_Poly::minkowski_sum(const F_Poly& y) const {
+  const auto& x = *this;
+  assert(x.space_dim() == y.space_dim());
+  if (x.is_empty())
+    return x;
+  if (y.is_empty())
+    return y;
+  if (x.is_universe())
+    return x;
+  if (y.is_universe())
+    return y;
+
+  using namespace detail;
+  Blocks lub = blocks_lub(x.itvs, x.blocks, y.itvs, y.blocks);
+
+  auto res = x;
+  res.sync(lub);
+  Refactor_Proxy y_fs(y.impl(), lub);
+  // compute sum of factors
+  for (auto i : bwd_index_range(res.blocks))
+    res.factors[i] = res.factors[i].minkowski_sum(y_fs[i]);
+  // compute sum of (meaningful) intervals
+  for (auto i : index_range(res.itvs)) {
+    if (res.is_itv_dim(i)) {
+      assert(y.is_itv_dim(i));
+      res.itvs[i].add_assign(y.itvs[i]);
+    }
+  }
+  res.factorize(true); // worth it?
+  assert(res.check_inv());
+  return res;
+}
+
 void
 F_Poly::time_elapse_assign(const F_Poly& y) {
   auto& x = *this;

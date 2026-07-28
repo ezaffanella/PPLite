@@ -249,6 +249,10 @@ public:
     return pplite::total_memory_in_bytes(ph);
   }
 
+  Abs_Poly_Adapter* minkowski_sum(const Abs_Poly& y) const override {
+    return new Abs_Poly_Adapter(ph.minkowski_sum(get_poly(y)));
+  }
+
   // Sequence adapters
   using Con_Seq = Abs_Sequence_Adapter<Con, typename poly_type::Cons_Proxy>;
   using Gen_Seq = Abs_Sequence_Adapter<Gen, typename poly_type::Gens_Proxy>;

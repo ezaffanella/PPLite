@@ -285,6 +285,8 @@ struct Poly_Impl {
   Itv get_bounds(const Itv_Expr& ie) const;
   Index_Set get_unconstrained() const;
 
+  Poly_Impl minkowski_sum(const Poly_Impl& y) const;
+
   size_t hash() const;
   void print(std::ostream& os) const;
   void print() const { print(std::cout); }
@@ -496,6 +498,13 @@ public:
   Itv get_bounds(const Itv_Expr& ie) const { return impl().get_bounds(ie); }
 
   Index_Set get_unconstrained() const { return impl().get_unconstrained(); }
+
+  /* Note: it assumes that *this and y are topologically closed */
+  Poly minkowski_sum(const Poly& y) const {
+    Poly res;
+    res.impl() = impl().minkowski_sum(y.impl());
+    return res;
+  }
 
   size_t hash() const { return impl().hash(); }
   void print(std::ostream& os) const { impl().print(os); }

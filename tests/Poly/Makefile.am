@@ -65,6 +65,7 @@ join_if_exact_closed \
 join_if_exact_nnc \
 mapspacedims \
 mater \
+minkowski \
 minmax \
 parallelimage \
 polydiff \
@@ -129,6 +130,7 @@ join_if_exact_closed_SOURCES = join_if_exact_closed.cc
 join_if_exact_nnc_SOURCES = join_if_exact_nnc.cc
 mapspacedims_SOURCES = mapspacedims.cc
 mater_SOURCES = mater.cc
+minkowski_SOURCES = minkowski.cc
 minmax_SOURCES = minmax.cc
 parallelimage_SOURCES = parallelimage.cc
 polydiff_SOURCES = polydiff.cc
