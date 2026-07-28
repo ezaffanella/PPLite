@@ -861,6 +861,52 @@ U_Wrap<PH>::parallel_affine_image(const Vars& vars,
 }
 
 template <typename PH>
+U_Wrap<PH>
+U_Wrap<PH>::minkowski_sum(const U_Wrap& y) const {
+  const auto& x = *this;
+  if (x.is_empty())
+    return x;
+  if (y.is_empty())
+    return y;
+  if (x.is_universe())
+    return x;
+  if (y.is_universe())
+    return y;
+
+  assert(x.kernel.space_dim() > 0 && y.kernel.space_dim() > 0);
+
+  // Handle first the likely case of polyhedra having no lines.
+  if (x.space_dim() == x.kernel.space_dim()
+      && y.space_dim() == y.kernel.space_dim()) {
+    x.sync_kernel_dims(y);
+    auto res = x;
+    res.kernel = x.kernel.minkowski_sum(y.kernel);
+    res.check_kernel_for_unconstrained();
+    assert(res.check_inv());
+    return res;
+  }
+
+  const auto& [x_uncon, y_uncon] = missing_kernel_dims(x, y);
+  if (x_uncon.size() == x.kernel.space_dim()
+      ||
+      y_uncon.size() == y.kernel.space_dim())
+    // x or y would become universe, hence also the result
+    return U_Wrap(x.space_dim(), Spec_Elem::UNIVERSE, x.topology());
+
+  // working on copies
+  auto xx = x;
+  auto yy = y;
+  xx.unconstrain_kernel(x_uncon);
+  yy.unconstrain_kernel(y_uncon);
+  xx.sync_kernel_dims(yy);
+  auto res = xx;
+  res.kernel = xx.kernel.minkowski_sum(yy.kernel);
+  res.check_kernel_for_unconstrained();
+  assert(res.check_inv());
+  return res;
+}
+
+template <typename PH>
 bool
 U_Wrap<PH>::is_bounded_expr(bool from_below, const Linear_Expr& expr) const {
   if (space_dim() == 0 || is_empty())

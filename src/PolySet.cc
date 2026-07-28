@@ -759,6 +759,25 @@ PolySet<PH>::difference_assign(const PolySet& y) {
 }
 
 template <typename PH>
+PolySet<PH>
+PolySet<PH>::minkowski_sum(const PolySet& y) const {
+  const auto& x = *this;
+  if (x.is_empty())
+    return x;
+  if (y.is_empty())
+    return y;
+  x.omega_reduce();
+  y.omega_reduce();
+  auto res = PolySet(x.space_dim(), Spec_Elem::EMPTY, x.topology());
+  for (const auto& xd : x)
+    for (const auto& yd : y)
+      res.seq().emplace_back(xd.minkowski_sum(yd));
+  res.clear_reduced();
+  res.omega_reduce();
+  return res;
+}
+
+template <typename PH>
 void
 PolySet<PH>::concatenate_assign(const PolySet& y) {
   if (is_empty()) {

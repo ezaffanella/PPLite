@@ -394,6 +394,8 @@ public:
     return res;
   }
 
+  PolySet minkowski_sum(const PolySet& y) const;
+
   size_t hash() const { PPLITE_UNIMPL; }
 
   /* Modifiers */

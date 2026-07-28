@@ -187,6 +187,8 @@ public:
     return res;
   }
 
+  U_Wrap minkowski_sum(const U_Wrap& y) const;
+
   Cons copy_cons() const;
   Gens copy_gens() const;
   Cons copy_normalized_cons() const { return kernel.copy_normalized_cons(); }

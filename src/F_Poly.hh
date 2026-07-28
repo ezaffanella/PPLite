@@ -167,6 +167,8 @@ public:
   Itv get_bounds(const Itv_Expr& ie) const;
   Index_Set get_unconstrained() const;
 
+  F_Poly minkowski_sum(const F_Poly& y) const;
+
   size_t hash() const;
 
   void print(std::ostream& os) const;

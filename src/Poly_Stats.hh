@@ -443,6 +443,12 @@ struct Stats : private PH {
     AbsOp_Clock clock(AbsOp::Z_OTHER_OPS);
     return this->Base::is_universe();
   }
+  Stats minkowski_sum(const Stats& y) const {
+    AbsOp_Clock clock(AbsOp::Z_OTHER_OPS);
+    Stats res;
+    res.base() = this->Base::minkowski_sum(y.base());
+    return res;
+  }
   dim_type num_min_cons() const {
     AbsOp_Clock clock(AbsOp::Z_OTHER_OPS);
     return this->Base::num_min_cons();

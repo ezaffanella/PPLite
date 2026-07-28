@@ -180,6 +180,9 @@ public:
   void poly_difference_assign(const Dyn_Poly& y) {
     ptr->poly_difference_assign(*y.ptr);
   }
+  Dyn_Poly minkowski_sum(const Dyn_Poly& y) {
+    return Dyn_Poly(ptr->minkowski_sum(*y.ptr));
+  }
   void time_elapse_assign(const Dyn_Poly& y) {
     ptr->time_elapse_assign(*y.ptr);
   }
