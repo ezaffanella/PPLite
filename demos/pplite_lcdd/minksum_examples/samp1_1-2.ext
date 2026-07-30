@@ -1,0 +1,33 @@
+minksum 2
+
+3-cube
+V-representation
+begin
+ 8 4 rational
+ 1 1 -1 -1
+ 1 1 -1 1
+ 1 1 1 1
+ 1 1 1 -1
+ 1 -1 1 1
+ 1 -1 1 -1
+ 1 -1 -1 1
+ 1 -1 -1 -1
+end
+
+Cuboctahedron
+V-representation
+begin
+ 12 4 rational
+ 1 0 -1 1
+ 1 -1 0 1
+ 1 0 1 1
+ 1 1 0 1
+ 1 1 1 0
+ 1 1 0 -1
+ 1 1 -1 0
+ 1 0 1 -1
+ 1 -1 1 0
+ 1 -1 0 -1
+ 1 0 -1 -1
+ 1 -1 -1 0
+end

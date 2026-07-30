@@ -44,6 +44,7 @@ using poly_type = pplite::Poly;
 namespace {
 
 const char* program_name = nullptr;
+bool minksum = false;
 bool print_timings = false;
 bool sort_input = false;
 bool verbose = false;
@@ -54,10 +55,11 @@ std::istream* input_stream_p = nullptr;
 const char* output_file_name = nullptr;
 std::ostream* output_stream_p = nullptr;
 
-const char* const option_letters = "ho:stvc:";
+const char* const option_letters = "hmo:stvc:";
 
 struct option long_options[] = {
   {"help",    no_argument,       nullptr, 'h'},
+  {"minksum", no_argument,       nullptr, 'm'},
   {"output",  required_argument, nullptr, 'o'},
   {"sort-input", no_argument,    nullptr, 's'},
   {"timings", no_argument,       nullptr, 't'},
@@ -70,11 +72,19 @@ void
 usage(const std::string& program) {
   std::cout
     << "Usage: " << program << " [OPTION]... [FILE]\n"
-    "Reads an H-representation (resp., a V-representation) of a polyhedron\n"
+    << "       " << program << " --minksum [OPTION]... [FILE]...\n\n"
+    "When used without option --minksum (-m):\n"
+    "reads an H-representation (resp., a V-representation) of a polyhedron\n"
     "and generates a V-representation (resp., an H-representation) of\n"
-    "the same polyhedron.\n\n"
+    "the same polyhedron.\n"
+    "\n"
+    "When used with option --minksum (-m):\n"
+    "reads the (H or V) representations of N polyhedra, where N > 1,\n"
+    "and generates the V-representation of their Minkowski sum.\n"
+    "\n"
     "Options:\n"
     "  -h, --help              prints this help text to stdout\n"
+    "  -m, --minksum           computes V-repr for Minkowski's sum\n"
     "  -oPATH, --output=PATH   appends output to PATH\n"
     "  -t, --timings           prints timings to stderr\n"
     "  -v, --verbose           produces lots of output\n"
@@ -162,6 +172,10 @@ process_options(const int argc, char* const argv[]) {
     case 'h':
       usage(argv[0]);
       exit(0);
+      break;
+
+    case 'm':
+      minksum = true;
       break;
 
     case 'o':
@@ -566,7 +580,7 @@ convert(const char* name_in) try {
   poly_type ph;
   const Repr repr = read_polyhedron(input(), ph);
 
-  // Warn for misplaced linearity commands, and ignore all what follows.
+  // Error on misplaced linearity commands; ignore all what follows.
   std::string s;
   while (guarded_read(input(), s)) {
     if (s == "linearity" || s == "equality" || s == "partial_enum") {
@@ -651,6 +665,103 @@ convert(const char* name_in) try {
 }
 CATCH_ALL
 
+void
+compute_minkowski_sum(const char* name_in) try {
+  // Set up the input and output streams.
+  set_input(name_in);
+  set_output(output_file_name);
+
+  // input cannot start with these
+  std::vector<std::string> fstarts
+    = { "V-representation", "H-representation",
+        "begin", "linearity", "equality", "partial_enum" };
+
+  std::string s;
+  while (true) {
+    guarded_read(input(), s,
+                 "premature end of file while seeking for `minksum'");
+    if (s == "minksum")
+      break;
+    if (std::find(fstarts.begin(), fstarts.end(), s) != fstarts.end())
+      error("input should start with `minksum <N>' command, "
+            "<N> the number of summands");
+    // A comment: skip to end of line.
+    input().ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  }
+
+  // after "minksum" we should read the number of arguments
+  dim_type num_args;
+  guarded_read(input(), num_args, "illegal or missing number of summands");
+  if (num_args < 2)
+    error("option --minksum requires at least two input polyhedra");
+
+  std::vector<poly_type> args(num_args);
+  for (auto i = 0; i != num_args; ++i)
+    read_polyhedron(input(), args[i]);
+
+  // Check that all polyhedra have the same dimension
+  auto sdim = args[0].space_dim();
+  for (auto i = 1; i != num_args; ++i) {
+    if (args[i].space_dim() != sdim) {
+      error(std::string("minksum argument ")
+            + std::to_string(i+1) + " has space dimension "
+            + std::to_string(args[i].space_dim())
+            + " (should be " + std::to_string(sdim) + ")");
+    }
+  }
+
+  Clock clock;
+
+  // building a tree of sums, reusing args for storing partial results
+  if (verbose) {
+    std::cerr << "Computing the sum of " << num_args
+              << " polyhedra (tree pattern):\n";
+  }
+  for (auto level = 0, step = 1; step < num_args; ++level, step *= 2) {
+    for (auto i = 0; i + step < num_args; i += 2*step) {
+      args[i] = args[i].minkowski_sum(args[i + step]);
+      if (verbose) {
+        std::cerr << "  * level " << level << ": computed "
+                  << "ph_" << i << " = ph_" << i << " + ph_" << (i+step)
+                  << " (";
+        clock.print_elapsed(std::cerr);
+        std::cerr << ")\n";
+      }
+    }
+  }
+
+  maybe_print_clock(clock);
+
+  const auto& sum = args[0];
+
+  // Write the V-repr of Minkowski's sum
+  write_polyhedron(output(), sum, Repr::V);
+
+  // Check the result, if requested to do so.
+  if (check_file_name) {
+    set_input(check_file_name);
+    // Read the polyhedron containing the expected result.
+    poly_type e_ph;
+    read_polyhedron(input(), e_ph);
+    if (not sum.equals(e_ph)) {
+      if (verbose)
+        std::cerr << "Check failed: polyhedra differ" << std::endl;
+      exit(1);
+    }
+    const auto sum_num_gens = sum.num_min_gens();
+    const auto e_ph_num_gens = e_ph.num_min_gens();
+    if (sum_num_gens != e_ph_num_gens) {
+      // If we have different number of generators, we fail.
+      std::cerr << "Check failed: different number of generators:\n"
+                << "expected " << e_ph_num_gens
+                << ", obtained " << sum_num_gens
+                << std::endl;
+      exit(1);
+    }
+  }
+}
+CATCH_ALL
+
 } // namespace
 
 int
@@ -658,8 +769,11 @@ main(int argc, char* argv[]) try {
   program_name = argv[0];
   // Process command line options.
   process_options(argc, argv);
-  // Passing nullptr means "read from stdin".
-  convert(input_file_name);
+  // Passing nullptr means "read from stdin"
+  if (minksum)
+    compute_minkowski_sum(input_file_name);
+  else
+    convert(input_file_name);
   return 0;
 }
 CATCH_ALL
