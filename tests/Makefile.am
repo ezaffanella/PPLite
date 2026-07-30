@@ -20,16 +20,16 @@
 
 SUBDIRS = \
 . \
-PSet \
 Poly \
 Poly_Impl \
+F_Poly \
+PSet \
 Index_Set \
 Var \
 Integer \
 Linear_Expr \
 Con \
-Gen \
-F_Poly
+Gen
 
 dist_noinst_HEADERS = pplite_test.hh
 
