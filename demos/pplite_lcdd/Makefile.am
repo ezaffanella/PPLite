@@ -79,7 +79,9 @@ $(TOUGH_EXAMPLES_IF_ASSERTIONS_ENABLED)
 
 LCDD = pplite_lcdd$(EXEEXT)
 
-check-local: $(LCDD)
+check-local: check_convert check_minksum
+
+check_convert: $(LCDD)
 	echo $(TOUGH_EXAMPLES) >tough_examples
 	echo $(ECHO_N) "$(ECHO_C)" >obtained
 	export LC_ALL=C; \
@@ -92,6 +94,19 @@ check-local: $(LCDD)
 	  ./$(LCDD) $$path | tr -d '\015' | sort | $(TEXT_MD5SUM) >>obtained; \
 	done
 	diff obtained $(srcdir)/$(EXPECTED)
+
+check_minksum: $(LCDD)
+	echo $(ECHO_N) "$(ECHO_C)" > minksum_obtained
+	export LC_ALL=C; \
+	for path in $(srcdir)/minksum_examples/*.ext; \
+	do \
+	  file=`basename $$path`; \
+	  [[ $$file =~ "_res.ext" ]] && continue; \
+	  echo $(ECHO_N) $$file " $(ECHO_C)" >> minksum_obtained; \
+	  echo $(LCDD) --minksum $$file; \
+	  ./$(LCDD) --minksum $$path | tr -d '\015' | sort | $(TEXT_MD5SUM) >> minksum_obtained; \
+	done
+	diff minksum_obtained $(srcdir)/minksum_expected
 
 check_cav18: $(LCDD)
 	outfile=check_cav18_pplite; \

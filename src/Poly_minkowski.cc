@@ -117,24 +117,6 @@ get_polytope(const Poly_Impl& x) {
   return res;
 }
 
-dim_type
-maximizing_point(const Gens& gs, Var var) {
-  auto it = gs.begin();
-  auto it_end = gs.end();
-  assert(it != it_end && it->is_point());
-  auto max_it = it;
-  auto max_val = Rational(it->coeff(var), it->divisor());
-  for (++it; it != it_end; ++it) {
-    assert(it->is_point());
-    auto val = Rational(it->coeff(var), it->divisor());
-    if (val > max_val) {
-      max_it = it;
-      max_val = std::move(val);
-    }
-  }
-  return std::distance(gs.begin(), max_it);
-}
-
 Gen
 get_edge_direction(const Gen& px, const Gen& py) {
   assert(px.is_point() && py.is_point());
@@ -162,13 +144,39 @@ Gen VComp2Gen(const VComp& v, const Gens& gs1, const Gens& gs2) {
   return sum_points(gs1[i], gs2[j]);
 }
 
-// The root is the vertex maximizing any linear function:
-// we arbitrarily select to maximize 1st coordinate.
+// The root is the vertex maximizing any (generic!) linear function.
 VComp
 get_root_composition(const Gens& gs1, const Gens& gs2) {
-  Var var(0);
-  return VComp { maximizing_point(gs1, var),
-                 maximizing_point(gs2, var) };
+
+  // we arbitrarily select to maximize expression
+  //    Var(0) + Var(1) + ... + Var(sdim-1)
+  // i.e., just sum coefficients, no need to compute scalar product
+  auto get_value = [](const Gen& g) {
+    Integer numer;
+    for (const auto& coeff : g.linear_expr())
+      numer += coeff;
+    return Rational(numer, g.divisor());
+  };
+
+  auto maximizing_point = [&get_value](const Gens& gs) {
+    auto it = gs.begin();
+    auto it_end = gs.end();
+    assert(it != it_end && it->is_point());
+
+    auto max_it = it;
+    auto max_val = get_value(*it);
+    for (++it; it != it_end; ++it) {
+      assert(it->is_point());
+      auto val = get_value(*it);
+      if (val > max_val) {
+        max_it = it;
+        max_val = std::move(val);
+      }
+    }
+    return std::distance(gs.begin(), max_it);
+  };
+
+  return VComp { maximizing_point(gs1), maximizing_point(gs2) };
 }
 
 // Returns the sum of (closed, non-empty and minimized) *polytopes* x and y
