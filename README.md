@@ -10,8 +10,8 @@ previous (non-versioned) releases of the library.
 <h3>Current version
 (see <a href="#available-downloads">below</a> for older ones)</h3>
 
-2026-01-22:
-<a href="releases/pplite-0.13.tar.gz">PPLite 0.13 can be downloaded</a>.
+2026-08-04:
+<a href="releases/pplite-0.14.tar.gz">PPLite 0.14 can be downloaded</a>.
 
 <h3>Support</h3>
 
@@ -146,6 +146,28 @@ For the list of collaborators, see file CREDITS.
 <h3>Available downloads</h3>
 
 <ul>
+
+<li>
+2026-08-04:
+<a href="releases/pplite-0.14.tar.gz">PPLite 0.14 can be downloaded</a>.
+<br>
+Added several polyhedra methods:
+  
+  * method `join_assign_if_exact` computes the join of two polyhedra provided it is exact,
+    i.e., it yields the same result as set union; the implementation is based on
+      R. Bagnara, P.M. Hill, E. Zaffanella:
+      <em>Exact Join Detection for Convex Polyhedra and Other Numerical Abstractions</em>,
+      CGTA 2010;
+    
+  * methods `skel_cons` and `skel_gens` return the <em>skeleton</em> constraints and
+    generators of an NNC polyhedron, respectively; this can be useful for some clients
+    (e.g., PHAVerLite);
+    
+  * method `minkowski_sum` computes the sums of two polyhedra
+    (beware: experimental code); using this, the demo program `pplite_lcdd`
+     has been extended to allow for the computation of Minkowski sums.
+    
+</li>
 
 <li>
 2026-01-22:
