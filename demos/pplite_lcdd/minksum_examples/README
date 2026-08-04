@@ -1,2 +1,15 @@
 These examples are taken from the test suite of MINKSUM1.8
-(https://sites.google.com/site/christopheweibel/research/minksum)
+(https://sites.google.com/site/christopheweibel/research/minksum).
+
+On example naming:
+
+* samp1_1-2.ext
+  this is example "samp1", containing two arguments (1-2);
+ both are provided using V-representation (.ext)
+
+* samp1_1-2_res.ext
+  this is the expected result for example "samp1"; it is provided in case
+  the user would like to semantically check the computed result by using
+  pplite_lcdd option --check=FILE.
+  (Note: option --check is NOT used when running `make check'; we opt for
+   a syntactic check, comparing the md5 hash of the output.)

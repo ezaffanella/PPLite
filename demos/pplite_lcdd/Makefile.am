@@ -18,7 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = examples
+SUBDIRS = \
+examples \
+minksum_examples
 
 AM_CPPFLAGS = \
 -I$(top_builddir)/src \
@@ -36,7 +38,8 @@ $(top_builddir)/src/libpplite.la \
 
 EXTRA_DIST = \
 expected_mpz \
-expected_mpz_a
+expected_mpz_a \
+minksum_expected
 
 if HAVE_MD5SUM
 
@@ -184,6 +187,7 @@ perf_cav18_tab3: $(LCDD)
 MOSTLYCLEANFILES = \
 cav18_tab3_examples \
 check_cav18_pplite \
+minksum_obtained \
 obtained \
 perf_cav18_all \
 perf_cav18_tab3 \

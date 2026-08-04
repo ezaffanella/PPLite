@@ -383,5 +383,6 @@ AC_CONFIG_FILES(Makefile
                 demos/Makefile
                 demos/pplite_lcdd/Makefile
                 demos/pplite_lcdd/examples/Makefile
+                demos/pplite_lcdd/minksum_examples/Makefile
                 )
 AC_OUTPUT
