@@ -330,22 +330,21 @@ struct Itv {
     switch (kind) {
     case UNIVERSE:
       set_empty();
-      return;
+      break;
     case L_BOUNDED:
       kind = U_BOUNDED;
       swap(lb, ub);
-      return;
+      break;
     case U_BOUNDED:
       kind = L_BOUNDED;
       swap(lb, ub);
-      return;
+      break;
     case LU_BOUNDED:
-      swap(lb, ub);
-      return;
     case EMPTY:
       set_universe();
-      return;
+      break;
     }
+    assert(check_impl());
   }
 
   void add_assign(const Itv& y) {
