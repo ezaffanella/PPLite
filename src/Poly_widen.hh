@@ -78,7 +78,7 @@ increases_affine_dim(const PH& x, const PH& y) {
 
 template <typename PH>
 inline bool
-widening_preamble(PH& x, const PH& y, Widen_Spec w_spec) {
+widening_preamble(PH& x, const PH& y, Widen_Impl w_impl, Widen_Spec w_spec) {
   x.minimize();
   y.minimize();
   const bool safe_widen = (w_spec == Widen_Spec::SAFE);
@@ -102,10 +102,14 @@ widening_preamble(PH& x, const PH& y, Widen_Spec w_spec) {
       return true;
   }
 
+  // NOTE: avoid the precision improvement below (related to affine dim)
+  // if user selected the *original* H79 widening.
+  if (w_impl == Widen_Impl::ORIG_H79)
+    return false;
+
   // Check if joining y with x would change (i.e., increase)
   // the affine dimension of x; this is not formally part of
-  // a generic widening specification, but it is more precise
-  // (and maybe also efficient).
+  // a generic widening specification, but it is more precise.
   if (safe_widen) {
     if (increases_affine_dim(x, y)) {
       x.join_assign(y);
@@ -166,6 +170,7 @@ namespace h79_widen {
 
 void h79_widen(Poly_Impl& x, const Poly_Impl& y, Widen_Spec w_spec);
 void boxed_h79_widen(Poly_Impl& x, const Poly_Impl& y, Widen_Spec w_spec);
+void orig_h79_widen(Poly_Impl& x, const Poly_Impl& y, Widen_Spec w_spec);
 
 } // namespace h79_widen
 

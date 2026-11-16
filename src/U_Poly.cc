@@ -583,7 +583,7 @@ void
 U_Wrap<PH>::widening_assign(const U_Wrap& y, const Cons* upto_ptr,
                             Widen_Impl w_impl, Widen_Spec w_spec) {
   auto& x = *this;
-  if (detail::widening_preamble(x, y, w_spec))
+  if (detail::widening_preamble(x, y, w_impl, w_spec))
     return;
   if (x.is_universe())
     return;

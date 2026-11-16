@@ -89,7 +89,7 @@ using size_t = std::size_t;
 enum class Topol { CLOSED, NNC };
 enum class Spec_Elem { EMPTY, UNIVERSE };
 enum class Widen_Spec { SAFE, RISKY };
-enum class Widen_Impl { H79, BOXED_H79, BHRZ03 };
+enum class Widen_Impl { H79, BOXED_H79, BHRZ03, ORIG_H79 };
 
 constexpr dim_type not_a_dim() { return -1; }
 

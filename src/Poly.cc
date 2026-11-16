@@ -1478,7 +1478,7 @@ Poly_Impl::widening_assign(const Poly_Impl& y, const Cons* upto_ptr,
   // We work on minimized representation.
   x.minimize();
   y.minimize();
-  if (detail::widening_preamble(x, y, w_spec))
+  if (detail::widening_preamble(x, y, w_impl, w_spec))
     return;
 
   // Before modifying x, select valid upto constraints.
@@ -1497,6 +1497,9 @@ Poly_Impl::widening_assign(const Poly_Impl& y, const Cons* upto_ptr,
     break;
   case Widen_Impl::BHRZ03:
     bhrz03_widen::bhrz03_widen(x, y, w_spec);
+    break;
+  case Widen_Impl::ORIG_H79:
+    h79_widen::orig_h79_widen(x, y, w_spec);
     break;
   }
   // Now add valid upto constraints.

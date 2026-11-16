@@ -130,7 +130,9 @@ public:
     for (auto i : vars)
       unconstrain(Var(i));
   }
-  void widening_assign(const Box& y);
+  void widening_assign(const Box& y,
+                       Widen_Impl w_impl = get_widen_impl(),
+                       Widen_Spec w_spec = get_widen_spec());
 
   void add_space_dims(dim_type d, bool project = false);
   void permute_space_dims(const Dims& perm);

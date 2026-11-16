@@ -291,7 +291,7 @@ struct Itv {
     }
   }
 
-  void widen_assign(const Itv& y) {
+  void widen_assign(const Itv& y, bool use_affine_dim) {
     auto& x = *this;
     // Adopt safe implementation (no inclusion precondition).
     if (y.is_empty() || (x == y))
@@ -300,7 +300,7 @@ struct Itv {
       x = y;
       return;
     }
-    if (y.is_singleton()) {
+    if (use_affine_dim && y.is_singleton()) {
       // Change of affine dimension.
       x.lub_assign(y);
       return;
@@ -309,6 +309,7 @@ struct Itv {
       x.unset_lb();
     if (x.has_ub() && y.has_ub() && x.ub > y.ub)
       x.unset_ub();
+    assert(check_inv());
   }
 
   // Returns true if refinement makes it empty.
@@ -344,7 +345,7 @@ struct Itv {
       set_universe();
       break;
     }
-    assert(check_impl());
+    assert(check_inv());
   }
 
   void add_assign(const Itv& y) {

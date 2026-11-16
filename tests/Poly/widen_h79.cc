@@ -340,19 +340,31 @@ test11() {
   ph.widening_assign(ph2);
   ph.minimize();
 
-  print_cons(ph, "=== ph1.widening_assign(ph2) ===");
+  print_cons(ph, "=== ph.widening_assign(ph2) ===");
   if (not (ph.check_inv() && ph.contains(ph1) && ph.contains(ph2)))
     return false;
 
-  // This would be the proper result of h79; we are more precise
+  // The result using our version of h79 widening is the same as ph1,
   // due to the check for affine dimension.
-  // Poly kres(4, Topol::NNC);
-  // kres.add_con(B >= 0);
-  // kres.add_con(D < 0);
-  // kres.minimize();
+  if (ph != ph1)
+    return false;
 
-  Poly kres = ph1;
-  return (ph == kres);
+  // The result using the *original* h79 definition is less precise.
+  Poly ph_orig(ph1);
+  ph_orig.widening_assign(ph2, Widen_Impl::ORIG_H79);
+  ph_orig.minimize();
+
+  print_cons(ph_orig, "=== ph.widening_assign(ph2, Widen_Impl::ORIG_H79) ===");
+  if (not (ph_orig.check_inv()
+           && ph_orig.contains(ph1) && ph_orig.contains(ph2)))
+    return false;
+
+  Poly kres_orig(4, Topol::NNC);
+  kres_orig.add_con(B >= 0);
+  kres_orig.add_con(D < 0);
+  kres_orig.minimize();
+
+  return (ph_orig == kres_orig);
 }
 
 bool

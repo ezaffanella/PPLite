@@ -213,6 +213,16 @@ h79_widen(Poly_Impl& x, const Poly_Impl& y, Widen_Spec w_spec) {
 }
 
 void
+orig_h79_widen(Poly_Impl& x, const Poly_Impl& y, Widen_Spec w_spec) {
+  // for w_impl = ORIG_H79, use trivial lifting of risky widening
+  if (w_spec == Widen_Spec::SAFE) {
+    x.poly_hull_assign(y);
+    x.minimize();
+  }
+  risky_h79_widen(x, y);
+}
+
+void
 boxed_h79_widen(Poly_Impl& x, const Poly_Impl& y, Widen_Spec w_spec) {
   assert(x.topol == y.topol);
   assert(x.dim > 0 && x.dim == y.dim);

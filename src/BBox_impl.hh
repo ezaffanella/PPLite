@@ -441,7 +441,9 @@ Box<KVI>::unconstrain(Var var) {
 
 template <bool KVI>
 inline void
-Box<KVI>::widening_assign(const Box& y) {
+Box<KVI>::widening_assign(const Box& y,
+                          Widen_Impl w_impl,
+                          Widen_Spec /* w_spec */) {
   auto& x = *this;
   assert(x.check_inv() && y.check_inv());
   assert(x.space_dim() == y.space_dim());
@@ -456,8 +458,9 @@ Box<KVI>::widening_assign(const Box& y) {
     assert(x.is_universe() && y.is_universe());
     return;
   }
+  const bool use_affine_dim = (w_impl != Widen_Impl::ORIG_H79);
   for (auto i : bwd_dim_range(x))
-    x.itvs[i].widen_assign(y.itvs[i]);
+    x.itvs[i].widen_assign(y.itvs[i], use_affine_dim);
   x.maybe_update_volume_info();
   assert(x.check_inv());
 }

@@ -2590,7 +2590,7 @@ F_Poly::widening_assign(const F_Poly& y, const Cons* upto_ptr,
   auto& x = *this;
   assert(x.topology() == y.topology());
   assert(x.space_dim() == y.space_dim());
-  if (detail::widening_preamble(x, y, w_spec))
+  if (detail::widening_preamble(x, y, w_impl, w_spec))
     return;
 
   if (w_spec == Widen_Spec::SAFE) {
@@ -2599,16 +2599,19 @@ F_Poly::widening_assign(const F_Poly& y, const Cons* upto_ptr,
     x.minimize();
   }
 
-  // FIXME: here we should check for certificate-based stability.
-  // For now, we only check affine dimension.
-  if (x.affine_dim() > y.affine_dim())
-    return;
+  const bool use_affine_dim = (w_impl != Widen_Impl::ORIG_H79);
+  if (use_affine_dim) {
+    // FIXME: here we should check for certificate-based stability.
+    // For now, we only check affine dimension.
+    if (x.affine_dim() > y.affine_dim())
+      return;
+  }
 
   Index_Set valid = detail::valid_upto_cons(*this, upto_ptr);
 
   for (auto i : index_range(itvs))
     if (x.is_itv_dim(i) && y.is_itv_dim(i))
-      x.itvs[i].widen_assign(y.itvs[i]);
+      x.itvs[i].widen_assign(y.itvs[i], use_affine_dim);
 
   // FIXME: temporary, could be improved?
   Blocks lub = detail::blocks_lub(x.itvs, x.blocks, y.itvs, y.blocks);
