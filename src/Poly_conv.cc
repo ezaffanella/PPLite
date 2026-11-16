@@ -21,8 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PPLITE_SORT_PENDING 0
 
-#define PPLITE_FAST_PATH_STATS 0
-
 #include "globals.hh"
 #include "support_utils.hh"
 #include "utils.hh"
@@ -46,76 +44,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace pplite {
 namespace detail {
-
-#if PPLITE_FAST_PATH_STATS
-
-#define FAST_PATH_STATS_INCR_CALLS (++fp_tests)
-#define FAST_PATH_STATS_INCR_TRUE (++fp_tests_true)
-#define FAST_PATH_STATS_INCR_DOUBT (++fp_tests_doubt)
-
-#define FAST_PATH_STATS_INCR_EXEC_FAST \
-  do { if (!con_to_gen) ++fp_exec_fast; } while (false)
-#define FAST_PATH_STATS_INCR_EXEC_SLOW \
-  do { if (!con_to_gen) ++fp_exec_slow; } while (false)
-
-#define FAST_PATH_STATS_RESET \
-  do { if (!con_to_gen) fp_stats_reset(); } while (false)
-#define FAST_PATH_STATS_PRINT \
-  do { if (!con_to_gen) fp_stats_print(); } while (false)
-
-namespace {
-
-PPLITE_TLS long fp_tests = 0;
-PPLITE_TLS long fp_tests_true = 0;
-PPLITE_TLS long fp_tests_doubt = 0;
-PPLITE_TLS long fp_exec_fast = 0;
-PPLITE_TLS long fp_exec_slow = 0;
-
-inline void fp_stats_reset() {
-  fp_tests = 0;
-  fp_tests_true = 0;
-  fp_tests_doubt = 0;
-  fp_exec_fast = 0;
-  fp_exec_slow = 0;
-}
-
-inline void fp_stats_print() {
-  auto get_perc = [](unsigned num) -> long {
-    return lround((num / static_cast<double>(fp_tests)) * 100.0);
-  };
-  if (fp_tests == 0)
-    return;
-  auto& os = std::cerr;
-  auto perc_true = get_perc(fp_tests_true);
-  auto perc_doubt = get_perc(fp_tests_doubt);
-  auto perc_fast =  get_perc(fp_exec_fast);
-  auto perc_slow = get_perc(fp_exec_slow);
-  os << "\n"
-     << "FAST PATH:"
-     << " calls " << fp_tests
-     << " --- "
-     << " %true " << perc_true
-     << " %doubt " << perc_doubt
-     << " --- "
-     << " %fast " << perc_fast
-     << " %slow " << perc_slow
-     << "\n";
-}
-
-} // namespace
-
-#else // !PPLITE_FAST_PATH_STATS
-
-#define FAST_PATH_STATS_INCR_CALLS
-#define FAST_PATH_STATS_INCR_TRUE
-#define FAST_PATH_STATS_INCR_DOUBT
-#define FAST_PATH_STATS_INCR_EXEC_FAST
-#define FAST_PATH_STATS_INCR_EXEC_SLOW
-#define FAST_PATH_STATS_RESET
-#define FAST_PATH_STATS_PRINT
-
-#endif // !PPLITE_FAST_PATH_STATS
-
 
 #if PPLITE_NOISY_CONVERSION
 
@@ -909,7 +837,6 @@ can_use_gen_to_con_fast_path(const Gen& src,
                              bool /*has_rays*/,
                              bool& has_positivity,
                              bool& has_maximal_efc) {
-  FAST_PATH_STATS_INCR_CALLS;
   // Fast path disabled when processing a closure point.
   if (src.is_closure_point())
     return false;
@@ -927,24 +854,17 @@ can_use_gen_to_con_fast_path(const Gen& src,
   has_positivity = any_of(sk_dst, std::mem_fn(&Con::is_tautological));
   if (has_positivity) {
     has_maximal_efc = false;
-    if (num_ns == 0) {
-      FAST_PATH_STATS_INCR_TRUE;
-      return true;
-    } else
-      return false;
+    return (num_ns == 0);
   }
   // Check for (non-skel) maximal efc.
   has_maximal_efc = (num_ns == 1) && (ns_dst[0].size() == num_rows(sk_dst));
-  if (has_maximal_efc || (num_ns == 0)) {
-    FAST_PATH_STATS_INCR_TRUE;
+  if (has_maximal_efc || (num_ns == 0))
     return true;
-  }
 
   assert(not has_positivity && not has_maximal_efc && (num_ns == 1));
   // The (one and only) support in ns_dst could be the rfc,
   // however, we miss a way to cheaply check if this is the case;
   // hence, we conservatively avoid the fast path.
-  FAST_PATH_STATS_INCR_DOUBT;
   return false;
   /*
     Note: if we could be sure that ns_dst[0] is the rfc,
@@ -1223,7 +1143,6 @@ conv_iter(dim_type space_dim, dim_type src_num_sing,
   }
 
   if (use_fast_path) {
-    FAST_PATH_STATS_INCR_EXEC_FAST;
     // gen-to-con fast path for the cases when
     // there is no need to transpose the saturation matrix.
     assert(ns_dst.size() <= 1);
@@ -1252,7 +1171,6 @@ conv_iter(dim_type space_dim, dim_type src_num_sing,
       }
     }
   } else {
-    FAST_PATH_STATS_INCR_EXEC_SLOW;
     // Dealing with non-skel elements (not the fast path).
     // New non-skel elements will be placed here.
     set_of_ns.clear();
@@ -1581,8 +1499,6 @@ conversion(dim_type space_dim,
   NS_Rows set_of_ns;
   bool has_rays = maybe_has_ray(src.sk_rows);
 
-  FAST_PATH_STATS_RESET;
-
   // Process pending sing rows.
   if (!pending.sing_rows.empty()) {
     auto res = conv_sing<con_to_gen>(space_dim, src, pending, dst,
@@ -1614,8 +1530,6 @@ conversion(dim_type space_dim,
   // Check for emptiness.
   if (con_to_gen && dst.ns_rows.empty() && !contains_a_point(dst.sk_rows))
     return true;
-
-  FAST_PATH_STATS_PRINT;
 
   assert(pending.empty());
   assert(num_rows(src.sk_rows) == sat_src.num_cols());
