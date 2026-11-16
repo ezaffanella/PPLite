@@ -160,25 +160,6 @@ normalize_for_hash(const Sys& sys) {
 using Con_Sys = Poly_Impl::Sys<Cons>;
 using Gen_Sys = Poly_Impl::Sys<Gens>;
 
-#if PPLITE_NOISY_CONVERSION
-
-template <typename Dst_Sys>
-void output_counters(const char* kind, dim_type k, const Dst_Sys& dst);
-
-extern template void
-output_counters<Con_Sys>(const char*, dim_type, const Con_Sys&);
-extern template void
-output_counters<Gen_Sys>(const char*, dim_type, const Gen_Sys&);
-
-#define OUTPUT_COUNTERS_IF_NOISY(kind, k, dst) \
-  { output_counters(kind, k, dst); }
-
-#else // !PPLITE_NOISY_CONVERSION
-
-#define OUTPUT_COUNTERS_IF_NOISY(kind, k, dst)
-
-#endif // !PPLITE_NOISY_CONVERSION
-
 // Only needed in gen-to-con minimize.
 // Use maybe_ helpers to call from templatic contexts.
 void ensure_strict_pos(Cons& sk_rows, NS_Rows& ns_rows);

@@ -129,39 +129,64 @@ PPLITE_TLS unsigned long num_comb_adj = 0;
 #define INCR_COMB_NONADJ  (++num_comb_nonadj)
 #define INCR_COMB_ADJ     (++num_comb_adj)
 
+// Abusing RAII: prints on construction and destruction.
 template <typename Dst_Sys>
-void
-output_counters(const char* kind, dim_type k, const Dst_Sys& dst) {
-  auto sg_count = dst.sing_rows.size();
-  auto sk_count = dst.sk_rows.size();
-  auto ns_count = dst.ns_rows.size();
+struct Noisy_Counters {
+  const char* kind_;
+  const dim_type k_;
+  const Dst_Sys& dst_;
 
-  std::ostream& os = std::cerr;
-  const auto num_adj
-    = num_quick_nonadj + num_quick_adj + num_comb_nonadj + num_comb_adj;
-  os << "  adj tests = " << num_adj;
-  os << " (quick no = " << num_quick_nonadj
-     << ", quick yes = " << num_quick_adj
-     << ", comb no = " << num_comb_nonadj
-     << ", comb yes = " << num_comb_adj
-     << ")\n\n";
-  // Reset counters.
-  num_quick_nonadj = 0;
-  num_quick_adj = 0;
-  num_comb_nonadj = 0;
-  num_comb_adj = 0;
-  os << "conv iter " << kind << " k = " << k
-     << " | sg = " << sg_count
-     << " | sk = " << sk_count
-     << " | ns = " << ns_count
-     << "\n";
-}
+  Noisy_Counters(const char* kind, dim_type k, const Dst_Sys& dst)
+    : kind_(kind), k_(k), dst_(dst) {
+    print_prolog();
+    reset_adj_counters();
+  }
+  ~Noisy_Counters() {
+    print_epilog();
+    print_adj_counters();
+  }
 
-// Explicit template instantiations.
-template void
-output_counters<Con_Sys>(const char*, dim_type, const Con_Sys&);
-template void
-output_counters<Gen_Sys>(const char*, dim_type, const Gen_Sys&);
+  void print_prolog() {
+    std::ostream& os = std::cerr;
+    os << "conv iter " << kind_ << " k = " << k_
+       << " | sg = " << dst_.sing_rows.size()
+       << " | sk = " << dst_.sk_rows.size()
+       << " | ns = " << dst_.ns_rows.size()
+       << "\n";
+  }
+
+  void print_epilog() {
+    std::ostream& os = std::cerr;
+    os << "  exiting " << kind_ << " k = " << k_
+       << " | sg = " << dst_.sing_rows.size()
+       << " | sk = " << dst_.sk_rows.size()
+       << " | ns = " << dst_.ns_rows.size()
+       << "\n";
+  }
+
+  void reset_adj_counters() {
+    num_quick_nonadj = 0;
+    num_quick_adj = 0;
+    num_comb_nonadj = 0;
+    num_comb_adj = 0;
+  }
+
+  void print_adj_counters() {
+    std::ostream& os = std::cerr;
+    const auto num_adj
+      = num_quick_nonadj + num_quick_adj + num_comb_nonadj + num_comb_adj;
+    os << "  adj tests = " << num_adj;
+    os << " (quick no = " << num_quick_nonadj
+       << ", quick yes = " << num_quick_adj
+       << ", comb no = " << num_comb_nonadj
+       << ", comb yes = " << num_comb_adj
+       << ")\n\n";
+  }
+
+}; // struct Noisy_Counters
+
+#define OUTPUT_COUNTERS_IF_NOISY(kind, k, dst) \
+  Noisy_Counters<Dst_Sys> nc_(kind, k, dst)
 
 #else // !PPLITE_NOISY_CONVERSION
 
@@ -169,6 +194,7 @@ output_counters<Gen_Sys>(const char*, dim_type, const Gen_Sys&);
 #define INCR_QUICK_ADJ
 #define INCR_COMB_NONADJ
 #define INCR_COMB_ADJ
+#define OUTPUT_COUNTERS_IF_NOISY(kind, k, dst)
 
 #endif // !PPLITE_NOISY_CONVERSION
 
