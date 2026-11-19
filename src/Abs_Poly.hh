@@ -39,7 +39,7 @@ struct Abs_Sequence {
   using value_type = Value;
 
   Abs_Sequence() = default;
-  virtual ~Abs_Sequence() {}
+  virtual ~Abs_Sequence() = default;
 
   Abs_Sequence(const Abs_Sequence&) = delete;
   Abs_Sequence(Abs_Sequence&&) = delete;

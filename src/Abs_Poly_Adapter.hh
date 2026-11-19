@@ -125,7 +125,7 @@ public:
   using value_type = typename Base::value_type;
 
   explicit Abs_Sequence_Adapter(seq_type&& s) : seq(std::move(s)) {}
-  ~Abs_Sequence_Adapter() override {}
+  ~Abs_Sequence_Adapter() override = default;
 
   Abs_Sequence_Adapter(const Abs_Sequence_Adapter&) = delete;
   Abs_Sequence_Adapter(Abs_Sequence_Adapter&&) = delete;
