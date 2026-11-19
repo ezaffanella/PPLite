@@ -578,7 +578,6 @@ Bits::remove_all_aux(Iter rem_first, Iter rem_last) const {
     if (idx_i < idx_j) {
       res.set(idx_i - removed);
       ++i;
-      continue;
     } else if (idx_i == idx_j) {
       ++i;
       ++j;
