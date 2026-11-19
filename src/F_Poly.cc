@@ -2110,7 +2110,6 @@ bool ascii_load_block(Block& b, std::istream& is) {
   if (not ((is >> dim) && (dim >= 0)))
     return false;
   b.resize(dim);
-  std::string str;
   if (not (ascii_load_string(is, ":") && ascii_load_string(is, "{")))
     return false;
   for (auto j : range(dim)) {
