@@ -548,10 +548,10 @@ satisfies_all(const Topol topol, const Gen& g,
 
   // Here we have an NNC and a point; we need to check cs.ns_rows too.
   Bits sat_row;
-  if (!compute_sat_row(g, cs.sk_rows, sat_row))
+  if (not compute_sat_row(g, cs.sk_rows, sat_row))
     return false;
   for (const auto& c_ns : cs.ns_rows) {
-    if (!c_ns.intersects(sat_row))
+    if (not c_ns.intersects(sat_row))
       return false;
   }
   // All constraints are satisfied.
