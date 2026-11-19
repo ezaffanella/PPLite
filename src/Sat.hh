@@ -100,8 +100,8 @@ public:
   }
   void resize(dim_type new_nrows, dim_type new_ncols);
 
-  void ascii_dump(std::ostream& s) const;
-  bool ascii_load(std::istream& s);
+  void ascii_dump(std::ostream& os) const;
+  bool ascii_load(std::istream& is);
 
   void print(std::ostream& os) const { ascii_dump(os); }
   void print() const { print(std::cout); }

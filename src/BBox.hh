@@ -108,7 +108,7 @@ public:
 
   void print_itvs(std::ostream& os) const;
   void print(std::ostream& os) const;
-  void ascii_dump(std::ostream& s) const;
+  void ascii_dump(std::ostream& os) const;
 
   // Box methods: modifiers.
   void swap(Box& y) noexcept;

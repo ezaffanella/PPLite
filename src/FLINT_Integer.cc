@@ -51,8 +51,8 @@ FLINT_Integer::read(std::istream& is, fmpz_t mp) {
 }
 
 void
-FLINT_Integer::ascii_dump(std::ostream& s) const {
-  print(s, mp);
+FLINT_Integer::ascii_dump(std::ostream& os) const {
+  print(os, mp);
 }
 
 bool

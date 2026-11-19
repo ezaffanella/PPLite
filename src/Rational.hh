@@ -40,18 +40,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace pplite {
 
 inline std::ostream&
-operator<<(std::ostream& s, const Rational& r) {
-  r.print(s);
-  return s;
+operator<<(std::ostream& os, const Rational& r) {
+  r.print(os);
+  return os;
 }
 
 inline std::istream&
-operator>>(std::istream& s, Rational& r) {
-  if (s.flags() & std::ios::skipws)
-    ascii_load_skip_spaces(s);
-  if (not r.read(s))
-    s.setstate(std::ios::failbit);
-  return s;
+operator>>(std::istream& is, Rational& r) {
+  if (is.flags() & std::ios::skipws)
+    ascii_load_skip_spaces(is);
+  if (not r.read(is))
+    is.setstate(std::ios::failbit);
+  return is;
 }
 
 using Rationals = std::vector<Rational>;

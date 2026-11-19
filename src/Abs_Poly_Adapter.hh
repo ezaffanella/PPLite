@@ -388,7 +388,7 @@ public:
 
   /* Input-output */
   void print(std::ostream& os) const override { ph.print(os); }
-  void ascii_dump(std::ostream& s) const override { ph.ascii_dump(s); }
+  void ascii_dump(std::ostream& os) const override { ph.ascii_dump(os); }
 
 }; // Abs_Poly_Adapter
 

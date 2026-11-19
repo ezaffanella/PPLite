@@ -66,7 +66,7 @@ public:
     return implies(flags, y.flags);
   }
 
-  void ascii_dump(std::ostream& s) const;
+  void ascii_dump(std::ostream& os) const;
   void print(std::ostream& os) const { ascii_dump(os); }
   void print() const { print(std::cout); }
 
@@ -100,7 +100,7 @@ public:
     return implies(impl(), y.impl());
   }
 
-  void ascii_dump(std::ostream& s) const;
+  void ascii_dump(std::ostream& os) const;
   void print(std::ostream& os) const { ascii_dump(os); }
   void print() const { print(std::cout); }
 
@@ -152,14 +152,14 @@ operator-(Poly_Gen_Rel x, Poly_Gen_Rel y) {
 namespace IO_Operators {
 
 inline std::ostream&
-operator<<(std::ostream& s, const Poly_Con_Rel& r) {
-  r.ascii_dump(s);
-  return s;
+operator<<(std::ostream& os, const Poly_Con_Rel& r) {
+  r.ascii_dump(os);
+  return os;
 }
 inline std::ostream&
-operator<<(std::ostream& s, const Poly_Gen_Rel& r) {
-  r.ascii_dump(s);
-  return s;
+operator<<(std::ostream& os, const Poly_Gen_Rel& r) {
+  r.ascii_dump(os);
+  return os;
 }
 
 } // namespace IO_Operators

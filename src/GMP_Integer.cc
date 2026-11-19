@@ -39,8 +39,8 @@ GMP_Integer::read(std::istream& is, mpz_t mp) {
 }
 
 void
-GMP_Integer::ascii_dump(std::ostream& s) const {
-  print(s, mp);
+GMP_Integer::ascii_dump(std::ostream& os) const {
+  print(os, mp);
 }
 
 bool

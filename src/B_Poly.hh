@@ -564,20 +564,20 @@ public:
   size_t hash() const { return ph.hash(); }
 
   /* Input-output */
-  void print(std::ostream& s) const { ph.print(s); }
+  void print(std::ostream& os) const { ph.print(os); }
   void print() const { ph.print(); }
-  bool ascii_load(std::istream& s) {
+  bool ascii_load(std::istream& is) {
     // FIXME: also load bbox
     reset_bbox();
-    return ph.ascii_load(s);
+    return ph.ascii_load(is);
   }
-  void ascii_dump(std::ostream& s) const {
-    ph.ascii_dump(s);
+  void ascii_dump(std::ostream& os) const {
+    ph.ascii_dump(os);
     if (bbp == nullptr)
-      s << "has_bbox = false\n";
+      os << "has_bbox = false\n";
     else {
-      s << "has_bbox = true\n";
-      bbp->ascii_dump(s);
+      os << "has_bbox = true\n";
+      bbp->ascii_dump(os);
     }
   }
 
@@ -587,9 +587,9 @@ namespace IO_Operators {
 
 template <typename PH>
 inline std::ostream&
-operator<<(std::ostream& s, const B_Wrap<PH>& ph) {
-  ph.print(s);
-  return s;
+operator<<(std::ostream& os, const B_Wrap<PH>& ph) {
+  ph.print(os);
+  return os;
 }
 
 } // namespace IO_Operators

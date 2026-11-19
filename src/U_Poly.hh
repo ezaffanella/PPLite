@@ -535,10 +535,10 @@ public:
   size_t hash() const;
 
   /* Input-output */
-  void print(std::ostream& s) const;
+  void print(std::ostream& os) const;
   void print() const { print(std::cout); }
-  bool ascii_load(std::istream& s);
-  void ascii_dump(std::ostream& s) const;
+  bool ascii_load(std::istream& is);
+  void ascii_dump(std::ostream& os) const;
 
 private:
   Dims info;
@@ -724,9 +724,9 @@ namespace IO_Operators {
 
 template <typename PH>
 inline std::ostream&
-operator<<(std::ostream& s, const U_Wrap<PH>& ph) {
-  ph.print(s);
-  return s;
+operator<<(std::ostream& os, const U_Wrap<PH>& ph) {
+  ph.print(os);
+  return os;
 }
 
 } // namespace IO_Operators

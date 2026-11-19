@@ -828,18 +828,18 @@ PolySet<PH>::fold_space_dims(const Index_Set& vars, Var dest) {
 
 template <typename PH>
 bool
-PolySet<PH>::ascii_load(std::istream& s) {
+PolySet<PH>::ascii_load(std::istream& is) {
   auto sz = 0;
-  if (not (ascii_load_string(s, "size") && (s >> sz)))
+  if (not (ascii_load_string(is, "size") && (is >> sz)))
     return false;
 
   auto sd = 0;
-  if (not (ascii_load_string(s, "dim") && (s >> sd)))
+  if (not (ascii_load_string(is, "dim") && (is >> sd)))
     return false;
 
   auto topol = Topol::CLOSED;
   std::string str;
-  if (not (ascii_load_string(s, "topol") && (s >> str)))
+  if (not (ascii_load_string(is, "topol") && (is >> str)))
     return false;
   if (str == "CLOSED")
     topol = Topol::CLOSED;
@@ -849,7 +849,7 @@ PolySet<PH>::ascii_load(std::istream& s) {
     return false;
 
   auto red = 0;
-  if (not (ascii_load_string(s, "reduced") && (s >> red)))
+  if (not (ascii_load_string(is, "reduced") && (is >> red)))
     return false;
   if (not (red == 0 || red == 1))
     return false;
@@ -858,20 +858,20 @@ PolySet<PH>::ascii_load(std::istream& s) {
   Disj d;
   for (auto i = 0; i != sz; ++i) {
     auto idx = 0;
-    if (not (ascii_load_string(s, "===") &&
-             ascii_load_string(s, "start") &&
-             ascii_load_string(s, "disjunct") &&
-             (s >> idx) && (idx == i) &&
-             ascii_load_string(s, "===")))
+    if (not (ascii_load_string(is, "===") &&
+             ascii_load_string(is, "start") &&
+             ascii_load_string(is, "disjunct") &&
+             (is >> idx) && (idx == i) &&
+             ascii_load_string(is, "===")))
       return false;
-    if (!d.ascii_load(s))
+    if (!d.ascii_load(is))
       return false;
     new_set.seq().push_back(std::move(d));
-    if (not (ascii_load_string(s, "===") &&
-             ascii_load_string(s, "end") &&
-             ascii_load_string(s, "disjunct") &&
-             (s >> idx) && (idx == i) &&
-             ascii_load_string(s, "===")))
+    if (not (ascii_load_string(is, "===") &&
+             ascii_load_string(is, "end") &&
+             ascii_load_string(is, "disjunct") &&
+             (is >> idx) && (idx == i) &&
+             ascii_load_string(is, "===")))
       return false;
   }
   new_set.impl_.reduced = static_cast<bool>(red);
@@ -882,18 +882,18 @@ PolySet<PH>::ascii_load(std::istream& s) {
 
 template <typename PH>
 void
-PolySet<PH>::ascii_dump(std::ostream& s) const {
+PolySet<PH>::ascii_dump(std::ostream& os) const {
   using namespace IO_Operators;
-  s << "size " << size() << "\n";
-  s << "dim " << space_dim() << "\n";
-  s << "topol " << topology() << "\n";
-  s << "reduced " << is_reduced() << "\n\n";
+  os << "size " << size() << "\n";
+  os << "dim " << space_dim() << "\n";
+  os << "topol " << topology() << "\n";
+  os << "reduced " << is_reduced() << "\n\n";
 
   auto i = 0;
   for (const auto& d : seq()) {
-    s << "=== start disjunct << " << i << " ===\n";
-    d.ascii_dump(s);
-    s << "=== end disjunct << " << i << " ===\n\n";
+    os << "=== start disjunct << " << i << " ===\n";
+    d.ascii_dump(os);
+    os << "=== end disjunct << " << i << " ===\n\n";
     ++i;
   }
 }

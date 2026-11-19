@@ -525,8 +525,8 @@ operator!=(const Stats<PH>& x, const Stats<PH>& y) {
 namespace IO_Operators {
 
 template <typename PH>
-std::ostream& operator<<(std::ostream& s, const Stats<PH>& ph) {
-  return s << ph.base();
+std::ostream& operator<<(std::ostream& os, const Stats<PH>& ph) {
+  return os << ph.base();
 }
 
 } // namespace IO_Operators

@@ -54,18 +54,18 @@ get_coprimes(const Integer& x, const Integer& y,
 }
 
 inline std::ostream&
-operator<<(std::ostream& s, const Integer& i) {
-  i.print(s);
-  return s;
+operator<<(std::ostream& os, const Integer& i) {
+  i.print(os);
+  return os;
 }
 
 inline std::istream&
-operator>>(std::istream& s, Integer& i) {
-  if (s.flags() & std::ios::skipws)
-    ascii_load_skip_spaces(s);
-  if (not i.read(s))
-    s.setstate(std::ios::failbit);
-  return s;
+operator>>(std::istream& is, Integer& i) {
+  if (is.flags() & std::ios::skipws)
+    ascii_load_skip_spaces(is);
+  if (not i.read(is))
+    is.setstate(std::ios::failbit);
+  return is;
 }
 
 using Integers = std::vector<Integer>;

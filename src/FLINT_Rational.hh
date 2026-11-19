@@ -129,7 +129,7 @@ public:
   void print() const { print(std::cout); }
   bool read(std::istream& is) { return read(is, mp); }
 
-  void ascii_dump(std::ostream& s) const;
+  void ascii_dump(std::ostream& os) const;
   bool ascii_load(std::istream& is);
 
 }; // class FLINT_Rational

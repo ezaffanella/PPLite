@@ -32,11 +32,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace pplite {
 
 inline void
-ascii_load_skip_spaces(std::istream& s) {
+ascii_load_skip_spaces(std::istream& is) {
   char ch;
-  while (s.get(ch)) {
+  while (is.get(ch)) {
     if (not std::isspace(ch)) {
-      s.unget();
+      is.unget();
       return;
     }
   }
@@ -95,22 +95,22 @@ read_mpz_as_string(std::istream& is) {
 }
 
 inline bool
-ascii_load_string(std::istream& s, const std::string& str) {
+ascii_load_string(std::istream& is, const std::string& str) {
   std::string loaded;
-  return (s >> loaded) && (loaded == str);
+  return (is >> loaded) && (loaded == str);
 }
 
 template <typename Iter>
 inline void
-ascii_dump(std::ostream& s, Iter first, Iter last) {
+ascii_dump(std::ostream& os, Iter first, Iter last) {
   for ( ; first != last; ++first)
-    first->ascii_dump(s);
+    first->ascii_dump(os);
 }
 
 template <typename Rows>
 inline void
-ascii_dump_all(std::ostream& s, const Rows& rows) {
-  ascii_dump(s, std::begin(rows), std::end(rows));
+ascii_dump_all(std::ostream& os, const Rows& rows) {
+  ascii_dump(os, std::begin(rows), std::end(rows));
 }
 
 } // namespace pplite

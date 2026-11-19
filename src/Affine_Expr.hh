@@ -51,8 +51,8 @@ public: // Public access is meant.
   dim_type space_dim() const { return expr.space_dim(); }
   bool is_zero() const { return inhomo.is_zero() && expr.is_zero(); }
 
-  void ascii_dump(std::ostream& s) const;
-  bool ascii_load(std::istream& s);
+  void ascii_dump(std::ostream& os) const;
+  bool ascii_load(std::istream& is);
 
   void m_swap(Affine_Expr& y) noexcept {
     using std::swap;
@@ -216,9 +216,9 @@ operator*(Affine_Expr a, Integer const& n) { return n * std::move(a); }
 namespace IO_Operators {
 
 inline std::ostream&
-operator<<(std::ostream& s, const Affine_Expr& a) {
-  a.print(s);
-  return s;
+operator<<(std::ostream& os, const Affine_Expr& a) {
+  a.print(os);
+  return os;
 }
 
 } // namespace IO_Operators

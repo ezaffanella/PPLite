@@ -223,7 +223,7 @@ struct Abs_Poly {
 
   /* Input-output */
   virtual void print(std::ostream& os) const = 0;
-  virtual void ascii_dump(std::ostream& s) const = 0;
+  virtual void ascii_dump(std::ostream& os) const = 0;
 
 }; // Abs_Poly
 

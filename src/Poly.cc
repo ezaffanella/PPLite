@@ -1962,33 +1962,33 @@ Poly_Impl::aux_check_inv_check_minimize() const {
 }
 
 void
-Poly_Impl::ascii_dump(std::ostream& s) const {
+Poly_Impl::ascii_dump(std::ostream& os) const {
   using namespace IO_Operators;
-  s << "topol " << topol << "\n";
-  s << "dim " << dim << "\n";
-  s << "status " << status << "\n";
-  s << "=> cs sys\n";
-  cs.ascii_dump(s);
-  s << "=> gs sys\n";
-  gs.ascii_dump(s);
-  s << "sat_c\n";
-  sat_c.ascii_dump(s);
-  s << "sat_g\n";
-  sat_g.ascii_dump(s);
-  s << "=> cs_pending\n";
-  cs_pending.ascii_dump(s);
-  s << "=> gs_pending\n";
-  gs_pending.ascii_dump(s);
+  os << "topol " << topol << "\n";
+  os << "dim " << dim << "\n";
+  os << "status " << status << "\n";
+  os << "=> cs sys\n";
+  cs.ascii_dump(os);
+  os << "=> gs sys\n";
+  gs.ascii_dump(os);
+  os << "sat_c\n";
+  sat_c.ascii_dump(os);
+  os << "sat_g\n";
+  sat_g.ascii_dump(os);
+  os << "=> cs_pending\n";
+  cs_pending.ascii_dump(os);
+  os << "=> gs_pending\n";
+  gs_pending.ascii_dump(os);
 }
 
 namespace detail {
 
 template <typename Row>
 bool
-ascii_load(std::vector<Row>& rows, dim_type nrows, std::istream& s) {
+ascii_load(std::vector<Row>& rows, dim_type nrows, std::istream& is) {
   rows.resize(nrows);
   for (auto i : index_range(rows)) {
-    if (!rows[i].ascii_load(s))
+    if (!rows[i].ascii_load(is))
       return false;
   }
   return true;
@@ -1996,20 +1996,20 @@ ascii_load(std::vector<Row>& rows, dim_type nrows, std::istream& s) {
 
 template <typename Rows>
 bool
-ascii_load(Poly_Impl::Sys<Rows>& sys, std::istream& s) {
+ascii_load(Poly_Impl::Sys<Rows>& sys, std::istream& is) {
   sys.clear();
   dim_type num = 0;
-  if (not (ascii_load_string(s, "sing_rows")
-           && (s >> num) && (num >= 0)
-           && ascii_load(sys.sing_rows, num, s)))
+  if (not (ascii_load_string(is, "sing_rows")
+           && (is >> num) && (num >= 0)
+           && ascii_load(sys.sing_rows, num, is)))
     return false;
-  if (not (ascii_load_string(s, "sk_rows")
-           && (s >> num) && (num >= 0)
-           && ascii_load(sys.sk_rows, num, s)))
+  if (not (ascii_load_string(is, "sk_rows")
+           && (is >> num) && (num >= 0)
+           && ascii_load(sys.sk_rows, num, is)))
     return false;
-  if (not (ascii_load_string(s, "ns_rows")
-           && (s >> num) && (num >= 0)
-           && ascii_load(sys.ns_rows, num, s)))
+  if (not (ascii_load_string(is, "ns_rows")
+           && (is >> num) && (num >= 0)
+           && ascii_load(sys.ns_rows, num, is)))
     return false;
   return true;
 }
@@ -2017,9 +2017,9 @@ ascii_load(Poly_Impl::Sys<Rows>& sys, std::istream& s) {
 } // namespace detail
 
 bool
-Poly_Impl::ascii_load(std::istream& s) {
+Poly_Impl::ascii_load(std::istream& is) {
   std::string str;
-  if (not (ascii_load_string(s, "topol") && (s >> str)))
+  if (not (ascii_load_string(is, "topol") && (is >> str)))
     return false;
   if (str == "CLOSED")
     topol = Topol::CLOSED;
@@ -2028,10 +2028,10 @@ Poly_Impl::ascii_load(std::istream& s) {
   else
     return false;
 
-  if (not (ascii_load_string(s, "dim") && (s >> dim) && (dim >= 0)))
+  if (not (ascii_load_string(is, "dim") && (is >> dim) && (dim >= 0)))
     return false;
 
-  if (not (ascii_load_string(s, "status") && (s >> str)))
+  if (not (ascii_load_string(is, "status") && (is >> str)))
     return false;
   if (str == "EMPTY")
     status = Status::EMPTY;
@@ -2042,29 +2042,29 @@ Poly_Impl::ascii_load(std::istream& s) {
   else
     return false;
 
-  if (not (ascii_load_string(s, "=>")
-           && ascii_load_string(s, "cs")
-           && ascii_load_string(s, "sys")
-           && detail::ascii_load(cs, s)))
+  if (not (ascii_load_string(is, "=>")
+           && ascii_load_string(is, "cs")
+           && ascii_load_string(is, "sys")
+           && detail::ascii_load(cs, is)))
     return false;
-  if (not (ascii_load_string(s, "=>")
-           && ascii_load_string(s, "gs")
-           && ascii_load_string(s, "sys")
-           && detail::ascii_load(gs, s)))
-    return false;
-
-  if (not (ascii_load_string(s, "sat_c") && sat_c.ascii_load(s)))
-    return false;
-  if (not (ascii_load_string(s, "sat_g") && sat_g.ascii_load(s)))
+  if (not (ascii_load_string(is, "=>")
+           && ascii_load_string(is, "gs")
+           && ascii_load_string(is, "sys")
+           && detail::ascii_load(gs, is)))
     return false;
 
-  if (not (ascii_load_string(s, "=>")
-           && ascii_load_string(s, "cs_pending")
-           && detail::ascii_load(cs_pending, s)))
+  if (not (ascii_load_string(is, "sat_c") && sat_c.ascii_load(is)))
     return false;
-  if (not (ascii_load_string(s, "=>")
-           && ascii_load_string(s, "gs_pending")
-           && detail::ascii_load(gs_pending, s)))
+  if (not (ascii_load_string(is, "sat_g") && sat_g.ascii_load(is)))
+    return false;
+
+  if (not (ascii_load_string(is, "=>")
+           && ascii_load_string(is, "cs_pending")
+           && detail::ascii_load(cs_pending, is)))
+    return false;
+  if (not (ascii_load_string(is, "=>")
+           && ascii_load_string(is, "gs_pending")
+           && detail::ascii_load(gs_pending, is)))
     return false;
 
   assert(check_inv());
@@ -2072,17 +2072,17 @@ Poly_Impl::ascii_load(std::istream& s) {
 }
 
 void
-Poly_Impl::print(std::ostream& s) const {
+Poly_Impl::print(std::ostream& os) const {
   if (is_empty()) {
-    s << "false";
+    os << "false";
     return;
   }
   minimize();
   bool comma = false;
   for (const auto& c : cons()) {
-    if (comma) s << ", ";
+    if (comma) os << ", ";
     using namespace IO_Operators;
-    s << c;
+    os << c;
     comma = true;
   }
 }
@@ -2090,41 +2090,41 @@ Poly_Impl::print(std::ostream& s) const {
 namespace IO_Operators {
 
 std::ostream&
-operator<<(std::ostream& s, Topol topol) {
-  s << (topol == Topol::CLOSED ? "C" : "NNC");
-  return s;
+operator<<(std::ostream& os, Topol topol) {
+  os << (topol == Topol::CLOSED ? "C" : "NNC");
+  return os;
 }
 
 std::ostream&
-operator<<(std::ostream& s, Poly_Impl::Status status) {
+operator<<(std::ostream& os, Poly_Impl::Status status) {
   using Status = Poly_Impl::Status;
   switch (status) {
   case Status::EMPTY:
-    s << "EMPTY";
+    os << "EMPTY";
     break;
   case Status::MINIMIZED:
-    s << "MINIMIZED";
+    os << "MINIMIZED";
     break;
   case Status::PENDING:
-    s << "PENDING";
+    os << "PENDING";
     break;
   default:
     PPLITE_UNREACH;
     break;
   }
-  return s;
+  return os;
 }
 
 std::ostream&
-operator<<(std::ostream& s, const Poly_Impl& ph) {
-  ph.print(s);
-  return s;
+operator<<(std::ostream& os, const Poly_Impl& ph) {
+  ph.print(os);
+  return os;
 }
 
 std::ostream&
-operator<<(std::ostream& s, const Poly& ph) {
-  s << ph.impl();
-  return s;
+operator<<(std::ostream& os, const Poly& ph) {
+  os << ph.impl();
+  return os;
 }
 
 } // namespace IO_Operators

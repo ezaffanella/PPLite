@@ -27,32 +27,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace pplite {
 
 void
-Poly_Con_Rel::ascii_dump(std::ostream& s) const {
+Poly_Con_Rel::ascii_dump(std::ostream& os) const {
   auto f = flags;
   if (f == NOTHING) {
-    s << "NOTHING";
+    os << "NOTHING";
     return;
   }
 
   while (true) {
     if (implies(f, IS_DISJOINT)) {
-      s << "IS_DISJOINT";
+      os << "IS_DISJOINT";
       f &= ~IS_DISJOINT;
     }
     else if (implies(f, STRICTLY_INTERSECTS)) {
-      s << "STRICTLY_INTERSECTS";
+      os << "STRICTLY_INTERSECTS";
       f &= ~STRICTLY_INTERSECTS;
     }
     else if (implies(f, IS_INCLUDED)) {
-      s << "IS_INCLUDED";
+      os << "IS_INCLUDED";
       f &= ~IS_INCLUDED;
     }
     else if (implies(f, SATURATES)) {
-      s << "SATURATES";
+      os << "SATURATES";
       f &= ~SATURATES;
     }
     if (f != NOTHING) {
-      s << " & ";
+      os << " & ";
     }
     else {
       break;
@@ -61,12 +61,12 @@ Poly_Con_Rel::ascii_dump(std::ostream& s) const {
 }
 
 void
-Poly_Gen_Rel::ascii_dump(std::ostream& s) const {
+Poly_Gen_Rel::ascii_dump(std::ostream& os) const {
   if (impl() == NOTHING)
-    s << "NOTHING";
+    os << "NOTHING";
   else {
     assert(impl() == SUBSUMES);
-    s << "SUBSUMES";
+    os << "SUBSUMES";
   }
 }
 

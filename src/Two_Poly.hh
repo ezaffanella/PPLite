@@ -553,15 +553,15 @@ public:
   }
 
   /* Input-output (here we only work on ph1) */
-  void print(std::ostream& s) const { ph1.print(s); }
+  void print(std::ostream& os) const { ph1.print(os); }
   void print() const { print(std::cout); }
-  bool ascii_load(std::istream& s) {
-    auto res = ph1.ascii_load(s);
+  bool ascii_load(std::istream& is) {
+    auto res = ph1.ascii_load(is);
     if (res) ph2 = Poly2(ph1);
     return res;
   }
-  void ascii_dump(std::ostream& s) const {
-    ph1.ascii_dump(s);
+  void ascii_dump(std::ostream& os) const {
+    ph1.ascii_dump(os);
   }
 
 private:
@@ -580,9 +580,9 @@ private:
 namespace IO_Operators {
 
 template <typename PH1, typename PH2>
-std::ostream& operator<<(std::ostream& s, const Two_Poly<PH1, PH2>& ph) {
-  s << ph.ph1;
-  return s;
+std::ostream& operator<<(std::ostream& os, const Two_Poly<PH1, PH2>& ph) {
+  os << ph.ph1;
+  return os;
 }
 
 } // namespace IO_Operators

@@ -151,8 +151,8 @@ public:
     return { pos, neg };
   }
 
-  void ascii_dump(std::ostream& s) const;
-  bool ascii_load(std::istream& s);
+  void ascii_dump(std::ostream& os) const;
+  bool ascii_load(std::istream& is);
 
   void m_swap(Linear_Expr& y) noexcept {
     using std::swap;
@@ -470,9 +470,9 @@ is_proper_interval_expr(const Linear_Expr& e) {
 namespace IO_Operators {
 
 inline std::ostream&
-operator<<(std::ostream& s, Linear_Expr const& e) {
-  e.print(s);
-  return s;
+operator<<(std::ostream& os, Linear_Expr const& e) {
+  e.print(os);
+  return os;
 }
 
 } // namespace IO_Operators

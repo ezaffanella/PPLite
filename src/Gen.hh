@@ -110,14 +110,14 @@ public:
 
   bool check_inv() const;
 
-  void print(std::ostream& s) const;
+  void print(std::ostream& os) const;
   void print() const { print(std::cout); }
 
-  void dump_type(std::ostream& s) const;
-  void ascii_dump(std::ostream& s) const;
+  void dump_type(std::ostream& os) const;
+  void ascii_dump(std::ostream& os) const;
 
-  bool load_type(std::istream& s);
-  bool ascii_load(std::istream& s);
+  bool load_type(std::istream& is);
+  bool ascii_load(std::istream& is);
 
   void m_swap(Gen& y) noexcept {
     Impl& xi = impl();
@@ -215,15 +215,15 @@ compare(const Gen& x, const Gen& y) {
 
 namespace IO_Operators {
 
-std::ostream& operator<<(std::ostream& s, const Gen::Type& t);
+std::ostream& operator<<(std::ostream& os, const Gen::Type& t);
 
 inline std::ostream&
-operator<<(std::ostream& s, const Gen& g) {
-  g.print(s);
-  return s;
+operator<<(std::ostream& os, const Gen& g) {
+  g.print(os);
+  return os;
 }
 
-std::ostream& operator<<(std::ostream& s, const Gens& gs);
+std::ostream& operator<<(std::ostream& os, const Gens& gs);
 
 } // namespace IO_Operators
 

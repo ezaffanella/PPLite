@@ -977,46 +977,47 @@ U_Wrap<PH>::hash() const {
 
 template <typename PH>
 void
-U_Wrap<PH>::print(std::ostream& s) const {
+U_Wrap<PH>::print(std::ostream& os) const {
   if (is_empty()) {
-    s << "false";
+    os << "false";
     return;
   }
   minimize();
   bool comma = false;
   for (const auto& c : cons()) {
-    if (comma) s << ", ";
+    if (comma) os << ", ";
     using namespace IO_Operators;
-    s << c;
+    os << c;
     comma = true;
   }
 }
 
 template <typename PH>
 bool
-U_Wrap<PH>::ascii_load(std::istream& s) {
+U_Wrap<PH>::ascii_load(std::istream& is) {
   std::string str;
   dim_type s_dim;
-  if (not (ascii_load_string(s, "space_dim") && (s >> s_dim) && (s_dim >= 0)))
+  if (not (ascii_load_string(is, "space_dim")
+           && (is >> s_dim) && (s_dim >= 0)))
     return false;
-  if (!(s >> str) || (str != "empty" && str != "not_empty"))
+  if (!(is >> str) || (str != "empty" && str != "not_empty"))
     return false;
   bool flag_empty = (str == "empty");
   info.resize(s_dim, not_a_dim());
   for (auto i : range(s_dim)) {
     dim_type j;
-    if (not (ascii_load_string(s, "dim")))
+    if (not (ascii_load_string(is, "dim")))
       return false;
-    if (!(s >> j) || j != i)
+    if (!(is >> j) || j != i)
       return false;
-    if (not (ascii_load_string(s, "->")))
+    if (not (ascii_load_string(is, "->")))
       return false;
-    if (!(s >> str))
+    if (!(is >> str))
       return false;
     if (str != "not_a_dim")
       info[i] = std::stol(str);
   }
-  if (!kernel.ascii_load(s))
+  if (!kernel.ascii_load(is))
     return false;
   if (kernel.is_empty() != flag_empty)
     return false;
@@ -1027,20 +1028,20 @@ U_Wrap<PH>::ascii_load(std::istream& s) {
 
 template <typename PH>
 void
-U_Wrap<PH>::ascii_dump(std::ostream& s) const {
-  s << "space_dim " << space_dim();
-  s << " " << (is_empty() ? "empty" : "not_empty") << "\n";
+U_Wrap<PH>::ascii_dump(std::ostream& os) const {
+  os << "space_dim " << space_dim();
+  os << " " << (is_empty() ? "empty" : "not_empty") << "\n";
   for (auto i : index_range(info)) {
-    s << "dim " << i << " -> ";
+    os << "dim " << i << " -> ";
     if (is_kernel_dim(i))
-      s << kernel_dim(i);
+      os << kernel_dim(i);
     else
-      s << "not_a_dim";
-    s << "\n";
+      os << "not_a_dim";
+    os << "\n";
   }
-  s << "\n";
-  kernel.ascii_dump(s);
-  s << "\n";
+  os << "\n";
+  kernel.ascii_dump(os);
+  os << "\n";
 }
 
 // Explicit template instantiation (definition).

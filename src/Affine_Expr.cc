@@ -39,20 +39,20 @@ void Affine_Expr::print(std::ostream& os) const {
 }
 
 void
-Affine_Expr::ascii_dump(std::ostream& s) const {
-  s << "expr ";
-  expr.ascii_dump(s);
-  s << "\n";
-  s << "inhomo ";
-  inhomo.ascii_dump(s);
+Affine_Expr::ascii_dump(std::ostream& os) const {
+  os << "expr ";
+  expr.ascii_dump(os);
+  os << "\n";
+  os << "inhomo ";
+  inhomo.ascii_dump(os);
 }
 
 bool
-Affine_Expr::ascii_load(std::istream& s) {
-  return ascii_load_string(s, "expr")
-    && expr.ascii_load(s)
-    && ascii_load_string(s, "inhomo")
-    && inhomo.ascii_load(s);
+Affine_Expr::ascii_load(std::istream& is) {
+  return ascii_load_string(is, "expr")
+    && expr.ascii_load(is)
+    && ascii_load_string(is, "inhomo")
+    && inhomo.ascii_load(is);
 }
 
 } // namespace pplite

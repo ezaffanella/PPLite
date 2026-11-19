@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 template <typename T>
 class Output_Function {
 public:
-  using ftype = void (std::ostream& s, const T& t);
+  using ftype = void (std::ostream&, const T&);
 
   template <typename F>
   explicit Output_Function(F default_f) : current(default_f) {}

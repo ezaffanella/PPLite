@@ -51,35 +51,35 @@ Sat::transpose() const {
 }
 
 void
-Sat::ascii_dump(std::ostream& s) const {
+Sat::ascii_dump(std::ostream& os) const {
   const char sep = ' ';
-  s << num_rows() << sep << 'x' << sep << num_cols() << "\n";
+  os << num_rows() << sep << 'x' << sep << num_cols() << "\n";
   for (const auto& row : rows()) {
     for (auto j : range(num_cols())) {
-      s << row[j] << sep;
+      os << row[j] << sep;
     }
-    s << "\n";
+    os << "\n";
   }
 }
 
 bool
-Sat::ascii_load(std::istream& s) {
+Sat::ascii_load(std::istream& is) {
   auto& x = *this;
   dim_type nrows;
   dim_type ncols;
   std::string str;
-  if (!(s >> nrows))
+  if (!(is >> nrows))
     return false;
-  if (!(s >> str) || str != "x")
+  if (!(is >> str) || str != "x")
     return false;
-  if (!(s >> ncols))
+  if (!(is >> ncols))
     return false;
   resize(nrows, ncols);
 
   for (auto i : range(nrows)) {
     for (auto j : range(ncols)) {
       int bit;
-      if (!(s >> bit))
+      if (!(is >> bit))
         return false;
       if (bit != 0)
         x[i].set(j);

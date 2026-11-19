@@ -655,24 +655,24 @@ public:
   void collapse(dim_type n);
 
   /* Input-output */
-  void print(std::ostream& s) const {
+  void print(std::ostream& os) const {
     if (is_empty()) {
-      s << "empty";
+      os << "empty";
       return;
     }
     auto it = begin();
-    s << "{ ";
-    it->print(s);
-    s << " }";
+    os << "{ ";
+    it->print(os);
+    os << " }";
     auto last = end();
     for (++it; it != last; ++it) {
-      s << " || { ";
-      it->print(s);
-      s << " }";
+      os << " || { ";
+      it->print(os);
+      os << " }";
     }
   }
-  bool ascii_load(std::istream& s);
-  void ascii_dump(std::ostream& s) const;
+  bool ascii_load(std::istream& is);
+  void ascii_dump(std::ostream& os) const;
 
 private:
   using DS_Pair = std::pair<Disj, Seq>;
@@ -696,9 +696,9 @@ NOTHROW_MOVES(FP_Set);
 namespace IO_Operators {
 
 template <typename PH>
-std::ostream& operator<<(std::ostream& s, const PolySet<PH>& x) {
-  x.print(s);
-  return s;
+std::ostream& operator<<(std::ostream& os, const PolySet<PH>& x) {
+  x.print(os);
+  return os;
 }
 
 } // namespace IO_Operators

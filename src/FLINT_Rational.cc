@@ -54,8 +54,8 @@ FLINT_Rational::read(std::istream& is, fmpq_t mp) {
 }
 
 void
-FLINT_Rational::ascii_dump(std::ostream& s) const {
-  print(s, mp);
+FLINT_Rational::ascii_dump(std::ostream& os) const {
+  print(os, mp);
 }
 
 bool

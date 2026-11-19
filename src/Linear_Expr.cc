@@ -322,26 +322,26 @@ void Linear_Expr::print(std::ostream& os) const {
 }
 
 void
-Linear_Expr::ascii_dump(std::ostream& s) const {
+Linear_Expr::ascii_dump(std::ostream& os) const {
   using IO_Operators::operator<<;
-  s << "dim " << space_dim() << " : ";
+  os << "dim " << space_dim() << " : ";
   for (auto i : dim_range(*this)) {
-    get(i).print(s);
-    s << ' ';
+    get(i).print(os);
+    os << ' ';
   }
 }
 
 bool
-Linear_Expr::ascii_load(std::istream& s) {
+Linear_Expr::ascii_load(std::istream& is) {
   dim_type dim = 0;
-  if (!(ascii_load_string(s, "dim")
-        && (s >> dim)
+  if (!(ascii_load_string(is, "dim")
+        && (is >> dim)
         && (dim >= 0)
-        && ascii_load_string(s, ":")))
+        && ascii_load_string(is, ":")))
     return false;
   row.resize(dim);
   for (auto& i : row) {
-    if (!i.ascii_load(s))
+    if (!i.ascii_load(is))
       return false;
   }
   return true;

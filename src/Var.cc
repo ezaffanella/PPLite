@@ -27,13 +27,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace pplite {
 
 void
-Var_default_output_function(std::ostream& s, const Var v) {
+Var_default_output_function(std::ostream& os, const Var v) {
   const dim_type varid = v.id();
   static constexpr char var_name_letters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   constexpr dim_type num_letters = sizeof(var_name_letters) - 1;
-  s << var_name_letters[varid % num_letters];
+  os << var_name_letters[varid % num_letters];
   if (const dim_type i = varid / num_letters) {
-    s << i;
+    os << i;
   }
 }
 

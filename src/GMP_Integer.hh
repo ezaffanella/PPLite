@@ -123,13 +123,13 @@ public:
   bool is_pm1() const { return mpz_cmpabs_ui(mp, 1) == 0; }
 
   static void print(std::ostream& os, const mpz_t mp);
-  static bool read(std::istream& os, mpz_t mp);
+  static bool read(std::istream& is, mpz_t mp);
 
   void print(std::ostream& os) const { print(os, mp); }
   void print() const { print(std::cout, mp); }
   bool read(std::istream& is) { return read(is, mp); }
 
-  void ascii_dump(std::ostream& s) const;
+  void ascii_dump(std::ostream& os) const;
   bool ascii_load(std::istream& is);
 
 }; // class GMP_Integer

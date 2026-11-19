@@ -77,44 +77,44 @@ Con::check_inv() const {
 }
 
 void
-Con::print(std::ostream& s) const {
-  linear_expr().print(s);
-  s << " ";
-  dump_type(s);
-  s << " ";
+Con::print(std::ostream& os) const {
+  linear_expr().print(os);
+  os << " ";
+  dump_type(os);
+  os << " ";
   switch (sgn(inhomo_term())) {
   case -1:
-    (-inhomo_term()).print(s);
+    (-inhomo_term()).print(os);
     break;
   case 0:
-    s << "0";
+    os << "0";
     break;
   case 1:
-    s << "-";
-    inhomo_term().print(s);
+    os << "-";
+    inhomo_term().print(os);
     break;
   }
 }
 
 void
-Con::dump_type(std::ostream& s) const {
+Con::dump_type(std::ostream& os) const {
   switch (type()) {
   case EQUALITY:
-    s << "=";
+    os << "=";
     break;
   case NONSTRICT_INEQUALITY:
-    s << ">=";
+    os << ">=";
     break;
   case STRICT_INEQUALITY:
-    s << ">";
+    os << ">";
     break;
   }
 }
 
 bool
-Con::load_type(std::istream& s) {
+Con::load_type(std::istream& is) {
   std::string str;
-  if (!(s >> str))
+  if (!(is >> str))
     return false;
   if (str == "=")
     set_type(EQUALITY);
@@ -128,28 +128,28 @@ Con::load_type(std::istream& s) {
 }
 
 void
-Con::ascii_dump(std::ostream& s) const {
-  dump_type(s);
-  s << " : ";
-  linear_expr().ascii_dump(s);
-  s << " : ";
-  inhomo_term().print(s);
-  s << "\n";
+Con::ascii_dump(std::ostream& os) const {
+  dump_type(os);
+  os << " : ";
+  linear_expr().ascii_dump(os);
+  os << " : ";
+  inhomo_term().print(os);
+  os << "\n";
 }
 
 bool
-Con::ascii_load(std::istream& s) {
-  return load_type(s)
-    && ascii_load_string(s, ":")
-    && impl().expr.ascii_load(s)
-    && ascii_load_string(s, ":")
-    && impl().inhomo.ascii_load(s);
+Con::ascii_load(std::istream& is) {
+  return load_type(is)
+    && ascii_load_string(is, ":")
+    && impl().expr.ascii_load(is)
+    && ascii_load_string(is, ":")
+    && impl().inhomo.ascii_load(is);
 }
 
 namespace IO_Operators {
 
 std::ostream&
-operator<<(std::ostream& s, const Con& c) {
+operator<<(std::ostream& os, const Con& c) {
   bool first = true;
   for (auto i : dim_range(c)) {
     if (c.linear_expr().get(i) == 0)
@@ -159,20 +159,20 @@ operator<<(std::ostream& s, const Con& c) {
       first = false;
     else {
       if (ci > 0)
-        s << " + ";
+        os << " + ";
       else {
-        s << " - ";
+        os << " - ";
         neg_assign(ci);
       }
     }
     if (ci == -1)
-      s << "-";
+      os << "-";
     else if (ci != 1)
-      s << ci << "*";
-    s << Var(i);
+      os << ci << "*";
+    os << Var(i);
   }
   if (first)
-    s << "0";
+    os << "0";
   const char* rel = nullptr;
   switch (c.type()) {
   case Con::EQUALITY:
@@ -185,12 +185,12 @@ operator<<(std::ostream& s, const Con& c) {
     rel = " > ";
     break;
   }
-  s << rel << -c.inhomo_term();
-  return s;
+  os << rel << -c.inhomo_term();
+  return os;
 }
 
 std::ostream&
-operator<<(std::ostream& s, const Con::Type& t) {
+operator<<(std::ostream& os, const Con::Type& t) {
   const char* n = nullptr;
   switch (t) {
   case Con::EQUALITY:
@@ -203,21 +203,21 @@ operator<<(std::ostream& s, const Con::Type& t) {
     n = "STRICT_INEQUALITY";
     break;
   }
-  s << n;
-  return s;
+  os << n;
+  return os;
 }
 
 std::ostream&
-operator<<(std::ostream& s, const Cons& cs) {
+operator<<(std::ostream& os, const Cons& cs) {
   auto i = cs.begin(), i_end = cs.end();
   if (i == i_end) {
-    s << "true";
-    return s;
+    os << "true";
+    return os;
   }
-  s << *i;
+  os << *i;
   for (++i; i != i_end; ++i)
-    s << ", " << *i;
-  return s;
+    os << ", " << *i;
+  return os;
 }
 
 } // namespace IO_Operators

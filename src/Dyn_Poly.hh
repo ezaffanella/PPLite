@@ -253,7 +253,7 @@ public:
   }
 
   /* Input-output */
-  void ascii_dump(std::ostream& s) const { ptr->ascii_dump(s); }
+  void ascii_dump(std::ostream& os) const { ptr->ascii_dump(os); }
 
 }; // Dyn_Poly
 

@@ -67,27 +67,27 @@ Gen::check_inv() const {
 }
 
 void
-Gen::dump_type(std::ostream& s) const {
+Gen::dump_type(std::ostream& os) const {
   switch (type()) {
   case LINE:
-    s << "L";
+    os << "L";
     break;
   case RAY:
-    s << "R";
+    os << "R";
     break;
   case POINT:
-    s << "P";
+    os << "P";
     break;
   case CLOSURE_POINT:
-    s << "C";
+    os << "C";
     break;
   }
 }
 
 bool
-Gen::load_type(std::istream& s) {
+Gen::load_type(std::istream& is) {
   std::string str;
-  if (!(s >> str))
+  if (!(is >> str))
     return false;
   if (str == "P")
     set_type(POINT);
@@ -103,49 +103,49 @@ Gen::load_type(std::istream& s) {
 }
 
 void
-Gen::ascii_dump(std::ostream& s) const {
-  dump_type(s);
-  s << " : ";
-  linear_expr().ascii_dump(s);
-  s << " : ";
-  impl().inhomo.print(s);
-  s << "\n";
+Gen::ascii_dump(std::ostream& os) const {
+  dump_type(os);
+  os << " : ";
+  linear_expr().ascii_dump(os);
+  os << " : ";
+  impl().inhomo.print(os);
+  os << "\n";
 }
 
 bool
-Gen::ascii_load(std::istream& s) {
-  return load_type(s)
-    && ascii_load_string(s, ":")
-    && impl().expr.ascii_load(s)
-    && ascii_load_string(s, ":")
-    && impl().inhomo.ascii_load(s);
+Gen::ascii_load(std::istream& is) {
+  return load_type(is)
+    && ascii_load_string(is, ":")
+    && impl().expr.ascii_load(is)
+    && ascii_load_string(is, ":")
+    && impl().inhomo.ascii_load(is);
 }
 
 void
-Gen::print(std::ostream& s) const {
+Gen::print(std::ostream& os) const {
   bool need_div = false;
   switch (type()) {
   case LINE:
-    s << "l(";
+    os << "l(";
     break;
   case RAY:
-    s << "r(";
+    os << "r(";
     break;
   case POINT:
-    s << "p(";
+    os << "p(";
     need_div = (divisor() != 1);
     break;
   case CLOSURE_POINT:
-    s << "c(";
+    os << "c(";
     need_div = (divisor() != 1);
     break;
   }
   if (need_div)
-    s << "(";
-  linear_expr().print(s);
+    os << "(";
+  linear_expr().print(os);
   if (need_div)
-    s << ")/" << divisor();
-  s << ")";
+    os << ")/" << divisor();
+  os << ")";
 }
 
 namespace detail {
@@ -171,7 +171,7 @@ add_as_rays(Gens gens, Gens& rays) {
 namespace IO_Operators {
 
 std::ostream&
-operator<<(std::ostream& s, const Gen::Type& t) {
+operator<<(std::ostream& os, const Gen::Type& t) {
   const char* n = nullptr;
   switch (t) {
   case Gen::POINT:
@@ -187,21 +187,21 @@ operator<<(std::ostream& s, const Gen::Type& t) {
     n = "CLOSURE_POINT";
     break;
   }
-  s << n;
-  return s;
+  os << n;
+  return os;
 }
 
 std::ostream&
-operator<<(std::ostream& s, const Gens& gs) {
+operator<<(std::ostream& os, const Gens& gs) {
   auto i = gs.begin(), i_end = gs.end();
   if (i == i_end) {
-    s << "false";
-    return s;
+    os << "false";
+    return os;
   }
-  s << *i;
+  os << *i;
   for (++i; i != i_end; ++i)
-    s << ", " << *i;
-  return s;
+    os << ", " << *i;
+  return os;
 }
 
 } // namespace IO_Operators

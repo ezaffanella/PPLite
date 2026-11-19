@@ -70,13 +70,13 @@ struct Poly_Impl {
     bool empty() const {
       return sing_rows.empty() && sk_rows.empty();
     }
-    void ascii_dump(std::ostream& s) const {
-      s << "sing_rows " << sing_rows.size() << "\n";
-      ascii_dump_all(s, sing_rows);
-      s << "sk_rows " << sk_rows.size() << "\n";
-      ascii_dump_all(s, sk_rows);
-      s << "ns_rows " << ns_rows.size() << "\n";
-      ascii_dump_all(s, ns_rows);
+    void ascii_dump(std::ostream& os) const {
+      os << "sing_rows " << sing_rows.size() << "\n";
+      ascii_dump_all(os, sing_rows);
+      os << "sk_rows " << sk_rows.size() << "\n";
+      ascii_dump_all(os, sk_rows);
+      os << "ns_rows " << ns_rows.size() << "\n";
+      ascii_dump_all(os, ns_rows);
     }
     bool operator==(const Sys& y) const {
       return sing_rows == y.sing_rows
@@ -397,8 +397,8 @@ struct Poly_Impl {
   Poly_Impl integral_split(const Con& c);
 
   /* Input-output */
-  bool ascii_load(std::istream& s);
-  void ascii_dump(std::ostream& s) const;
+  bool ascii_load(std::istream& is);
+  void ascii_dump(std::ostream& os) const;
 
 }; // struct Poly_Impl
 
@@ -653,8 +653,8 @@ public:
   using Impl::set_minimize_filter_threshold;
 
   /* Input-output */
-  bool ascii_load(std::istream& s) { return impl().ascii_load(s); }
-  void ascii_dump(std::ostream& s) const { impl().ascii_dump(s); }
+  bool ascii_load(std::istream& is) { return impl().ascii_load(is); }
+  void ascii_dump(std::ostream& os) const { impl().ascii_dump(os); }
 
 }; // class Poly
 
@@ -668,10 +668,10 @@ inline bool operator!=(const Poly& x, const Poly& y) { return !(x == y); }
 
 namespace IO_Operators {
 
-std::ostream& operator<<(std::ostream& s, Topol topol);
-std::ostream& operator<<(std::ostream& s, Poly_Impl::Status status);
-std::ostream& operator<<(std::ostream& s, const Poly_Impl& ph);
-std::ostream& operator<<(std::ostream& s, const Poly& ph);
+std::ostream& operator<<(std::ostream& os, Topol topol);
+std::ostream& operator<<(std::ostream& os, Poly_Impl::Status status);
+std::ostream& operator<<(std::ostream& os, const Poly_Impl& ph);
+std::ostream& operator<<(std::ostream& os, const Poly& ph);
 
 } // namespace IO_Operators
 

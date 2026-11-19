@@ -131,13 +131,13 @@ public:
   bool is_pm1() const { return fmpz_is_pm1(mp); }
 
   static void print(std::ostream& os, const fmpz_t mp);
-  static bool read(std::istream& os, fmpz_t mp);
+  static bool read(std::istream& is, fmpz_t mp);
 
   void print(std::ostream& os) const { print(os, mp); }
   void print() const { print(std::cout, mp); }
   bool read(std::istream& is) { return read(is, mp); }
 
-  void ascii_dump(std::ostream& s) const;
+  void ascii_dump(std::ostream& os) const;
   bool ascii_load(std::istream& is);
 
 }; // class FLINT_Integer

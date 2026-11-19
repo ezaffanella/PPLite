@@ -130,14 +130,14 @@ public:
 
   bool check_inv() const;
 
-  void print(std::ostream& s) const;
+  void print(std::ostream& os) const;
   void print() const { print(std::cout); }
 
-  void dump_type(std::ostream& s) const;
-  void ascii_dump(std::ostream& s) const;
+  void dump_type(std::ostream& os) const;
+  void ascii_dump(std::ostream& os) const;
 
-  bool load_type(std::istream& s);
-  bool ascii_load(std::istream& s);
+  bool load_type(std::istream& is);
+  bool ascii_load(std::istream& is);
 
   void m_swap(Con& y) noexcept {
     using std::swap;
@@ -181,9 +181,9 @@ using Cons = std::vector<Con>;
 
 namespace IO_Operators {
 
-std::ostream& operator<<(std::ostream& s, const Con& c);
-std::ostream& operator<<(std::ostream& s, const Con::Type& t);
-std::ostream& operator<<(std::ostream& s, const Cons& cs);
+std::ostream& operator<<(std::ostream& os, const Con& c);
+std::ostream& operator<<(std::ostream& os, const Con::Type& t);
+std::ostream& operator<<(std::ostream& os, const Cons& cs);
 
 } // namespace IO_Operators
 

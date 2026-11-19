@@ -299,8 +299,8 @@ public:
   void minimize() const;
 
   /* Input-output */
-  bool ascii_load(std::istream& s);
-  void ascii_dump(std::ostream& s) const;
+  bool ascii_load(std::istream& is);
+  void ascii_dump(std::ostream& os) const;
 
   static F_Poly from_poly(const Poly& ph);
   Poly to_poly() const;
