@@ -2826,7 +2826,7 @@ Poly_Impl::get_bounds(const Affine_Expr& ae) const {
       return;
     Integer num;
     sp::add_sp_assign(num, ae_nz, ae.expr, g.linear_expr());
-    auto value = Rational(std::move(num), g.divisor());
+    auto value = Rational(num, g.divisor());
     if (first) {
       if (inf_lb) {
         assert(!inf_ub);
