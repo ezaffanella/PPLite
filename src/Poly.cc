@@ -1711,7 +1711,7 @@ find_efc(const NS_Rows& cs_ns,
       rays.set(i);
   auto maybe_efc_sat = detail::sat_all(rays, sat_c);
   maybe_efc_sat.complement_until(num_rows(cs_sk));
-  const Index_Set maybe_efc(std::move(maybe_efc_sat));
+  Index_Set maybe_efc(std::move(maybe_efc_sat));
 
   const auto efc_size = maybe_efc.size();
   const auto cs_sk_size = num_rows(cs_sk);
