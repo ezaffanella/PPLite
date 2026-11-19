@@ -247,6 +247,7 @@ guarded_write(std::ostream& out, const T& x) {
     succeeded = !out.fail();
   }
   catch (...) {
+    // Do nothing
   }
   if (!succeeded) {
     fatal(std::string("cannot write to output file `")
