@@ -236,9 +236,6 @@ get_pos_efc_info(const Poly_Impl& x) {
     return { not_a_dim(), std::distance(ns.begin(), iter) };
 }
 
-/* Note: used for debugging only. */
-bool check_redundant_ns_by_ns(const NS_Rows& ns_rows);
-
 inline void
 strict_ineqs_become_nonstrict_ineqs(Cons& cons) {
   for (auto& c : cons) {
@@ -750,14 +747,14 @@ new_ns_from_set(const SK_Rows& sk_rows,
                 const Ranges& ns_ranges,
                 bool is_strict_ineq);
 
+
+/* Note: used for debugging only. */
 template <typename SK_Rows>
 bool
 check_redundant_ns_by_sk(const NS_Rows& ns_rows,
                          const SK_Rows& sk_rows);
-bool
-check_redundant_ns_by_ns(const NS_Rows& ns_rows);
-bool
-check_ns_rows(const NS_Rows& ns_rows);
+bool check_redundant_ns_by_ns(const NS_Rows& ns_rows);
+bool check_ns_rows(const NS_Rows& ns_rows);
 
 inline void
 make_non_singular(Gen& g, Integer& sp) {
