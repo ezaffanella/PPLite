@@ -422,10 +422,7 @@ inline Itv
 itv_from_con_inhomo(const Con& c) {
   if (c.linear_expr().is_zero()) {
     // Not a proper constraint.
-    if (c.is_inconsistent())
-      return Itv::empty();
-    else
-      return Itv(Spec_Elem::UNIVERSE);
+    return c.is_inconsistent() ? Itv::empty() : Itv::universe();
   }
   auto bound = Rational(-c.inhomo_term());
   Itv res;
