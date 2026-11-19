@@ -21,13 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define pplite_Index_Partition_hh 1
 
 #include <algorithm>
+#include <cstdint>
 #include <iterator>
 #include <vector>
 
 namespace pplite {
 namespace detail {
 
-enum class Range { EQ, POS, NEG, POS_NEG };
+enum class Range : std::uint8_t { EQ, POS, NEG, POS_NEG };
 
 using Ranges = std::vector<Range>;
 
