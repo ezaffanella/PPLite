@@ -589,16 +589,16 @@ public:
   void widening_assign(const Poly& y,
                        Widen_Impl w_impl = get_widen_impl(),
                        Widen_Spec w_spec = get_widen_spec()) {
-    return impl().widening_assign(y.impl(), nullptr, w_impl, w_spec);
+    impl().widening_assign(y.impl(), nullptr, w_impl, w_spec);
   }
   void widening_assign(const Poly& y, const Cons& upto_cons,
                        Widen_Impl w_impl = get_widen_impl(),
                        Widen_Spec w_spec = get_widen_spec()) {
-    return impl().widening_assign(y.impl(), &upto_cons, w_impl, w_spec);
+    impl().widening_assign(y.impl(), &upto_cons, w_impl, w_spec);
   }
 
   void time_elapse_assign(const Poly& y) {
-    return impl().time_elapse_assign(y.impl());
+    impl().time_elapse_assign(y.impl());
   }
 
   /* Split */
