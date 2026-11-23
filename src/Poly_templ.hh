@@ -570,8 +570,8 @@ con_hull_cons(Iter first, Iter last, bool boxed) {
     // Helper: add default interval slopes.
     auto add_box_constraints = [first] (Norm_Cons& cs) {
       for (auto d : dim_range(*first)) {
-        cs.push_back(Norm_Con(Linear_Expr(Var(d))));
-        cs.push_back(Norm_Con(Linear_Expr(-Var(d))));
+        cs.emplace_back(Linear_Expr(Var(d)));
+        cs.emplace_back(Linear_Expr(-Var(d)));
       }
     };
 
