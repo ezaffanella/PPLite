@@ -390,8 +390,8 @@ public:
 
   // Implementation helpers
 
-  void copy_from(dim_type dst_pos,
-                 const Bits& src, dim_type src_pos, dim_type count);
+  void copy_from(dim_type dst_k,
+                 const Bits& src, dim_type src_k, dim_type count);
 
   dim_type find_from_word(dim_type wk) const {
     assert(wk >= 0);
